@@ -58,6 +58,11 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.options.example
 Don't use `--with-pcre` for embedding PCRE statically.
 Instead you should use `-pcre` and `-pcreversion`.
 
+#### Caution about `--with-openssl`
+
+Don't use `--with-openssl` for embedding OpenSSL in this text-file.
+Instead you should use `-openssl` and `-opensslversion`.
+
 #### Caution about `--add-module`
 
 Don't use `--add-module` for embedding 3rd-party module in this text-file.

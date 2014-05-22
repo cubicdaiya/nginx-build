@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"syscall"
 )
 
@@ -46,6 +47,7 @@ func main() {
 	openSSLStatic := flag.Bool("openssl", false, "embedded PCRE statically")
 	openSSLVersion := flag.String("opensslversion", openssl.VERSION, "OpenSSL version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
+	jobs := flag.Int("j", runtime.NumCPU(), "number of jobs for buiding nginx")
 	flag.Parse()
 
 	var modulesConf *config.Config
@@ -205,7 +207,7 @@ func main() {
 	}
 
 	log.Println("Building nginx.....")
-	err = nginx.Make(conf)
+	err = nginx.Make(conf, *jobs)
 	if err != nil {
 		log.Fatal("Failed to build nginx")
 	}

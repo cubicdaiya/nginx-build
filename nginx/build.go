@@ -3,7 +3,6 @@ package nginx
 import (
 	"../common"
 	"os/exec"
-	"runtime"
 	"strconv"
 )
 
@@ -13,9 +12,8 @@ func Configure() error {
 	return cmd.Run()
 }
 
-func Make(conf string) error {
-	numCPU := runtime.NumCPU()
-	cmd := exec.Command("make", "-j", strconv.Itoa(numCPU))
+func Make(conf string, jobs int) error {
+	cmd := exec.Command("make", "-j", strconv.Itoa(jobs))
 	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }
