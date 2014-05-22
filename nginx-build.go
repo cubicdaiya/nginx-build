@@ -1,10 +1,6 @@
 package main
 
 import (
-	"./common"
-	"./nginx"
-	"./openssl"
-	"./pcre"
 	"flag"
 	"fmt"
 	"github.com/robfig/config"
@@ -25,7 +21,7 @@ func restoreCurrentDir(prevDir string) {
 	os.Chdir(prevDir)
 }
 
-func printLastMsg(workDir, version string) {
+func printLastMsg(workDir, srcDir string) {
 	log.Println("Complete building nginx!")
 
 	lastMsgFormat := `Enter the following command for install nginx.
@@ -33,34 +29,38 @@ func printLastMsg(workDir, version string) {
 $ cd %s/%s
 $ sudo make install
 `
-	log.Println(fmt.Sprintf(lastMsgFormat, workDir, nginx.SourcePath(version)))
+	log.Println(fmt.Sprintf(lastMsgFormat, workDir, srcDir))
 }
 
 func main() {
-	version := flag.String("v", nginx.VERSION, "nginx version")
+	version := flag.String("v", NGINX_VERSION, "nginx version")
 	confPath := flag.String("c", "", "configuration file for building nginx")
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
 	verbose := flag.Bool("verbose", false, "verbose mode")
 	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
-	pcreVersion := flag.String("pcreversion", pcre.VERSION, "PCRE version")
+	pcreVersion := flag.String("pcreversion", PCRE_VERSION, "PCRE version")
 	openSSLStatic := flag.Bool("openssl", false, "embedded PCRE statically")
-	openSSLVersion := flag.String("opensslversion", openssl.VERSION, "OpenSSL version")
+	openSSLVersion := flag.String("opensslversion", OPENSSL_VERSION, "OpenSSL version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
 	jobs := flag.Int("j", runtime.NumCPU(), "number of jobs for buiding nginx")
 	flag.Parse()
 
 	var modulesConf *config.Config
-	var modules3rd []nginx.Module3rd
+	var modules3rd []Module3rd
 	conf := ""
-	common.Verboseenabled = *verbose
+	Verboseenabled = *verbose
+
+	nginxBuilder := MakeBuilder(COMPONENT_NGINX, *version)
+	pcreBuilder := MakeBuilder(COMPONENT_PCRE, *pcreVersion)
+	openSSLBuilder := MakeBuilder(COMPONENT_OPENSSL, *openSSLVersion)
 
 	// change default umask
 	_ = syscall.Umask(0)
 
 	if *version == "" {
 		log.Println("[warn]nginx version is not set.")
-		log.Printf("[warn]nginx-build use %s.\n", nginx.VERSION)
+		log.Printf("[warn]nginx-build use %s.\n", NGINX_VERSION)
 	}
 
 	if *confPath == "" {
@@ -83,7 +83,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		modules3rd = nginx.LoadModules3rd(modulesConf)
+		modules3rd = LoadModules3rd(modulesConf)
 	}
 
 	if *workParentDir == "" {
@@ -118,56 +118,53 @@ func main() {
 	}
 
 	if *pcreStatic {
-		_, err = os.Stat(pcre.SourcePath(*pcreVersion))
+		_, err = os.Stat(pcreBuilder.SourcePath())
 		if err != nil {
 			log.Println("Download PCRE.....")
-			downloadLink := pcre.DownloadLink(*pcreVersion)
-			err := pcre.Download(downloadLink)
+			err := pcreBuilder.Download()
 			if err != nil {
 				log.Fatal("Failed to download PCRE")
 			}
-			err = nginx.ExtractArchive(pcre.ArchivePath(*pcreVersion))
+			err = ExtractArchive(pcreBuilder.ArchivePath())
 			if err != nil {
 				log.Fatal("Failed to extract nginx")
 			}
 		} else {
-			log.Println(pcre.SourcePath(*pcreVersion), "already exists.")
+			log.Println(pcreBuilder.SourcePath(), "already exists.")
 		}
 	}
 
 	if *openSSLStatic {
-		_, err = os.Stat(openssl.SourcePath(*openSSLVersion))
+		_, err = os.Stat(openSSLBuilder.SourcePath())
 		if err != nil {
 			log.Println("Download OpenSSL.....")
-			downloadLink := openssl.DownloadLink(*openSSLVersion)
-			err := openssl.Download(downloadLink)
+			err := openSSLBuilder.Download()
 			if err != nil {
 				log.Fatal("Failed to download OpenSSL")
 			}
-			err = nginx.ExtractArchive(openssl.ArchivePath(*openSSLVersion))
+			err = ExtractArchive(openSSLBuilder.ArchivePath())
 			if err != nil {
 				log.Fatal("Failed to extract nginx")
 			}
 		} else {
-			log.Println(openssl.SourcePath(*openSSLVersion), "already exists.")
+			log.Println(openSSLBuilder.SourcePath(), "already exists.")
 		}
 	}
 
-	_, err = os.Stat(nginx.SourcePath(*version))
+	_, err = os.Stat(nginxBuilder.SourcePath())
 	if err != nil {
 		log.Println("Download nginx.....")
-		downloadLink := nginx.DownloadLink(*version)
-		err := nginx.Download(downloadLink)
+		err := nginxBuilder.Download()
 		if err != nil {
 			log.Fatal("Failed to download nginx")
 		}
 		log.Println("Extract nginx.....")
-		err = nginx.ExtractArchive(nginx.ArchivePath(*version))
+		err = ExtractArchive(nginxBuilder.ArchivePath())
 		if err != nil {
 			log.Fatal("Failed to extract nginx")
 		}
 	} else {
-		log.Println(nginx.SourcePath(*version), "already exists.")
+		log.Println(nginxBuilder.SourcePath(), "already exists.")
 	}
 
 	if len(modules3rd) > 0 {
@@ -179,7 +176,7 @@ func main() {
 				continue
 			}
 			log.Println(fmt.Sprintf("Download %s.....", modules3rd[i].Name))
-			err = nginx.DownloadModule3rd(modules3rd[i])
+			err = nginxBuilder.DownloadModule3rd(modules3rd[i])
 			if err != nil {
 				log.Fatal("Failed to download ", modules3rd[i].Name)
 			}
@@ -187,33 +184,34 @@ func main() {
 			if modules3rd[i].Rev != "" {
 				dir := saveCurrentDir()
 				os.Chdir(modules3rd[i].Name)
-				nginx.SwitchRev(modules3rd[i].Rev)
+				SwitchRev(modules3rd[i].Rev)
 				os.Chdir(dir)
 			}
 		}
 	}
 
 	// cd workDir/nginx-${version}
-	os.Chdir(nginx.SourcePath(*version))
+	os.Chdir(nginxBuilder.SourcePath())
 
 	log.Println("Configure nginx.....")
-	err = nginx.ConfigureGen(conf, modules3rd, *pcreStatic, *pcreVersion, *openSSLStatic, *openSSLVersion)
+	err = nginxBuilder.ConfigureGen(conf, modules3rd, *pcreStatic, *pcreVersion, *openSSLStatic, *openSSLVersion)
 	if err != nil {
 		log.Fatal("Failed to generate configure script for nginx")
 	}
-	err = nginx.Configure()
+	err = Configure()
 	if err != nil {
 		log.Fatal("Failed to configure nginx")
 	}
 
 	log.Println("Building nginx.....")
-	err = nginx.Make(conf, *jobs)
+	err = Make(*jobs)
 	if err != nil {
+		fmt.Println(err.Error())
 		log.Fatal("Failed to build nginx")
 	}
 
 	// cd rootDir
 	os.Chdir(rootDir)
 
-	printLastMsg(workDir, *version)
+	printLastMsg(workDir, nginxBuilder.SourcePath())
 }
