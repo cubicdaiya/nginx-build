@@ -26,7 +26,7 @@ objs/bin/nginx -V
 ### Configuration for building nginx
 
 `nginx-build` provides a mechanism for custom configuration for building nginx.
-Prepare a ini-file like the following.
+Prepare a text-file like the following.
 
 ```
 --sbin-path=/usr/sbin/nginx
@@ -51,6 +51,9 @@ Give this file to `nginx-build` with `-c`.
 ```
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.options.example
 ```
+
+Don't use `--add-module` for embedding 3rd-party module in this text-file.
+Instead you should use `-m`.
 
 ### Configuration for embedding 3rd-party modules
 
