@@ -21,7 +21,7 @@ func restoreCurrentDir(prevDir string) {
 	os.Chdir(prevDir)
 }
 
-func printLastMsg (workDir, version string) {
+func printLastMsg(workDir, version string) {
 	log.Println("Complete building nginx!")
 
 	lastMsgFormat := `Enter the following command for install nginx.
