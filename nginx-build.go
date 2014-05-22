@@ -42,6 +42,7 @@ func main() {
 	verbose := flag.Bool("verbose", false, "verbose mode")
 	pcreStaic := flag.Bool("pcre", false, "embedded PCRE statically")
 	pcreVersion := flag.String("pcreversion", pcre.VERSION, "PCRE version")
+	clear := flag.Bool("clear", false, "remove entries in working directory")
 	flag.Parse()
 
 	var modulesConf *config.Config
@@ -90,6 +91,12 @@ func main() {
 	}
 
 	workDir := *workParentDir + "/" + *version
+	if *clear {
+		err = os.RemoveAll(workDir)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
 	_, err = os.Stat(workDir)
 	if err != nil {
 		err = os.Mkdir(workDir, 0755)
