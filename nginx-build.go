@@ -3,6 +3,7 @@ package main
 import (
 	"./common"
 	"./nginx"
+	"./openssl"
 	"./pcre"
 	"flag"
 	"fmt"
@@ -40,8 +41,10 @@ func main() {
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
 	verbose := flag.Bool("verbose", false, "verbose mode")
-	pcreStaic := flag.Bool("pcre", false, "embedded PCRE statically")
+	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
 	pcreVersion := flag.String("pcreversion", pcre.VERSION, "PCRE version")
+	openSSLStatic := flag.Bool("openssl", false, "embedded PCRE statically")
+	openSSLVersion := flag.String("opensslversion", openssl.VERSION, "OpenSSL version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
 	flag.Parse()
 
@@ -112,20 +115,40 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	_, err = os.Stat(pcre.SourcePath(*pcreVersion))
-	if err != nil {
-		log.Println("Download PCRE.....")
-		downloadLink := pcre.DownloadLink(*pcreVersion)
-		err := pcre.Download(downloadLink)
+	if *pcreStatic {
+		_, err = os.Stat(pcre.SourcePath(*pcreVersion))
 		if err != nil {
-			log.Fatal("Failed to download PCRE")
+			log.Println("Download PCRE.....")
+			downloadLink := pcre.DownloadLink(*pcreVersion)
+			err := pcre.Download(downloadLink)
+			if err != nil {
+				log.Fatal("Failed to download PCRE")
+			}
+			err = nginx.ExtractArchive(pcre.ArchivePath(*pcreVersion))
+			if err != nil {
+				log.Fatal("Failed to extract nginx")
+			}
+		} else {
+			log.Println(pcre.SourcePath(*pcreVersion), "already exists.")
 		}
-		err = nginx.ExtractArchive(pcre.ArchivePath(*pcreVersion))
+	}
+
+	if *openSSLStatic {
+		_, err = os.Stat(openssl.SourcePath(*openSSLVersion))
 		if err != nil {
-			log.Fatal("Failed to extract nginx")
+			log.Println("Download OpenSSL.....")
+			downloadLink := openssl.DownloadLink(*openSSLVersion)
+			err := openssl.Download(downloadLink)
+			if err != nil {
+				log.Fatal("Failed to download OpenSSL")
+			}
+			err = nginx.ExtractArchive(openssl.ArchivePath(*openSSLVersion))
+			if err != nil {
+				log.Fatal("Failed to extract nginx")
+			}
+		} else {
+			log.Println(openssl.SourcePath(*openSSLVersion), "already exists.")
 		}
-	} else {
-		log.Println(pcre.SourcePath(*pcreVersion), "already exists.")
 	}
 
 	_, err = os.Stat(nginx.SourcePath(*version))
@@ -172,7 +195,7 @@ func main() {
 	os.Chdir(nginx.SourcePath(*version))
 
 	log.Println("Configure nginx.....")
-	err = nginx.ConfigureGen(conf, modules3rd, *pcreStaic, *pcreVersion)
+	err = nginx.ConfigureGen(conf, modules3rd, *pcreStatic, *pcreVersion, *openSSLStatic, *openSSLVersion)
 	if err != nil {
 		log.Fatal("Failed to generate configure script for nginx")
 	}
