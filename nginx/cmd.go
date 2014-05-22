@@ -25,3 +25,9 @@ func ExtractArchive(path string) error {
 	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }
+
+func SwitchRev (rev string) error {
+	cmd := exec.Command("git", "co", rev)
+	common.CheckVerboseEnabled(cmd)
+	return cmd.Run()
+}

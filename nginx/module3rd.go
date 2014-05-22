@@ -6,17 +6,17 @@ import (
 
 type Module3rd struct {
 	Name string
-	form string
-	url  string
-	rev  string
+	Form string
+	Url  string
+	Rev  string
 }
 
 func LoadModule3rd(name string, c config.Config) Module3rd {
 	var module3rd Module3rd
 	module3rd.Name = name
-	module3rd.form, _ = c.String(name, "form")
-	module3rd.url, _ = c.String(name, "url")
-	module3rd.rev, _ = c.String(name, "rev")
+	module3rd.Form, _ = c.String(name, "form")
+	module3rd.Url, _ = c.String(name, "url")
+	module3rd.Rev, _ = c.String(name, "rev")
 	return module3rd
 }
 

@@ -17,13 +17,14 @@ func Download(link string) error {
 }
 
 func DownloadModule3rd(module3rd Module3rd) error {
-	form := module3rd.form
-	url := module3rd.url
+	form := module3rd.Form
+	url := module3rd.Url
 	var cmd *exec.Cmd
 	switch form {
 	case "github":
 		cmd = exec.Command("git", "clone", url)
+		common.CheckVerboseEnabled(cmd)
+		return cmd.Run()
 	}
-	common.CheckVerboseEnabled(cmd)
-	return cmd.Run()
+	return nil
 }

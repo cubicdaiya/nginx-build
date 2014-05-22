@@ -156,7 +156,14 @@ func main() {
 			log.Println(fmt.Sprintf("Download %s.....", modules3rd[i].Name))
 			err = nginx.DownloadModule3rd(modules3rd[i])
 			if err != nil {
-				log.Fatal("Failed to download", modules3rd[i].Name)
+				log.Fatal("Failed to download ", modules3rd[i].Name)
+			}
+
+			if modules3rd[i].Rev != "" {
+				dir := saveCurrentDir()
+				os.Chdir(modules3rd[i].Name)
+				nginx.SwitchRev(modules3rd[i].Rev)
+				os.Chdir(dir)
 			}
 		}
 	}
