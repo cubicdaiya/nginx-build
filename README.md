@@ -73,7 +73,7 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre
 `-pcreverson` is a option to set a version of PCRE.
 
 ```
-$ nginx-build -v 1.7.0 -d ~/opt/nginx -pcreversion=8.35
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre -pcreversion=8.35
 ```
 
 ### Embedding 3rd-party modules
