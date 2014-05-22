@@ -7,6 +7,7 @@
 ```
 git clone git@github.com:cubicdaiya/nginx-build.git
 cd nginx-build
+go get github.com/mattn/gom 
 gom install
 gom build
 go install
