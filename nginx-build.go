@@ -35,7 +35,7 @@ $ sudo make install
 }
 
 func main() {
-	version := flag.String("v", "", "nginx version")
+	version := flag.String("v", nginx.VERSION, "nginx version")
 	confPath := flag.String("c", "", "configuration file for building nginx")
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
