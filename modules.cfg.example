@@ -7,3 +7,7 @@ rev=v0.53
 form=github
 url=https://github.com/simpl/ngx_devel_kit
 rev=v0.2.19
+
+[ngx_info]
+form=github
+url=https://github.com/cubicdaiya/ngx_info
