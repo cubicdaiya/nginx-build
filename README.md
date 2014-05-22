@@ -2,16 +2,14 @@
 
 nginx-build - provides a command to build nginx seamlessly.
 
-# Dependencies
-
- * [Go](http://golang.org/)
- * [github.com/robfig/config](https://github.com/robfig/config)
-
-## Install
+## Setup
 
 ```
-go get github.com/robfig/config
-go get github.com/cubicdaiya/nginx-build
+git clone git@github.com:cubicdaiya/nginx-build.git
+cd nginx-build
+gom install
+gom build
+go install
 ```
 
 ## Usage
