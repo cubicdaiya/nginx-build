@@ -14,7 +14,7 @@ func configureModule3rdGen(modules3rd []Module3rd) string {
 	return result
 }
 
-func ConfigureGen(conf string, modules3rd []Module3rd) error {
+func ConfigureGen(conf string, modules3rd []Module3rd, pcreStatic bool, pcreVersion string) error {
 	configure := `#!/bin/sh
 
 ./configure `
@@ -29,6 +29,10 @@ func ConfigureGen(conf string, modules3rd []Module3rd) error {
 
 		conf = strings.Join(options, "\n")
 		configure += conf
+	}
+
+	if pcreStatic {
+		configure += fmt.Sprintf("--with-pcre=../pcre-%s \\\n", pcreVersion)
 	}
 
 	configure_modules3rd := configureModule3rdGen(modules3rd)

@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"../common"
 	"os/exec"
 	"runtime"
 	"strconv"
@@ -8,19 +9,19 @@ import (
 
 func Configure() error {
 	cmd := exec.Command("sh", "./nginx-configure")
-	checkVerboseenabled(cmd)
+	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }
 
 func Make(conf string) error {
 	numCPU := runtime.NumCPU()
 	cmd := exec.Command("make", "-j", strconv.Itoa(numCPU))
-	checkVerboseenabled(cmd)
+	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }
 
 func ExtractArchive(path string) error {
 	cmd := exec.Command("tar", "zxvf", path)
-	checkVerboseenabled(cmd)
+	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }

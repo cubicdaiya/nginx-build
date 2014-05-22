@@ -1,4 +1,4 @@
-package nginx
+package pcre
 
 import (
 	"../common"
@@ -12,18 +12,6 @@ func DownloadLink(version string) string {
 
 func Download(link string) error {
 	cmd := exec.Command("wget", link)
-	common.CheckVerboseEnabled(cmd)
-	return cmd.Run()
-}
-
-func DownloadModule3rd(module3rd Module3rd) error {
-	form := module3rd.form
-	url := module3rd.url
-	var cmd *exec.Cmd
-	switch form {
-	case "github":
-		cmd = exec.Command("git", "clone", url)
-	}
 	common.CheckVerboseEnabled(cmd)
 	return cmd.Run()
 }

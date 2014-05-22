@@ -1,7 +1,9 @@
 package main
 
 import (
+	"./common"
 	"./nginx"
+	"./pcre"
 	"flag"
 	"fmt"
 	"github.com/robfig/config"
@@ -38,18 +40,21 @@ func main() {
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
 	verbose := flag.Bool("verbose", false, "verbose mode")
+	pcreStaic := flag.Bool("pcre", false, "embedded PCRE statically")
+	pcreVersion := flag.String("pcreversion", pcre.VERSION, "PCRE version")
 	flag.Parse()
 
 	var modulesConf *config.Config
 	var modules3rd []nginx.Module3rd
 	conf := ""
-	nginx.Verboseenabled = *verbose
+	common.Verboseenabled = *verbose
 
 	// change default umask
 	_ = syscall.Umask(0)
 
 	if *version == "" {
-		log.Fatal("set nginx version with -v")
+		log.Println("[warn]nginx version is not set.")
+		log.Printf("[warn]nginx-build use %s.\n", nginx.VERSION)
 	}
 
 	if *confPath == "" {
@@ -100,6 +105,22 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	_, err = os.Stat(pcre.SourcePath(*pcreVersion))
+	if err != nil {
+		log.Println("Download PCRE.....")
+		downloadLink := pcre.DownloadLink(*pcreVersion)
+		err := pcre.Download(downloadLink)
+		if err != nil {
+			log.Fatal("Failed to download PCRE")
+		}
+		err = nginx.ExtractArchive(pcre.ArchivePath(*pcreVersion))
+		if err != nil {
+			log.Fatal("Failed to extract nginx")
+		}
+	} else {
+		log.Println(pcre.SourcePath(*pcreVersion), "already exists.")
+	}
+
 	_, err = os.Stat(nginx.SourcePath(*version))
 	if err != nil {
 		log.Println("Download nginx.....")
@@ -107,6 +128,11 @@ func main() {
 		err := nginx.Download(downloadLink)
 		if err != nil {
 			log.Fatal("Failed to download nginx")
+		}
+		log.Println("Extract nginx.....")
+		err = nginx.ExtractArchive(nginx.ArchivePath(*version))
+		if err != nil {
+			log.Fatal("Failed to extract nginx")
 		}
 	} else {
 		log.Println(nginx.SourcePath(*version), "already exists.")
@@ -128,17 +154,11 @@ func main() {
 		}
 	}
 
-	log.Println("Extract nginx.....")
-	err = nginx.ExtractArchive(nginx.ArchivePath(*version))
-	if err != nil {
-		log.Fatal("Failed to extract nginx")
-	}
-
 	// cd workDir/nginx-${version}
 	os.Chdir(nginx.SourcePath(*version))
 
 	log.Println("Configure nginx.....")
-	err = nginx.ConfigureGen(conf, modules3rd)
+	err = nginx.ConfigureGen(conf, modules3rd, *pcreStaic, *pcreVersion)
 	if err != nil {
 		log.Fatal("Failed to generate configure script for nginx")
 	}

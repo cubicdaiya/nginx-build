@@ -1,4 +1,4 @@
-package nginx
+package common
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 
 var Verboseenabled bool
 
-func checkVerboseenabled(cmd *exec.Cmd) {
+func CheckVerboseEnabled(cmd *exec.Cmd) {
 	if Verboseenabled {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
