@@ -52,17 +52,31 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.options.example
 ```
 
-#### Caution about `--add-module`
-
-Don't use `--add-module` for embedding 3rd-party module in this text-file.
-Instead you should use `-m`.
-
 #### Caution about `--with-pcre`
 
 Don't use `--with-pcre` for embedding PCRE statically.
 Instead you should use `-pcre` and `-pcreversion`.
 
-### Configuration for embedding 3rd-party modules
+#### Caution about `--add-module`
+
+Don't use `--add-module` for embedding 3rd-party module in this text-file.
+Instead you should use `-m`.
+
+### Embedding PCRE statically
+
+Give `-pcre` to `nginx-build`.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre
+```
+
+`-pcreverson` is a option to set a version of PCRE.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -pcreversion=8.35
+```
+
+### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
 Prepare a ini-file like the following.
