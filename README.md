@@ -5,12 +5,8 @@
 ## Setup
 
 ```
-git clone git@github.com:cubicdaiya/nginx-build.git
-cd nginx-build
-go get github.com/mattn/gom 
-gom install
-gom build
-go install
+go get -u github.com/robfig/config
+go get -u github.com/cubicdaiya/nginx-build
 ```
 
 ## Quick Start
