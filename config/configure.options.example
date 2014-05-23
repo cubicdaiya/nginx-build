@@ -1,4 +1,3 @@
 --sbin-path=/usr/sbin/nginx
 --conf-path=/etc/nginx/nginx.conf
---with-pcre-jit
 --with-cc-opt="-Wno-deprecated-declarations"
