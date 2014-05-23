@@ -26,7 +26,13 @@ func main() {
 	zlibVersion := flag.String("opensslversion", ZLIB_VERSION, "zlib version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
 	jobs := flag.Int("j", runtime.NumCPU(), "number of jobs for buiding nginx")
+	versions := flag.Bool("versions", false, "show nginx versions")
 	flag.Parse()
+
+	if *versions {
+                showVersions()
+		os.Exit(0)
+	}
 
 	// set verbose mode
 	VerboseEnabled = *verbose
