@@ -13,11 +13,6 @@ form=github
 url=https://github.com/simpl/ngx_devel_kit
 rev=v0.2.19
 
-[lua-nginx-module]
-form=github
-url=https://github.com/openresty/lua-nginx-module.git
-rev=v0.9.7
-
 [ngx_info]
 form=github
 url=https://github.com/cubicdaiya/ngx_info
