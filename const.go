@@ -9,13 +9,12 @@ const PCRE_VERSION = "8.35"
 const OPENSSL_DOWNLOAD_URL_PREFIX = "http://www.openssl.org/source"
 const OPENSSL_VERSION = "1.0.1g"
 
+const ZLIB_DOWNLOAD_URL_PREFIX = "http://zlib.net"
+const ZLIB_VERSION = "1.2.8"
+
 const (
 	COMPONENT_NGINX = iota
 	COMPONENT_PCRE
 	COMPONENT_OPENSSL
+	COMPONENT_ZLIB
 )
-
-
-
-
-

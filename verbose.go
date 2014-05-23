@@ -5,10 +5,10 @@ import (
 	"os/exec"
 )
 
-var Verboseenabled bool
+var VerboseEnabled bool
 
-func CheckVerboseEnabled(cmd *exec.Cmd) {
-	if Verboseenabled {
+func checkVerboseEnabled(cmd *exec.Cmd) {
+	if VerboseEnabled {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	}

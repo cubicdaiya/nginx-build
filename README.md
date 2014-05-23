@@ -53,6 +53,11 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.options.example
 ```
 
+#### Caution about `--with-zlib`
+
+Don't use `--with-zlib` for embedding ZLIB statically.
+Instead you should use `-zlib` and `-zlibversion`.
+
 #### Caution about `--with-pcre`
 
 Don't use `--with-pcre` for embedding PCRE statically.
@@ -68,6 +73,20 @@ Instead you should use `-openssl` and `-opensslversion`.
 Don't use `--add-module` for embedding 3rd-party module in this text-file.
 Instead you should use `-m`.
 
+### Embedding ZLIB statically
+
+Give `-zlib` to `nginx-build`.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib
+```
+
+`-zlibverson` is a option to set a version of ZLIB.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib -zlibversion=1.2.8
+```
+
 ### Embedding PCRE statically
 
 Give `-pcre` to `nginx-build`.
@@ -80,6 +99,20 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre
 
 ```
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre -pcreversion=8.35
+```
+
+### Embedding OpenSSL statically
+
+Give `-openssl` to `nginx-build`.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl
+```
+
+`-opensslverson` is a option to set a version of OPENSSL.
+
+```
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
 ```
 
 ### Embedding 3rd-party modules
