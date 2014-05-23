@@ -6,10 +6,10 @@ import (
 )
 
 type Module3rd struct {
-	Name string
-	Form string
-	Url  string
-	Rev  string
+	Name   string
+	Form   string
+	Url    string
+	Rev    string
 	PrevSh string
 }
 
@@ -25,13 +25,12 @@ func loadModule3rd(name string, c config.Config) Module3rd {
 
 func loadModules3rd(c *config.Config) []Module3rd {
 	sections := c.Sections()
-	l := len(sections)
 	var modules3rd []Module3rd
-	for i := 0; i < l; i++ {
-		if sections[i] == config.DEFAULT_SECTION {
+	for _, s := range sections {
+		if s == config.DEFAULT_SECTION {
 			continue
 		}
-		modules3rd = append(modules3rd, loadModule3rd(sections[i], *c))
+		modules3rd = append(modules3rd, loadModule3rd(s, *c))
 	}
 	return modules3rd
 }

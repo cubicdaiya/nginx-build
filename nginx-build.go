@@ -123,23 +123,23 @@ func main() {
 	}
 	if len(modules3rd) > 0 {
 		log.Println("Download 3rd Party Modules.....")
-		for i := 0; i < len(modules3rd); i++ {
-			if fileExists(modules3rd[i].Name) {
-				log.Printf("%s already exists.", modules3rd[i].Name)
+		for _, m := range modules3rd {
+			if fileExists(m.Name) {
+				log.Printf("%s already exists.", m.Name)
 				continue
 			}
-			log.Printf("Download %s.....", modules3rd[i].Name)
-			err = downloadModule3rd(modules3rd[i])
+			log.Printf("Download %s.....", m.Name)
+			err = downloadModule3rd(m)
 			if err != nil {
-				log.Fatalf("Failed to download %s", modules3rd[i].Name)
+				log.Fatalf("Failed to download %s", m.Name)
 			}
 
-			fmt.Println(modules3rd[i].Rev)
-			if modules3rd[i].Rev != "" {
+			fmt.Println(m.Rev)
+			if m.Rev != "" {
 				dir := saveCurrentDir()
-				os.Chdir(modules3rd[i].Name)
-				switchRev(modules3rd[i].Rev)
-				prevShell(modules3rd[i].PrevSh)
+				os.Chdir(m.Name)
+				switchRev(m.Rev)
+				prevShell(m.PrevSh)
 				os.Chdir(dir)
 			}
 		}

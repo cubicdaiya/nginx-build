@@ -14,8 +14,9 @@ type StaticLibrary struct {
 
 func configureGenModule3rd(modules3rd []Module3rd) string {
 	result := ""
-	for i := 0; i < len(modules3rd); i++ {
-		result += fmt.Sprintf("--add-module=../%s \\\n", modules3rd[i].Name)
+	//for i := 0; i < len(modules3rd); i++ {
+	for _, m := range modules3rd {
+		result += fmt.Sprintf("--add-module=../%s \\\n", m.Name)
 	}
 	return result
 }
@@ -29,7 +30,7 @@ func (builder *Builder) configureGen(conf string, modules3rd []Module3rd, depend
 		configure += "\\\n"
 		options := strings.Split(conf, "\n")
 
-		for i := 0; i < len(options); i++ {
+		for i := range options {
 			options[i] += " \\"
 		}
 
@@ -37,8 +38,8 @@ func (builder *Builder) configureGen(conf string, modules3rd []Module3rd, depend
 		configure += conf
 	}
 
-	for i := 0; i < len(dependencies); i++ {
-		configure += fmt.Sprintf("%s=../%s-%s \\\n", dependencies[i].Option, dependencies[i].Name, dependencies[i].Version)
+	for _, d := range dependencies {
+		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
 	}
 
 	configure_modules3rd := configureGenModule3rd(modules3rd)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	_"fmt"
+	_ "fmt"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -31,7 +31,7 @@ func switchRev(rev string) error {
 	return cmd.Run()
 }
 
-func prevShell (sh string) error {
+func prevShell(sh string) error {
 	if len(sh) == 0 {
 		return nil
 	}
