@@ -17,7 +17,7 @@ func downloadModule3rd(module3rd Module3rd) error {
 	url := module3rd.Url
 	var cmd *exec.Cmd
 	switch form {
-	case "github":
+	case "git":
 		cmd = exec.Command("git", "clone", url)
 		checkVerboseEnabled(cmd)
 		return cmd.Run()
