@@ -108,12 +108,12 @@ Prepare a ini-file like the following.
 
 ```ini
 [echo-nginx-module]
-form=github
+form=git
 url=https://github.com/openresty/echo-nginx-module.git
 rev=v0.53
 
 [ngx_devel_kit]
-form=github
+form=git
 url=https://github.com/simpl/ngx_devel_kit
 rev=v0.2.19
 ```
