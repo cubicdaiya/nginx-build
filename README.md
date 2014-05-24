@@ -27,6 +27,8 @@ Prepare a configure script like the following.
 
 ```
 #!bin/sh
+
+./configure \
 --sbin-path=/usr/sbin/nginx \
 --conf-path=/etc/nginx/nginx.conf \
 --with-cc-opt="-Wno-deprecated-declarations" \
