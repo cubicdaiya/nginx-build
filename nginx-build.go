@@ -173,9 +173,8 @@ func main() {
 
 	log.Println("Build nginx.....")
 	if *openSSLStatic {
-		// This is for protecting a failure of building nginx with OpenSSL
-		// Unfortunately build of nginx with static OpenSSL fails
-		// by multi-CPUs
+		// This is a workaround for protecting a failure of building nginx with OpenSSL.
+		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
 		*jobs = 1
 	}
 	err = make(*jobs)
