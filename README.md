@@ -23,18 +23,19 @@ objs/bin/nginx -V
 ### Configuration for building nginx
 
 `nginx-build` provides a mechanism for custom configuration for building nginx.
-Prepare a text-file like the following.
+Prepare a configure script like the following.
 
 ```
---sbin-path=/usr/sbin/nginx
---conf-path=/etc/nginx/nginx.conf
---with-cc-opt="-Wno-deprecated-declarations"
+#!bin/sh
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--with-cc-opt="-Wno-deprecated-declarations" \
 ```
 
 Give this file to `nginx-build` with `-c`.
 
 ```
-$ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.options.example
+$ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.example
 ```
 
 #### Caution about `--with-zlib`

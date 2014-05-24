@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 )
 
 type StaticLibrary struct {
@@ -14,30 +13,14 @@ type StaticLibrary struct {
 
 func configureGenModule3rd(modules3rd []Module3rd) string {
 	result := ""
-	//for i := 0; i < len(modules3rd); i++ {
 	for _, m := range modules3rd {
 		result += fmt.Sprintf("--add-module=../%s \\\n", m.Name)
 	}
 	return result
 }
 
-func (builder *Builder) configureGen(conf string, modules3rd []Module3rd, dependencies []StaticLibrary) error {
-	configure := `#!/bin/sh
-
-./configure `
-
-	if conf != "" {
-		configure += "\\\n"
-		options := strings.Split(conf, "\n")
-
-		for i := range options {
-			options[i] += " \\"
-		}
-
-		conf = strings.Join(options, "\n")
-		configure += conf
-	}
-
+func (builder *Builder) configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) error {
+	configure += " "
 	for _, d := range dependencies {
 		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
 	}

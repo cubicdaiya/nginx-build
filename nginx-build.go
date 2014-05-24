@@ -30,7 +30,7 @@ func main() {
 	flag.Parse()
 
 	if *versions {
-                showVersions()
+		showVersions()
 		os.Exit(0)
 	}
 
