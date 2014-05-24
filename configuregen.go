@@ -20,7 +20,13 @@ func configureGenModule3rd(modules3rd []Module3rd) string {
 }
 
 func (builder *Builder) configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) error {
-	configure += " "
+	if len(configure) == 0 {
+		configure = `#!/bin/sh
+
+./configure \
+`
+	}
+
 	for _, d := range dependencies {
 		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
 	}
