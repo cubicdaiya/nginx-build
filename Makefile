@@ -5,7 +5,7 @@ nginx-build: *.go
 	gom build
 
 build-example: nginx-build
-	./nginx-build -c config/configure.options.example -m config/modules.cfg.example -d work -verbose -clear
+	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
 bundle:
 	@echo $$'\e[1;32m'"Building dependencies for nginx-build..."$$'\e[m'
