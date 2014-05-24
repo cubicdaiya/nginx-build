@@ -30,8 +30,8 @@ func printLastMsg(workDir, srcDir string) {
 
 	lastMsgFormat := `Enter the following command for install nginx.
 
-$ cd %s/%s
-$ sudo make install
+   $ cd %s/%s
+   $ sudo make install
 `
 	log.Println(fmt.Sprintf(lastMsgFormat, workDir, srcDir))
 }
