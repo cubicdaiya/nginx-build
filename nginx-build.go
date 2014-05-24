@@ -146,7 +146,6 @@ func main() {
 				log.Fatalf("Failed to download %s", m.Name)
 			}
 
-			fmt.Println(m.Rev)
 			if m.Rev != "" {
 				dir := saveCurrentDir()
 				os.Chdir(m.Name)
