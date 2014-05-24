@@ -1,5 +1,6 @@
 #!/bin/sh
 
---sbin-path=/usr/sbin/nginx
---conf-path=/etc/nginx/nginx.conf
---with-cc-opt="-Wno-deprecated-declarations"
+./configure \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--with-cc-opt="-Wno-deprecated-declarations" \
