@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"io/ioutil"
 )
 
@@ -25,6 +26,9 @@ func (builder *Builder) configureGen(configure string, modules3rd []Module3rd, d
 
 ./configure \
 `
+		if runtime.GOOS == "darwin" {
+			configure += "--with-cc-opt=\"-Wno-deprecated-declarations\" \\"
+		}
 	}
 
 	for _, d := range dependencies {
