@@ -4,13 +4,13 @@
 
 ## Setup
 
-```
+```bash
 go get -u github.com/cubicdaiya/nginx-build
 ```
 
 ## Quick Start
 
-```
+```bash
 mkdir -p ~/opt/nginx
 nginx-build -v 1.7.0 -d ~/opt/nginx
 cd ~/opt/nginx/1.7.0/nginx-1.7.0
@@ -24,7 +24,7 @@ objs/bin/nginx -V
 `nginx-build` provides a mechanism for custom configuration for building nginx.
 Prepare a configure script like the following.
 
-```
+```bash
 #!bin/sh
 
 ./configure \
@@ -35,7 +35,7 @@ Prepare a configure script like the following.
 
 Give this file to `nginx-build` with `-c`.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -c configure.example
 ```
 
@@ -63,13 +63,13 @@ Instead you should use `-m`.
 
 Give `-zlib` to `nginx-build`.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib
 ```
 
 `-zlibverson` is a option to set a version of ZLIB.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib -zlibversion=1.2.8
 ```
 
@@ -77,13 +77,13 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib -zlibversion=1.2.8
 
 Give `-pcre` to `nginx-build`.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre
 ```
 
 `-pcreverson` is a option to set a version of PCRE.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre -pcreversion=8.35
 ```
 
@@ -91,13 +91,13 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre -pcreversion=8.35
 
 Give `-openssl` to `nginx-build`.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl
 ```
 
 `-opensslverson` is a option to set a version of OPENSSL.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
 ```
 
@@ -106,7 +106,7 @@ $ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
 Prepare a ini-file like the following.
 
-```
+```ini
 [echo-nginx-module]
 form=github
 url=https://github.com/openresty/echo-nginx-module.git
@@ -120,6 +120,6 @@ rev=v0.2.19
 
 Give this file to `nginx-build` with `-m`.
 
-```
+```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -m modules.cfg.example
 ```
