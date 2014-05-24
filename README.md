@@ -21,7 +21,7 @@ objs/bin/nginx -V
 
 ### Configuration for building nginx
 
-`nginx-build` provides a mechanism for custom configuration for building nginx.
+`nginx-build` provides a mechanism for customizing configuration for building nginx.
 Prepare a configure script like the following.
 
 ```bash
@@ -67,7 +67,7 @@ Give `-zlib` to `nginx-build`.
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib
 ```
 
-`-zlibverson` is a option to set a version of ZLIB.
+`-zlibverson` is an option to set a version of ZLIB.
 
 ```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -zlib -zlibversion=1.2.8
@@ -81,7 +81,7 @@ Give `-pcre` to `nginx-build`.
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre
 ```
 
-`-pcreverson` is a option to set a version of PCRE.
+`-pcreverson` is an option to set a version of PCRE.
 
 ```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -pcre -pcreversion=8.35
@@ -95,7 +95,7 @@ Give `-openssl` to `nginx-build`.
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl
 ```
 
-`-opensslverson` is a option to set a version of OPENSSL.
+`-opensslverson` is an option to set a version of OPENSSL.
 
 ```bash
 $ nginx-build -v 1.7.0 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
