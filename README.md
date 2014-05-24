@@ -5,7 +5,6 @@
 ## Setup
 
 ```
-go get -u github.com/robfig/config
 go get -u github.com/cubicdaiya/nginx-build
 ```
 
