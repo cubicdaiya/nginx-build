@@ -37,7 +37,7 @@ func loadModules3rd(c *config.Config) []Module3rd {
 
 func loadModules3rdFile(path string) ([]Module3rd, error) {
 	var modules3rd []Module3rd
-	if path != "" {
+	if len(path) > 0 {
 		if !fileExists(path) {
 			return modules3rd, fmt.Errorf("modulesConfPath(%s) does not exist.", path)
 		}
