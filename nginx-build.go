@@ -147,7 +147,7 @@ func main() {
 				log.Fatalf("Failed to download %s", m.Name)
 			}
 
-			if m.Rev != "" {
+			if len(m.Rev) > 0 {
 				dir := saveCurrentDir()
 				os.Chdir(m.Name)
 				err := switchRev(m.Rev)

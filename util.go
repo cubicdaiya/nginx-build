@@ -43,7 +43,7 @@ func printLastMsg(workDir, srcDir string) {
 }
 
 func versionCheck(version string) {
-	if version == "" {
+	if len(version) == 0 {
 		log.Println("[warn]nginx version is not set.")
 		log.Printf("[warn]nginx-build use %s.\n", NGINX_VERSION)
 	}
@@ -51,7 +51,7 @@ func versionCheck(version string) {
 
 func fileGetContents(path string) (string, error) {
 	conf := ""
-	if path == "" {
+	if len(path) == 0 {
 		log.Println("[warn]configure option is empty.")
 	} else {
 		confb, err := ioutil.ReadFile(path)
