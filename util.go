@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
-func runCommand (cmd *exec.Cmd) error {
+func runCommand(cmd *exec.Cmd) error {
 	checkVerboseEnabled(cmd)
 	return cmd.Run()
 }

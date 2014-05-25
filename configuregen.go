@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"runtime"
 	"io/ioutil"
+	"runtime"
 )
 
 type StaticLibrary struct {
