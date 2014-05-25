@@ -8,27 +8,19 @@ import (
 )
 
 func configure() error {
-	cmd := exec.Command("sh", "./nginx-configure")
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return runCommand(exec.Command("sh", "./nginx-configure"))
 }
 
 func make(jobs int) error {
-	cmd := exec.Command("make", "-j", strconv.Itoa(jobs))
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
 }
 
 func extractArchive(path string) error {
-	cmd := exec.Command("tar", "zxvf", path)
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return runCommand(exec.Command("tar", "zxvf", path))
 }
 
 func switchRev(rev string) error {
-	cmd := exec.Command("git", "co", rev)
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return runCommand(exec.Command("git", "co", rev))
 }
 
 func prevShell(sh string) error {
@@ -36,12 +28,11 @@ func prevShell(sh string) error {
 		return nil
 	}
 	args := strings.Split(strings.Trim(sh, " "), " ")
-	var cmd *exec.Cmd
+	var err error
 	if len(args) == 1 {
-		cmd = exec.Command(args[0])
+		err = runCommand(exec.Command(args[0]))
 	} else {
-		cmd = exec.Command(args[0], args[1:]...)
+		err = runCommand(exec.Command(args[0], args[1:]...))
 	}
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return err
 }

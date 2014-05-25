@@ -3,10 +3,16 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os/exec"
 	"log"
 	"os"
 	"path/filepath"
 )
+
+func runCommand (cmd *exec.Cmd) error {
+	checkVerboseEnabled(cmd)
+	return cmd.Run()
+}
 
 func fileExists(path string) bool {
 	_, err := os.Stat(path)

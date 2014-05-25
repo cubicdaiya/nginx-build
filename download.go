@@ -7,20 +7,15 @@ import (
 )
 
 func download(url string) error {
-	cmd := exec.Command("wget", url)
-	checkVerboseEnabled(cmd)
-	return cmd.Run()
+	return runCommand(exec.Command("wget", url))
 }
 
 func downloadModule3rd(module3rd Module3rd) error {
 	form := module3rd.Form
 	url := module3rd.Url
-	var cmd *exec.Cmd
 	switch form {
 	case "git":
-		cmd = exec.Command("git", "clone", url)
-		checkVerboseEnabled(cmd)
-		return cmd.Run()
+		return runCommand(exec.Command("git", "clone", url))
 	}
 	return nil
 }
