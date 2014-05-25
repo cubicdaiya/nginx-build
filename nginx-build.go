@@ -63,7 +63,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	if *workParentDir == "" {
+	if len(*workParentDir) == 0 {
 		log.Fatal("set working directory with -d")
 	}
 
