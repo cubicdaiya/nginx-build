@@ -143,6 +143,7 @@ func main() {
 			log.Printf("Download %s.....", m.Name)
 			err = downloadModule3rd(m)
 			if err != nil {
+				log.Println(err.Error())
 				log.Fatalf("Failed to download %s", m.Name)
 			}
 

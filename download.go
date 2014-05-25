@@ -17,7 +17,7 @@ func downloadModule3rd(module3rd Module3rd) error {
 	case "git":
 		return runCommand(exec.Command("git", "clone", url))
 	}
-	return nil
+	return fmt.Errorf("form=%s is not supported", form)
 }
 
 func downloadAndExtract(builder *Builder) error {
