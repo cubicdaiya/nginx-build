@@ -150,8 +150,14 @@ func main() {
 			if m.Rev != "" {
 				dir := saveCurrentDir()
 				os.Chdir(m.Name)
-				switchRev(m.Rev)
-				prevShell(m.PrevSh)
+				err := switchRev(m.Rev)
+				if err != nil {
+					log.Println(err.Error())
+				}
+				err = prevShell(m.PrevSh)
+				if err != nil {
+					log.Println(err.Error())
+				}
 				os.Chdir(dir)
 			}
 		}
