@@ -25,6 +25,10 @@ func (builder *Builder) name() string {
 	return name
 }
 
+func (builder *Builder) option() string {
+	return fmt.Sprintf("--with-%s", builder.name())
+}
+
 func (builder *Builder) downloadURL() string {
 	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.archivePath())
 }

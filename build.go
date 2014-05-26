@@ -11,7 +11,7 @@ func configure() error {
 	return runCommand(exec.Command("sh", "./nginx-configure"))
 }
 
-func make(jobs int) error {
+func build(jobs int) error {
 	return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
 }
 

@@ -11,6 +11,11 @@ import (
 
 func main() {
 	var dependencies []StaticLibrary
+	var parallels int
+	done := make(chan bool)
+
+	// set parallel numbers
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// Parse flags
 	version := flag.String("v", NGINX_VERSION, "nginx version")
@@ -62,6 +67,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	parallels += len(modules3rd)
 
 	if len(*workParentDir) == 0 {
 		log.Fatal("set working directory with -d")
@@ -94,59 +100,73 @@ func main() {
 	}
 
 	if *pcreStatic {
-		err = downloadAndExtract(&pcreBuilder)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		dependencies = append(dependencies,
-			StaticLibrary{
-				Name:    pcreBuilder.name(),
-				Version: *pcreVersion,
-				Option:  "--with-pcre"})
+		parallels++
+		go func(done chan bool) {
+			err = downloadAndExtract(&pcreBuilder)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			done <- true
+		}(done)
 	}
 
 	if *openSSLStatic {
-		err := downloadAndExtract(&openSSLBuilder)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		dependencies = append(dependencies,
-			StaticLibrary{
-				Name:    openSSLBuilder.name(),
-				Version: *openSSLVersion,
-				Option:  "--with-openssl"})
+		parallels++
+		go func(done chan bool) {
+			err := downloadAndExtract(&openSSLBuilder)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			done <- true
+		}(done)
 	}
 
 	if *zlibStatic {
-		err := downloadAndExtract(&zlibBuilder)
+		parallels++
+		go func(done chan bool) {
+			err := downloadAndExtract(&zlibBuilder)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			done <- true
+		}(done)
+	}
+
+	parallels++
+	go func(done chan bool) {
+		err = downloadAndExtract(&nginxBuilder)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		dependencies = append(dependencies,
-			StaticLibrary{
-				Name:    zlibBuilder.name(),
-				Version: *zlibVersion,
-				Option:  "--with-zlib"})
-	}
+		done <- true
+	}(done)
 
-	err = downloadAndExtract(&nginxBuilder)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
 	if len(modules3rd) > 0 {
-		log.Println("Download 3rd Party Modules.....")
 		for _, m := range modules3rd {
-			if fileExists(m.Name) {
-				log.Printf("%s already exists.", m.Name)
-				continue
-			}
-			log.Printf("Download %s.....", m.Name)
-			err = downloadModule3rd(m)
-			if err != nil {
-				log.Println(err.Error())
-				log.Fatalf("Failed to download %s", m.Name)
-			}
+			go func(done chan bool, m Module3rd) {
+				if fileExists(m.Name) {
+					log.Printf("%s already exists.", m.Name)
+					done <- true
+					return
+				}
+				log.Printf("Download %s.....", m.Name)
+				err = downloadModule3rd(m)
+				if err != nil {
+					log.Println(err.Error())
+					log.Fatalf("Failed to download %s", m.Name)
+				}
+				done <- true
+			}(done, m)
+		}
 
+	}
+
+	for i := 0; i < parallels; i++ {
+		<-done
+	}
+
+	if len(modules3rd) > 0 {
+		for _, m := range modules3rd {
 			if len(m.Rev) > 0 {
 				dir := saveCurrentDir()
 				os.Chdir(m.Name)
@@ -166,6 +186,18 @@ func main() {
 	// cd workDir/nginx-${version}
 	os.Chdir(nginxBuilder.sourcePath())
 
+	if *pcreStatic {
+		dependencies = append(dependencies, makeStaticLibrary(&pcreBuilder))
+	}
+
+	if *openSSLStatic {
+		dependencies = append(dependencies, makeStaticLibrary(&openSSLBuilder))
+	}
+
+	if *zlibStatic {
+		dependencies = append(dependencies, makeStaticLibrary(&zlibBuilder))
+	}
+
 	log.Println("Generate configure script for nginx.....")
 	err = nginxBuilder.configureGen(nginxConf, modules3rd, dependencies)
 	if err != nil {
@@ -183,7 +215,7 @@ func main() {
 		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
 		*jobs = 1
 	}
-	err = make(*jobs)
+	err = build(*jobs)
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatal("Failed to build nginx")

@@ -49,3 +49,10 @@ func loadModules3rdFile(path string) ([]Module3rd, error) {
 	}
 	return modules3rd, nil
 }
+
+func makeStaticLibrary(builder *Builder) StaticLibrary {
+	return StaticLibrary{
+		Name:    builder.name(),
+		Version: builder.Version,
+		Option:  builder.option()}
+}
