@@ -21,4 +21,4 @@ url=https://github.com/cubicdaiya/ngx_info
 form=git
 url=https://github.com/cubicdaiya/ngx_small_light
 rev=v0.5.2
-prevsh=./setup --with-gd
+shprov=./setup --with-gd

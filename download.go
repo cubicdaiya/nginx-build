@@ -22,22 +22,48 @@ func downloadModule3rd(module3rd Module3rd) error {
 
 func downloadAndExtract(builder *Builder) error {
 	if !fileExists(builder.sourcePath()) {
-		name := builder.name()
 		if !fileExists(builder.archivePath()) {
-			log.Printf("Download %s.....", name)
+			log.Printf("Download %s.....", builder.sourcePath())
 			url := builder.downloadURL()
 			err := download(url)
 			if err != nil {
-				return fmt.Errorf("Failed to download %s", name)
+				return fmt.Errorf("Failed to download %s", builder.sourcePath())
 			}
 		}
-		log.Printf("Extract %s.....", name)
+		log.Printf("Extract %s.....", builder.archivePath())
 		err := extractArchive(builder.archivePath())
 		if err != nil {
-			return fmt.Errorf("Failed to extract %s", name)
+			return fmt.Errorf("Failed to extract %s", builder.archivePath())
 		}
 	} else {
 		log.Printf("%s already exists.", builder.sourcePath())
 	}
 	return nil
+}
+
+func downloadAndExtractParallel(builder *Builder, done chan bool) {
+	err := downloadAndExtract(builder)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	done <- true
+}
+
+func downloadAndExtractModule3rdParallel(m Module3rd, done chan bool) {
+	if fileExists(m.Name) {
+		log.Printf("%s already exists.", m.Name)
+		done <- true
+		return
+	}
+	if len(m.Rev) > 0 {
+		log.Printf("Download %s-%s.....", m.Name, m.Rev)
+	} else {
+		log.Printf("Download %s.....", m.Name)
+	}
+	err := downloadModule3rd(m)
+	if err != nil {
+		log.Println(err.Error())
+		log.Fatalf("Failed to download %s", m.Name)
+	}
+	done <- true
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"runtime"
 )
 
@@ -10,6 +9,13 @@ type StaticLibrary struct {
 	Name    string
 	Version string
 	Option  string
+}
+
+func makeStaticLibrary(builder *Builder) StaticLibrary {
+	return StaticLibrary{
+		Name:    builder.name(),
+		Version: builder.Version,
+		Option:  builder.option()}
 }
 
 func configureGenModule3rd(modules3rd []Module3rd) string {
@@ -20,7 +26,7 @@ func configureGenModule3rd(modules3rd []Module3rd) string {
 	return result
 }
 
-func (builder *Builder) configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) error {
+func configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) string {
 	if len(configure) == 0 {
 		configure = `#!/bin/sh
 
@@ -38,5 +44,5 @@ func (builder *Builder) configureGen(configure string, modules3rd []Module3rd, d
 	configure_modules3rd := configureGenModule3rd(modules3rd)
 	configure += configure_modules3rd
 
-	return ioutil.WriteFile("./nginx-configure", []byte(configure), 0655)
+	return configure
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/robfig/config"
+	"log"
+	"os"
 )
 
 type Module3rd struct {
@@ -10,7 +12,7 @@ type Module3rd struct {
 	Form   string
 	Url    string
 	Rev    string
-	PrevSh string
+	Shprov string
 }
 
 func loadModule3rd(name string, c config.Config) Module3rd {
@@ -19,7 +21,7 @@ func loadModule3rd(name string, c config.Config) Module3rd {
 	module3rd.Form, _ = c.String(name, "form")
 	module3rd.Url, _ = c.String(name, "url")
 	module3rd.Rev, _ = c.String(name, "rev")
-	module3rd.PrevSh, _ = c.String(name, "prevsh")
+	module3rd.Shprov, _ = c.String(name, "shprov")
 	return module3rd
 }
 
@@ -50,9 +52,24 @@ func loadModules3rdFile(path string) ([]Module3rd, error) {
 	return modules3rd, nil
 }
 
-func makeStaticLibrary(builder *Builder) StaticLibrary {
-	return StaticLibrary{
-		Name:    builder.name(),
-		Version: builder.Version,
-		Option:  builder.option()}
+func provideModule3rd(m Module3rd) {
+	if len(m.Rev) > 0 {
+		dir := saveCurrentDir()
+		os.Chdir(m.Name)
+		err := switchRev(m.Rev)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		os.Chdir(dir)
+	}
+
+	if len(m.Shprov) > 0 {
+		dir := saveCurrentDir()
+		os.Chdir(m.Name)
+		err := provideShell(m.Shprov)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		os.Chdir(dir)
+	}
 }

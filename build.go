@@ -23,7 +23,7 @@ func switchRev(rev string) error {
 	return runCommand(exec.Command("git", "co", rev))
 }
 
-func prevShell(sh string) error {
+func provideShell(sh string) error {
 	if len(sh) == 0 {
 		return nil
 	}

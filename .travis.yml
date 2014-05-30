@@ -1,0 +1,12 @@
+language: go
+go:
+  - tip
+before_install:
+  - go get github.com/mattn/gom
+script:
+  - apt-get install libmagickcore-dev libmagickwand-dev libgd2-xpm-dev
+  - $HOME/gopath/bin/gom install
+  - $HOME/gopath/bin/gom test
+  - $HOME/gopath/bin/gom build
+  - mkdir work
+  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear

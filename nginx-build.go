@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"runtime"
@@ -11,7 +12,7 @@ import (
 
 func main() {
 	var dependencies []StaticLibrary
-	var parallels int
+	parallels := 0
 	done := make(chan bool)
 
 	// set parallel numbers
@@ -67,7 +68,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	parallels += len(modules3rd)
 
 	if len(*workParentDir) == 0 {
 		log.Fatal("set working directory with -d")
@@ -101,85 +101,38 @@ func main() {
 
 	if *pcreStatic {
 		parallels++
-		go func(done chan bool) {
-			err = downloadAndExtract(&pcreBuilder)
-			if err != nil {
-				log.Fatal(err.Error())
-			}
-			done <- true
-		}(done)
+		go downloadAndExtractParallel(&pcreBuilder, done)
 	}
 
 	if *openSSLStatic {
 		parallels++
-		go func(done chan bool) {
-			err := downloadAndExtract(&openSSLBuilder)
-			if err != nil {
-				log.Fatal(err.Error())
-			}
-			done <- true
-		}(done)
+		go downloadAndExtractParallel(&openSSLBuilder, done)
 	}
 
 	if *zlibStatic {
 		parallels++
-		go func(done chan bool) {
-			err := downloadAndExtract(&zlibBuilder)
-			if err != nil {
-				log.Fatal(err.Error())
-			}
-			done <- true
-		}(done)
+		go downloadAndExtractParallel(&zlibBuilder, done)
 	}
 
 	parallels++
-	go func(done chan bool) {
-		err = downloadAndExtract(&nginxBuilder)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		done <- true
-	}(done)
+	go downloadAndExtractParallel(&nginxBuilder, done)
 
 	if len(modules3rd) > 0 {
+		parallels += len(modules3rd)
 		for _, m := range modules3rd {
-			go func(done chan bool, m Module3rd) {
-				if fileExists(m.Name) {
-					log.Printf("%s already exists.", m.Name)
-					done <- true
-					return
-				}
-				log.Printf("Download %s.....", m.Name)
-				err = downloadModule3rd(m)
-				if err != nil {
-					log.Println(err.Error())
-					log.Fatalf("Failed to download %s", m.Name)
-				}
-				done <- true
-			}(done, m)
+			go downloadAndExtractModule3rdParallel(m, done)
 		}
 
 	}
 
+	// wait until all downloading processes by goroutine finish
 	for i := 0; i < parallels; i++ {
 		<-done
 	}
 
 	if len(modules3rd) > 0 {
 		for _, m := range modules3rd {
-			if len(m.Rev) > 0 {
-				dir := saveCurrentDir()
-				os.Chdir(m.Name)
-				err := switchRev(m.Rev)
-				if err != nil {
-					log.Println(err.Error())
-				}
-				err = prevShell(m.PrevSh)
-				if err != nil {
-					log.Println(err.Error())
-				}
-				os.Chdir(dir)
-			}
+			provideModule3rd(m)
 		}
 	}
 
@@ -198,18 +151,19 @@ func main() {
 		dependencies = append(dependencies, makeStaticLibrary(&zlibBuilder))
 	}
 
-	log.Println("Generate configure script for nginx.....")
-	err = nginxBuilder.configureGen(nginxConf, modules3rd, dependencies)
+	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
+	configureScript := configureGen(nginxConf, modules3rd, dependencies)
+	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
-		log.Fatal("Failed to generate configure script for nginx")
+		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())
 	}
-	log.Println("Configure nginx.....")
+	log.Printf("Configure %s.....", nginxBuilder.sourcePath())
 	err = configure()
 	if err != nil {
-		log.Fatal("Failed to configure nginx")
+		log.Fatalf("Failed to configure %s", nginxBuilder.sourcePath())
 	}
 
-	log.Println("Build nginx.....")
+	log.Printf("Build %s.....", nginxBuilder.sourcePath())
 	if *openSSLStatic {
 		// This is a workaround for protecting a failure of building nginx with OpenSSL.
 		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
@@ -218,7 +172,7 @@ func main() {
 	err = build(*jobs)
 	if err != nil {
 		fmt.Println(err.Error())
-		log.Fatal("Failed to build nginx")
+		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
 	}
 
 	// cd rootDir
