@@ -20,7 +20,7 @@ func extractArchive(path string) error {
 }
 
 func switchRev(rev string) error {
-	return runCommand(exec.Command("git", "co", rev))
+	return runCommand(exec.Command("git", "checkout", rev))
 }
 
 func provideShell(sh string) error {
