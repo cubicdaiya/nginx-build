@@ -9,4 +9,4 @@ script:
   - $HOME/gopath/bin/gom test
   - $HOME/gopath/bin/gom build
   - mkdir work
-  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear
+  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl
