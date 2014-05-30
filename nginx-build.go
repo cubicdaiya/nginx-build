@@ -74,7 +74,7 @@ func main() {
 	}
 
 	if !fileExists(*workParentDir) {
-		log.Fatal(fmt.Sprintf("working directory(%s) does not exist.", *workParentDir))
+		log.Fatalf("working directory(%s) does not exist.", *workParentDir)
 	}
 
 	workDir := *workParentDir + "/" + *version
@@ -88,7 +88,7 @@ func main() {
 	if !fileExists(workDir) {
 		err := os.Mkdir(workDir, 0755)
 		if err != nil {
-			log.Fatal("Failed to create working directory(%s) does not exist.", workDir)
+			log.Fatalf("Failed to create working directory(%s) does not exist.", workDir)
 		}
 	}
 

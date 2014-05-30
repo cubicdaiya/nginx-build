@@ -39,7 +39,7 @@ func printLastMsg(workDir, srcDir string) {
    $ cd %s/%s
    $ sudo make install
 `
-	log.Println(fmt.Sprintf(lastMsgFormat, workDir, srcDir))
+	log.Printf(lastMsgFormat, workDir, srcDir)
 }
 
 func versionCheck(version string) {
