@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "fmt"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -21,6 +22,13 @@ func extractArchive(path string) error {
 
 func switchRev(rev string) error {
 	return runCommand(exec.Command("git", "checkout", rev))
+}
+
+func showConfigureOptions() error {
+	cmd := exec.Command("objs/nginx", "-V")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 func provideShell(sh string) error {

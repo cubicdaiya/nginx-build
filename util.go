@@ -34,6 +34,13 @@ func restoreCurrentDir(prevDir string) {
 func printLastMsg(workDir, srcDir string) {
 	log.Println("Complete building nginx!")
 
+	fmt.Println()
+	err := showConfigureOptions()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println()
+
 	lastMsgFormat := `Enter the following command for install nginx.
 
    $ cd %s/%s

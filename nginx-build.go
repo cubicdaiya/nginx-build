@@ -175,8 +175,8 @@ func main() {
 		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
 	}
 
+	printLastMsg(workDir, nginxBuilder.sourcePath())
+
 	// cd rootDir
 	os.Chdir(rootDir)
-
-	printLastMsg(workDir, nginxBuilder.sourcePath())
 }
