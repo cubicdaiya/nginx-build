@@ -1,5 +1,7 @@
 # nginx-build
 
+[![Build Status](https://travis-ci.org/cubicdaiya/nginx-build.svg?branch=master)](https://travis-ci.org/cubicdaiya/nginx-build)
+
 `nginx-build` - provides a command to build nginx seamlessly.
 
 ## Setup
