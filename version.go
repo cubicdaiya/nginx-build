@@ -18,7 +18,7 @@ func versionsGen() []string {
 	var versions []string
 
 	versionsMinor0 := []int{45, 6, 61, 14, 38, 39, 69, 55, 7}
-	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 0, 0}
+	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 0, 1}
 
 	for i := 0; i < 9; i++ {
 		versions = append(versions, versionsSubmajorGen(0, i+1, versionsMinor0[i])...)
