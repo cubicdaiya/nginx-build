@@ -33,17 +33,17 @@ func main() {
 	zlibVersion := flag.String("zlibversion", ZLIB_VERSION, "zlib version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
 	jobs := flag.Int("j", runtime.NumCPU(), "number of jobs for buiding nginx")
-	versionb := flag.Bool("version", false, "show nginx-build versions")
-	versions := flag.Bool("versions", false, "show nginx versions")
+	versionb := flag.Bool("version", false, "print nginx-build versions")
+	versions := flag.Bool("versions", false, "print nginx versions")
 	flag.Parse()
 
 	if *versionb {
-		showNginxBuildVersion()
+		printNginxBuildVersion()
 		os.Exit(0)
 	}
 
 	if *versions {
-		showNginxVersions()
+		printNginxVersions()
 		os.Exit(0)
 	}
 

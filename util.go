@@ -37,7 +37,7 @@ func printLastMsg(workDir, srcDir string) {
 	log.Println("Complete building nginx!")
 
 	fmt.Println()
-	err := showConfigureOptions()
+	err := printConfigureOptions()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -88,7 +88,7 @@ func switchRev(rev string) error {
 	return runCommand(exec.Command("git", "checkout", rev))
 }
 
-func showConfigureOptions() error {
+func printConfigureOptions() error {
 	cmd := exec.Command("objs/nginx", "-V")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

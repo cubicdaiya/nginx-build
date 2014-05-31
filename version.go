@@ -33,14 +33,14 @@ func versionsGen() []string {
 	return versions
 }
 
-func showNginxVersions() {
+func printNginxVersions() {
 	versions := versionsGen()
 	for _, v := range versions {
 		fmt.Println(v)
 	}
 }
 
-func showNginxBuildVersion() {
+func printNginxBuildVersion() {
 	fmt.Printf(`nginx-build %s
 Copyright (C) 2014 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 `, NGINX_BUILD_VERSION)
