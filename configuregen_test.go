@@ -74,6 +74,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
 	dependencies = append(dependencies, makeStaticLibrary(&suite.builders[COMPONENT_ZLIB]))
 	configureScript := configureGen("", []Module3rd{}, dependencies)
 
+	assert.Contains(suite.T(), configureScript, "--with-http_ssl_module")
 	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-pcre=../pcre-%s \\\n", PCRE_VERSION))
 	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-openssl=../openssl-%s \\\n", OPENSSL_VERSION))
 	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-zlib=../zlib-%s \\\n", ZLIB_VERSION))

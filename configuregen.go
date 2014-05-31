@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"runtime"
+	"strings"
 )
 
 type StaticLibrary struct {
@@ -27,6 +28,7 @@ func configureGenModule3rd(modules3rd []Module3rd) string {
 }
 
 func configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) string {
+	openSSLStatic := false
 	if len(configure) == 0 {
 		configure = `#!/bin/sh
 
@@ -39,6 +41,13 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 
 	for _, d := range dependencies {
 		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
+		if d.Name == "openssl" {
+			openSSLStatic = true
+		}
+	}
+
+	if openSSLStatic && !strings.Contains(configure, "--with-http_ssl_module") {
+		configure += "--with-http_ssl_module \\\n"
 	}
 
 	configure_modules3rd := configureGenModule3rd(modules3rd)
