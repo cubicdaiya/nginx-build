@@ -177,7 +177,7 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())
 	}
 	log.Printf("Configure %s.....", nginxBuilder.sourcePath())
-	err = configure()
+	err = configureNginx()
 	if err != nil {
 		log.Fatalf("Failed to configure %s", nginxBuilder.sourcePath())
 	}
@@ -188,7 +188,7 @@ func main() {
 		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
 		*jobs = 1
 	}
-	err = build(*jobs)
+	err = buildNginx(*jobs)
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())

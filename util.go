@@ -72,11 +72,11 @@ func fileGetContents(path string) (string, error) {
 	return conf, nil
 }
 
-func configure() error {
+func configureNginx() error {
 	return runCommand(exec.Command("sh", "./nginx-configure"))
 }
 
-func build(jobs int) error {
+func buildNginx(jobs int) error {
 	return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
 }
 
