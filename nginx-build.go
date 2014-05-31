@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"strings"
 	"syscall"
 )
 
@@ -152,6 +153,24 @@ func main() {
 	}
 
 	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
+
+	if *pcreStatic && strings.Contains(nginxConf, pcreBuilder.option()) {
+		log.Printf("[warn]Using '%s' is discouraged. Instead give '-pcre' and '-pcreversion' to 'nginx-build'", pcreBuilder.option())
+	}
+
+	if *openSSLStatic && strings.Contains(nginxConf, openSSLBuilder.option()) {
+		log.Printf("[warn]Using '%s' is discouraged. Instead give '-openssl' and '-opensslversion' to 'nginx-build'", openSSLBuilder.option())
+
+	}
+
+	if *zlibStatic && strings.Contains(nginxConf, zlibBuilder.option()) {
+		log.Printf("[warn]Using '%s' is discouraged. Instead give '-zlib' and '-zlibversion' to 'nginx-build'", zlibBuilder.option())
+	}
+
+	if strings.Contains(nginxConf, "--add-module=") {
+		log.Println("[warn]Using '--add-module' is discouraged. Instead give ini-file with '-m' to 'nginx-build'")
+	}
+
 	configureScript := configureGen(nginxConf, modules3rd, dependencies)
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {

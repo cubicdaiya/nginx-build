@@ -41,26 +41,6 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -v 1.7.1 -d ~/opt/nginx -c configure.example
 ```
 
-#### Caution about `--with-zlib`
-
-Don't use `--with-zlib` for embedding ZLIB statically.
-Instead you should use `-zlib` and `-zlibversion`.
-
-#### Caution about `--with-pcre`
-
-Don't use `--with-pcre` for embedding PCRE statically.
-Instead you should use `-pcre` and `-pcreversion`.
-
-#### Caution about `--with-openssl`
-
-Don't use `--with-openssl` for embedding OpenSSL in this text-file.
-Instead you should use `-openssl` and `-opensslversion`.
-
-#### Caution about `--add-module`
-
-Don't use `--add-module` for embedding 3rd-party module in this text-file.
-Instead you should use `-m`.
-
 ### Embedding ZLIB statically
 
 Give `-zlib` to `nginx-build`.
