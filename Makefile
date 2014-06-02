@@ -16,6 +16,10 @@ bundle:
 check:
 	gom test
 
+.PHONY: doc
+doc:
+	cd doc; make man
+
 clean:
 	rm -rf nginx-build
 	rm -rf bin/linux/amd64/nginx-build
