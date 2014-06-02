@@ -16,6 +16,8 @@ func downloadModule3rd(module3rd Module3rd) error {
 	switch form {
 	case "git":
 		return runCommand(exec.Command("git", "clone", url))
+	case "local":
+		return nil
 	}
 	return fmt.Errorf("form=%s is not supported", form)
 }

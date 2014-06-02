@@ -22,7 +22,11 @@ func makeStaticLibrary(builder *Builder) StaticLibrary {
 func configureGenModule3rd(modules3rd []Module3rd) string {
 	result := ""
 	for _, m := range modules3rd {
-		result += fmt.Sprintf("--add-module=../%s \\\n", m.Name)
+		if m.Form == "local" {
+			result += fmt.Sprintf("--add-module=%s \\\n", m.Url)
+		} else {
+			result += fmt.Sprintf("--add-module=../%s \\\n", m.Name)
+		}
 	}
 	return result
 }
