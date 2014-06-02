@@ -57,15 +57,21 @@ func downloadAndExtractModule3rdParallel(m Module3rd, done chan bool) {
 		done <- true
 		return
 	}
-	if len(m.Rev) > 0 {
-		log.Printf("Download %s-%s.....", m.Name, m.Rev)
-	} else {
-		log.Printf("Download %s.....", m.Name)
+
+	if m.Form != "local" {
+		if len(m.Rev) > 0 {
+			log.Printf("Download %s-%s.....", m.Name, m.Rev)
+		} else {
+			log.Printf("Download %s.....", m.Name)
+		}
+		err := downloadModule3rd(m)
+		if err != nil {
+			log.Println(err.Error())
+			log.Fatalf("Failed to download %s", m.Name)
+		}
+	} else if !fileExists(m.Url) {
+		log.Fatalf("no such directory:%s", m.Url)
 	}
-	err := downloadModule3rd(m)
-	if err != nil {
-		log.Println(err.Error())
-		log.Fatalf("Failed to download %s", m.Name)
-	}
+
 	done <- true
 }
