@@ -154,16 +154,16 @@ func main() {
 
 	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
 
-	if *pcreStatic && strings.Contains(nginxConf, pcreBuilder.option()) {
+	if *pcreStatic && strings.Contains(nginxConf, pcreBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-pcre' and '-pcreversion' to 'nginx-build'", pcreBuilder.option())
 	}
 
-	if *openSSLStatic && strings.Contains(nginxConf, openSSLBuilder.option()) {
+	if *openSSLStatic && strings.Contains(nginxConf, openSSLBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-openssl' and '-opensslversion' to 'nginx-build'", openSSLBuilder.option())
 
 	}
 
-	if *zlibStatic && strings.Contains(nginxConf, zlibBuilder.option()) {
+	if *zlibStatic && strings.Contains(nginxConf, zlibBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-zlib' and '-zlibversion' to 'nginx-build'", zlibBuilder.option())
 	}
 
