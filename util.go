@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -31,6 +32,15 @@ func saveCurrentDir() string {
 
 func restoreCurrentDir(prevDir string) {
 	os.Chdir(prevDir)
+}
+
+func printFirstMsg() {
+	fmt.Printf(`nginx-build: %s
+Compiler: %s %s
+`,
+		NGINX_BUILD_VERSION,
+		runtime.Compiler,
+		runtime.Version())
 }
 
 func printLastMsg(workDir, srcDir string) {

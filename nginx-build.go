@@ -47,6 +47,8 @@ func main() {
 		os.Exit(0)
 	}
 
+	printFirstMsg()
+
 	// set verbose mode
 	VerboseEnabled = *verbose
 

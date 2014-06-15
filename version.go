@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 )
 
 func versionsSubmajorGen(major, submajor, minor int) []string {
@@ -42,6 +43,11 @@ func printNginxVersions() {
 
 func printNginxBuildVersion() {
 	fmt.Printf(`nginx-build %s
+Compiler: %s %s
 Copyright (C) 2014 Tatsuhiko Kubo <cubicdaiya@gmail.com>
-`, NGINX_BUILD_VERSION)
+`,
+		NGINX_BUILD_VERSION,
+		runtime.Compiler,
+		runtime.Version())
+
 }
