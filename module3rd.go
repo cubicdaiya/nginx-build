@@ -15,7 +15,7 @@ type Module3rd struct {
 	Shprov string
 }
 
-func loadModule3rd(name string, c config.Config) Module3rd {
+func loadModule3rd(name string, c *config.Config) Module3rd {
 	var module3rd Module3rd
 	module3rd.Name = name
 	module3rd.Form, _ = c.String(name, "form")
@@ -32,7 +32,7 @@ func loadModules3rd(c *config.Config) []Module3rd {
 		if s == config.DEFAULT_SECTION {
 			continue
 		}
-		modules3rd = append(modules3rd, loadModule3rd(s, *c))
+		modules3rd = append(modules3rd, loadModule3rd(s, c))
 	}
 	return modules3rd
 }
@@ -52,7 +52,7 @@ func loadModules3rdFile(path string) ([]Module3rd, error) {
 	return modules3rd, nil
 }
 
-func provideModule3rd(m Module3rd) {
+func provideModule3rd(m *Module3rd) {
 	if len(m.Rev) > 0 {
 		dir := saveCurrentDir()
 		os.Chdir(m.Name)

@@ -133,7 +133,7 @@ func main() {
 
 	if len(modules3rd) > 0 {
 		for _, m := range modules3rd {
-			provideModule3rd(m)
+			provideModule3rd(&m)
 		}
 	}
 
