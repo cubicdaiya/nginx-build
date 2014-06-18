@@ -18,13 +18,13 @@ func main() {
 
 	// set parallel numbers
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	jobs := runtime.NumCPU()
 
 	// Parse flags
 	version := flag.String("v", NGINX_VERSION, "nginx version")
 	nginxConfPath := flag.String("c", "", "configuration file for building nginx")
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
+	jobs := flag.Int("j", runtime.NumCPU(), "jobs to build nginx")
 	verbose := flag.Bool("verbose", false, "verbose mode")
 	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
 	pcreVersion := flag.String("pcreversion", PCRE_VERSION, "PCRE version")
@@ -188,9 +188,9 @@ func main() {
 	if *openSSLStatic {
 		// This is a workaround for protecting a failure of building nginx with OpenSSL.
 		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
-		jobs = 1
+		*jobs = 1
 	}
-	err = buildNginx(jobs)
+	err = buildNginx(*jobs)
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
