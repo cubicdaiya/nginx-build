@@ -5,7 +5,7 @@ nginx-build: *.go
 
 build-cross:
 	GOOS=linux GOARCH=amd64 gom build -o bin/linux/amd64/nginx-build
-	GOOS=linux GOARCH=amd64 gom build -o bin/linux/amd64/nginx-build
+	GOOS=darwin GOARCH=amd64 gom build -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	tar zcvf bin/linux/amd64/nginx-build-darwin.tar.gz bin/linux/amd64/nginx-build
