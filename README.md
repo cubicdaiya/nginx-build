@@ -4,11 +4,13 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
-## Setup
+## Install
 
 ```bash
 go get -u github.com/cubicdaiya/nginx-build
 ```
+
+If you don't have go-runtime, you may download the binary from [here](https://github.com/cubicdaiya/nginx-build/releases).
 
 ## Quick Start
 
