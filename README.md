@@ -16,8 +16,8 @@ If you don't have go-runtime, you may download the binary from [here](https://gi
 
 ```bash
 mkdir -p ~/opt/nginx
-nginx-build -v 1.7.4 -d ~/opt/nginx
-cd ~/opt/nginx/1.7.4/nginx-1.7.4
+nginx-build -v 1.7.5 -d ~/opt/nginx
+cd ~/opt/nginx/1.7.5/nginx-1.7.5
 objs/bin/nginx -V
 ```
 
@@ -40,7 +40,7 @@ Prepare a configure script like the following.
 Give this file to `nginx-build` with `-c`.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -c configure.example
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -c configure.example
 ```
 
 ### Embedding ZLIB statically
@@ -48,13 +48,13 @@ $ nginx-build -v 1.7.4 -d ~/opt/nginx -c configure.example
 Give `-zlib` to `nginx-build`.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -zlib
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -zlib
 ```
 
 `-zlibverson` is an option to set a version of ZLIB.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -zlib -zlibversion=1.2.8
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -zlib -zlibversion=1.2.8
 ```
 
 ### Embedding PCRE statically
@@ -62,13 +62,13 @@ $ nginx-build -v 1.7.4 -d ~/opt/nginx -zlib -zlibversion=1.2.8
 Give `-pcre` to `nginx-build`.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -pcre
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -pcre
 ```
 
 `-pcreverson` is an option to set a version of PCRE.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -pcre -pcreversion=8.35
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -pcre -pcreversion=8.35
 ```
 
 ### Embedding OpenSSL statically
@@ -76,13 +76,13 @@ $ nginx-build -v 1.7.4 -d ~/opt/nginx -pcre -pcreversion=8.35
 Give `-openssl` to `nginx-build`.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -openssl
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -openssl
 ```
 
 `-opensslverson` is an option to set a version of OPENSSL.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -openssl -opensslversion=1.0.1g
 ```
 
 ### Embedding 3rd-party modules
@@ -105,5 +105,5 @@ rev=v0.2.19
 Give this file to `nginx-build` with `-m`.
 
 ```bash
-$ nginx-build -v 1.7.4 -d ~/opt/nginx -m modules.cfg.example
+$ nginx-build -v 1.7.5 -d ~/opt/nginx -m modules.cfg.example
 ```
