@@ -21,6 +21,9 @@ bundle:
 check:
 	gom test
 
+fmt:
+        go fmt ./...
+
 .PHONY: doc
 doc:
 	cd doc; make man
