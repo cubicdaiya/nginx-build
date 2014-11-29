@@ -22,7 +22,7 @@ check:
 	gom test
 
 fmt:
-        go fmt ./...
+	go fmt ./...
 
 .PHONY: doc
 doc:
