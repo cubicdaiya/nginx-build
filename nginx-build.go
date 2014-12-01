@@ -21,7 +21,7 @@ func main() {
 
 	// Parse flags
 	version := flag.String("v", NGINX_VERSION, "nginx version")
-	nginxConfPath := flag.String("c", "", "configuration file for building nginx")
+	nginxConfigurePath := flag.String("c", "", "configuration file for building nginx")
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
 	jobs := flag.Int("j", runtime.NumCPU(), "jobs to build nginx")
@@ -62,10 +62,11 @@ func main() {
 
 	versionCheck(*version)
 
-	nginxConf, err := fileGetContents(*nginxConfPath)
+	nginxConfigure, err := fileGetContents(*nginxConfigurePath)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	nginxConfigure = normalizeConfigure(nginxConfigure)
 
 	modules3rd, err := loadModules3rdFile(*modulesConfPath)
 	if err != nil {
@@ -170,24 +171,24 @@ func main() {
 
 	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
 
-	if *pcreStatic && strings.Contains(nginxConf, pcreBuilder.option()+"=") {
+	if *pcreStatic && strings.Contains(nginxConfigure, pcreBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-pcre' and '-pcreversion' to 'nginx-build'", pcreBuilder.option())
 	}
 
-	if *openSSLStatic && strings.Contains(nginxConf, openSSLBuilder.option()+"=") {
+	if *openSSLStatic && strings.Contains(nginxConfigure, openSSLBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-openssl' and '-opensslversion' to 'nginx-build'", openSSLBuilder.option())
 
 	}
 
-	if *zlibStatic && strings.Contains(nginxConf, zlibBuilder.option()+"=") {
+	if *zlibStatic && strings.Contains(nginxConfigure, zlibBuilder.option()+"=") {
 		log.Printf("[warn]Using '%s' is discouraged. Instead give '-zlib' and '-zlibversion' to 'nginx-build'", zlibBuilder.option())
 	}
 
-	if strings.Contains(nginxConf, "--add-module=") {
+	if strings.Contains(nginxConfigure, "--add-module=") {
 		log.Println("[warn]Using '--add-module' is discouraged. Instead give ini-file with '-m' to 'nginx-build'")
 	}
 
-	configureScript := configureGen(nginxConf, modules3rd, dependencies)
+	configureScript := configureGen(nginxConfigure, modules3rd, dependencies)
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())

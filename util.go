@@ -118,3 +118,10 @@ func provideShell(sh string) error {
 	}
 	return err
 }
+
+func normalizeConfigure(configure string) string {
+	configure = strings.TrimRight(configure, "\n")
+	configure = strings.TrimRight(configure, " ")
+	configure += " "
+	return configure
+}
