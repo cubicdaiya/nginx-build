@@ -122,6 +122,7 @@ func provideShell(sh string) error {
 func normalizeConfigure(configure string) string {
 	configure = strings.TrimRight(configure, "\n")
 	configure = strings.TrimRight(configure, " ")
+	configure = strings.TrimRight(configure, "\\")
 	configure += " "
 	return configure
 }
