@@ -82,7 +82,7 @@ $ nginx-build -d ~/opt/nginx -openssl
 `-opensslverson` is an option to set a version of OPENSSL.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.1g
+$ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.1j
 ```
 
 ### Embedding 3rd-party modules
