@@ -123,6 +123,8 @@ func normalizeConfigure(configure string) string {
 	configure = strings.TrimRight(configure, "\n")
 	configure = strings.TrimRight(configure, " ")
 	configure = strings.TrimRight(configure, "\\")
-	configure += " "
+	if configure != "" {
+		configure += " "
+	}
 	return configure
 }
