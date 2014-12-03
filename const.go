@@ -26,9 +26,16 @@ const (
 	ZLIB_DOWNLOAD_URL_PREFIX = "http://zlib.net"
 )
 
+// openResty
+const (
+	OPENRESTY_VERSION             = "1.7.4.1"
+	OPENRESTY_DOWNLOAD_URL_PREFIX = "http://openresty.org/download"
+)
+
 // component enumerations
 const (
 	COMPONENT_NGINX = iota
+	COMPONENT_OPENRESTY
 	COMPONENT_PCRE
 	COMPONENT_OPENSSL
 	COMPONENT_ZLIB

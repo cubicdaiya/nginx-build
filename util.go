@@ -43,13 +43,15 @@ Compiler: %s %s
 		runtime.Version())
 }
 
-func printLastMsg(workDir, srcDir string) {
+func printLastMsg(workDir, srcDir string, openResty bool) {
 	log.Println("Complete building nginx!")
 
 	fmt.Println()
-	err := printConfigureOptions()
-	if err != nil {
-		fmt.Println(err.Error())
+	if !openResty {
+		err := printConfigureOptions()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 	fmt.Println()
 

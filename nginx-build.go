@@ -35,6 +35,8 @@ func main() {
 	clear := flag.Bool("clear", false, "remove entries in working directory")
 	versionb := flag.Bool("version", false, "print nginx-build versions")
 	versions := flag.Bool("versions", false, "print nginx versions")
+	openResty := flag.Bool("openresty", false, "download openresty instead of nginx")
+	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
 	flag.Parse()
 
 	if *versionb {
@@ -52,7 +54,12 @@ func main() {
 	// set verbose mode
 	VerboseEnabled = *verbose
 
-	nginxBuilder := makeBuilder(COMPONENT_NGINX, *version)
+	var nginxBuilder Builder
+	if *openResty {
+		nginxBuilder = makeBuilder(COMPONENT_OPENRESTY, *openRestyVersion)
+	} else {
+		nginxBuilder = makeBuilder(COMPONENT_NGINX, *version)
+	}
 	pcreBuilder := makeBuilder(COMPONENT_PCRE, *pcreVersion)
 	openSSLBuilder := makeBuilder(COMPONENT_OPENSSL, *openSSLVersion)
 	zlibBuilder := makeBuilder(COMPONENT_ZLIB, *zlibVersion)
@@ -84,7 +91,12 @@ func main() {
 		}
 	}
 
-	workDir := *workParentDir + "/" + *version
+	var workDir string
+	if *openResty {
+		workDir = *workParentDir + "/" + *openRestyVersion
+	} else {
+		workDir = *workParentDir + "/" + *version
+	}
 	if *clear {
 		err := os.RemoveAll(workDir)
 		if err != nil {
@@ -211,7 +223,7 @@ func main() {
 		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
 	}
 
-	printLastMsg(workDir, nginxBuilder.sourcePath())
+	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty)
 
 	// cd rootDir
 	os.Chdir(rootDir)

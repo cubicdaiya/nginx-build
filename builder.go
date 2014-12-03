@@ -21,6 +21,8 @@ func (builder *Builder) name() string {
 		name = "openssl"
 	case COMPONENT_ZLIB:
 		name = "zlib"
+	case COMPONENT_OPENRESTY:
+		name = "ngx_openresty"
 	default:
 		panic("invalid component")
 	}
@@ -56,6 +58,8 @@ func makeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = OPENSSL_DOWNLOAD_URL_PREFIX
 	case COMPONENT_ZLIB:
 		builder.DownloadURLPrefix = ZLIB_DOWNLOAD_URL_PREFIX
+	case COMPONENT_OPENRESTY:
+		builder.DownloadURLPrefix = OPENRESTY_DOWNLOAD_URL_PREFIX
 	default:
 		panic("invalid component")
 	}
