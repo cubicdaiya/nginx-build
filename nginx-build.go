@@ -33,18 +33,18 @@ func main() {
 	zlibStatic := flag.Bool("zlib", false, "embedded zlib statically")
 	zlibVersion := flag.String("zlibversion", ZLIB_VERSION, "zlib version")
 	clear := flag.Bool("clear", false, "remove entries in working directory")
-	versionb := flag.Bool("version", false, "print nginx-build versions")
-	versions := flag.Bool("versions", false, "print nginx versions")
+	versionPrint := flag.Bool("version", false, "print nginx-build versions")
+	versionsPrint := flag.Bool("versions", false, "print nginx versions")
 	openResty := flag.Bool("openresty", false, "download openresty instead of nginx")
 	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
 	flag.Parse()
 
-	if *versionb {
+	if *versionPrint {
 		printNginxBuildVersion()
 		os.Exit(0)
 	}
 
-	if *versions {
+	if *versionsPrint {
 		printNginxVersions()
 		os.Exit(0)
 	}
