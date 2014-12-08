@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Builder struct {
@@ -43,6 +44,18 @@ func (builder *Builder) sourcePath() string {
 
 func (builder *Builder) archivePath() string {
 	return fmt.Sprintf("%s.tar.gz", builder.sourcePath())
+}
+
+func (builder *Builder) isIncludeWithOption(nginxConfigure string) bool {
+	if strings.Contains(nginxConfigure, builder.option()+"=") {
+		return true
+	}
+	return false
+}
+
+func (builder *Builder) warnMsgWithLibrary() string {
+	return fmt.Sprintf("[warn]Using '%s' is discouraged. Instead give '-%s' and '-%sversion' to 'nginx-build'",
+		builder.option(), builder.name(), builder.name())
 }
 
 func makeBuilder(component int, version string) Builder {
