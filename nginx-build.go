@@ -98,20 +98,9 @@ func main() {
 		workDir = *workParentDir + "/" + *version
 	}
 	if *clear {
-		err := os.RemoveAll(workDir)
+		err := clearWorkDir(workDir)
 		if err != nil {
-			// workaround for a restriction of os.RemoveAll
-			// os.RemoveAll call fd.Readdirnames(100).
-			// So os.RemoveAll does not always remove all entries.
-			// Some 3rd-party module(e.g. lua-nginx-module) tumbles this restriction.
-			if fileExists(workDir) {
-				err := os.RemoveAll(workDir)
-				if err != nil {
-					log.Fatal(err.Error())
-				}
-			} else {
-				log.Fatal(err.Error())
-			}
+			log.Fatal(err.Error())
 		}
 	}
 

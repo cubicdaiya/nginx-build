@@ -130,3 +130,17 @@ func normalizeConfigure(configure string) string {
 	}
 	return configure
 }
+
+func clearWorkDir(workDir string) error {
+	err := os.RemoveAll(workDir)
+	if err != nil {
+		// workaround for a restriction of os.RemoveAll
+		// os.RemoveAll call fd.Readdirnames(100).
+		// So os.RemoveAll does not always remove all entries.
+		// Some 3rd-party module(e.g. lua-nginx-module) tumbles this restriction.
+		if fileExists(workDir) {
+			err = os.RemoveAll(workDir)
+		}
+	}
+	return err
+}
