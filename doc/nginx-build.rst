@@ -23,6 +23,10 @@ OPTIONS
 
  specify nginx version
 
+**\-j [jobs]**
+
+ jobs to build nginx
+
 **\-c [configure]**
 
  specify configuration file for building nginx
@@ -62,6 +66,14 @@ OPTIONS
 **\-opensslversion [openssl-version]**
 
  specify OpenSSL version
+
+**\-openresty**
+
+ download openresty instead of nginx
+
+**\-openrestyversion [openresty-version]**
+
+ openresty version
 
 **\-verbose**
 

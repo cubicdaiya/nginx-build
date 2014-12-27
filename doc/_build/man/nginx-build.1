@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NGINX-BUILD" "1" "July 04, 2014" "0.0.5" "nginx-build"
+.TH "NGINX-BUILD" "1" "December 28, 2014" "0.2.0" "nginx-build"
 .SH NAME
 nginx-build \- seamless nginx builder
 .
@@ -53,6 +53,13 @@ show versions of nginx
 .INDENT 0.0
 .INDENT 3.5
 specify nginx version
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-j [jobs]\fP
+.INDENT 0.0
+.INDENT 3.5
+jobs to build nginx
 .UNINDENT
 .UNINDENT
 .sp
@@ -123,6 +130,20 @@ embed OpenSSL statically for building nginx
 .INDENT 0.0
 .INDENT 3.5
 specify OpenSSL version
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-openresty\fP
+.INDENT 0.0
+.INDENT 3.5
+download openresty instead of nginx
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-openrestyversion [openresty\-version]\fP
+.INDENT 0.0
+.INDENT 3.5
+openresty version
 .UNINDENT
 .UNINDENT
 .sp
