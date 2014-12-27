@@ -24,6 +24,10 @@ check:
 fmt:
 	go fmt ./...
 
+install:
+	install nginx-build /usr/local/bin/nginx-build
+	install doc/_build/man/nginx-build.7 /usr/local/share/man/man7/nginx-build.7
+
 .PHONY: doc
 doc:
 	cd doc; make man
