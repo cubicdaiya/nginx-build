@@ -257,5 +257,5 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 man_pages = [
-    ('nginx-build', 'nginx-build', u'seamless nginx builder', [u'Tatsuhiko Kubo'], 1),
+    ('nginx-build', 'nginx-build', u'seamless nginx builder', [u'Tatsuhiko Kubo'], 7),
 ]
