@@ -29,7 +29,7 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 		case "echo-nginx-module":
 			assert.Equal(suite.T(), m.Name, "echo-nginx-module")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/echo-nginx-module.git")
-			assert.Equal(suite.T(), m.Rev, "v0.54")
+			assert.Equal(suite.T(), m.Rev, "v0.57")
 		case "headers-more-nginx-module":
 			assert.Equal(suite.T(), m.Name, "headers-more-nginx-module")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/headers-more-nginx-module.git")
