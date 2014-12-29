@@ -1,11 +1,11 @@
 
 
 nginx-build: *.go
-	gom build -o nginx-build
+	gom build -ldflags '-s -w' -o nginx-build
 
 build-cross:
-	GOOS=linux GOARCH=amd64 gom build -o bin/linux/amd64/nginx-build
-	GOOS=darwin GOARCH=amd64 gom build -o bin/darwin/amd64/nginx-build
+	GOOS=linux GOARCH=amd64 gom build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
+	GOOS=darwin GOARCH=amd64 gom build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	cd bin/linux/amd64/ && tar zcvf nginx-build-linux-amd64.tar.gz nginx-build
