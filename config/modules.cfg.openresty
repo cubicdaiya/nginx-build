@@ -1,0 +1,17 @@
+[ngx_info]
+form=git
+url=https://github.com/cubicdaiya/ngx_info
+
+[ngx_dosdetector]
+form=git
+url=https://github.com/cubicdaiya/ngx_dosdetector
+
+[ngx_access_token]
+form=git
+url=https://github.com/cubicdaiya/ngx_access_token
+
+[ngx_small_light]
+form=git
+url=https://github.com/cubicdaiya/ngx_small_light
+rev=v0.6.3
+shprov=./setup --with-gd
