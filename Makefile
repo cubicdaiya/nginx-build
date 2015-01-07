@@ -1,7 +1,7 @@
 
 
 nginx-build: *.go
-	gom build -ldflags '-s -w' -o nginx-build
+	gom build -o nginx-build
 
 build-cross:
 	GOOS=linux GOARCH=amd64 gom build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
