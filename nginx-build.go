@@ -202,9 +202,19 @@ func main() {
 
 	log.Printf("Build %s.....", nginxBuilder.sourcePath())
 	if *openSSLStatic {
-		// This is a workaround for protecting a failure of building nginx with OpenSSL.
-		// Unfortunately build of nginx with static OpenSSL fails by multi-CPUs.
+		// Workarounds for protecting a failure of building nginx with static-linked OpenSSL.
+
+		// Unfortunately a build of OpenSSL fails when multi-CPUs are used.
 		*jobs = 1
+
+		// Sometime machine hardware name('uname -m') is different
+		// from machine processor architecture name('uname -p') on Mac.
+		// Specifically, `uname -p` is 'i386' and `uname -m` is 'x86_64'.
+		// In this case, a build of OpenSSL fails.
+		// So it needs to convince OpenSSL with KERNEL_BITS.
+		if runtime.GOOS == "darwin" && runtime.GOARCH == "amd64" {
+			os.Setenv("KERNEL_BITS", "64")
+		}
 	}
 	err = buildNginx(*jobs)
 	if err != nil {
