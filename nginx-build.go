@@ -207,7 +207,7 @@ func main() {
 		// Unfortunately a build of OpenSSL fails when multi-CPUs are used.
 		*jobs = 1
 
-		// Sometime machine hardware name('uname -m') is different
+		// Sometimes machine hardware name('uname -m') is different
 		// from machine processor architecture name('uname -p') on Mac.
 		// Specifically, `uname -p` is 'i386' and `uname -m` is 'x86_64'.
 		// In this case, a build of OpenSSL fails.
