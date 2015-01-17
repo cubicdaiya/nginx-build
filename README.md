@@ -17,7 +17,7 @@ If you don't have go-runtime, you may download the binary from [here](https://gi
 ```bash
 mkdir -p ~/opt/nginx
 nginx-build -d ~/opt/nginx
-cd ~/opt/nginx/1.7.8/nginx-1.7.8
+cd ~/opt/nginx/1.7.9/nginx-1.7.9
 objs/bin/nginx -V
 ```
 
