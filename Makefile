@@ -15,6 +15,9 @@ dist: build-cross
 build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
+gom:
+	go get -u github.com/mattn/gom
+
 bundle:
 	gom install
 
