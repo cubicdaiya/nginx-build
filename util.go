@@ -72,9 +72,7 @@ func versionCheck(version string) {
 
 func fileGetContents(path string) (string, error) {
 	conf := ""
-	if len(path) == 0 {
-		log.Println("[warn]configure option is empty.")
-	} else {
+	if len(path) > 0 {
 		confb, err := ioutil.ReadFile(path)
 		if err != nil {
 			return "", fmt.Errorf("confPath(%s) does not exist.", path)
