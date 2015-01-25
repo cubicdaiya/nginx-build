@@ -75,6 +75,14 @@ OPTIONS
 
  openresty version
 
+**\-tengine**
+
+ download tengine instead of nginx
+
+**\-tengineversion [tengine-version]**
+
+ tengine version
+
 **\-verbose**
 
  enable verbose mode
