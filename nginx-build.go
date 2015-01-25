@@ -101,6 +101,8 @@ func main() {
 	var workDir string
 	if *openResty {
 		workDir = *workParentDir + "/" + *openRestyVersion
+	} else if *tengine {
+		workDir = *workParentDir + "/" + *tengineVersion
 	} else {
 		workDir = *workParentDir + "/" + *version
 	}
