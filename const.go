@@ -32,10 +32,17 @@ const (
 	OPENRESTY_DOWNLOAD_URL_PREFIX = "http://openresty.org/download"
 )
 
+// tengine
+const (
+	TENGINE_VERSION             = "2.1.0"
+	TENGINE_DOWNLOAD_URL_PREFIX = "http://tengine.taobao.org/download"
+)
+
 // component enumerations
 const (
 	COMPONENT_NGINX = iota
 	COMPONENT_OPENRESTY
+	COMPONENT_TENGINE
 	COMPONENT_PCRE
 	COMPONENT_OPENSSL
 	COMPONENT_ZLIB

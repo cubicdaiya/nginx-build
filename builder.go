@@ -24,6 +24,8 @@ func (builder *Builder) name() string {
 		name = "zlib"
 	case COMPONENT_OPENRESTY:
 		name = "ngx_openresty"
+	case COMPONENT_TENGINE:
+		name = "tengine"
 	default:
 		panic("invalid component")
 	}
@@ -73,6 +75,8 @@ func makeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = ZLIB_DOWNLOAD_URL_PREFIX
 	case COMPONENT_OPENRESTY:
 		builder.DownloadURLPrefix = OPENRESTY_DOWNLOAD_URL_PREFIX
+	case COMPONENT_TENGINE:
+		builder.DownloadURLPrefix = TENGINE_DOWNLOAD_URL_PREFIX
 	default:
 		panic("invalid component")
 	}

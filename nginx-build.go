@@ -36,7 +36,9 @@ func main() {
 	versionPrint := flag.Bool("version", false, "print nginx-build versions")
 	versionsPrint := flag.Bool("versions", false, "print nginx versions")
 	openResty := flag.Bool("openresty", false, "download openresty instead of nginx")
+	tengine := flag.Bool("tengine", false, "download tengine instead of nginx")
 	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
+	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
 	flag.Parse()
 
 	if *versionPrint {
@@ -55,8 +57,13 @@ func main() {
 	VerboseEnabled = *verbose
 
 	var nginxBuilder Builder
+	if *openResty && *tengine {
+		log.Fatal("select one between '-openresty' and '-tengine'.")
+	}
 	if *openResty {
 		nginxBuilder = makeBuilder(COMPONENT_OPENRESTY, *openRestyVersion)
+	} else if *tengine {
+		nginxBuilder = makeBuilder(COMPONENT_TENGINE, *tengineVersion)
 	} else {
 		nginxBuilder = makeBuilder(COMPONENT_NGINX, *version)
 	}

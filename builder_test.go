@@ -20,6 +20,7 @@ func (suite *BuilderTestSuite) SetupTest() {
 	suite.builders[COMPONENT_OPENSSL] = makeBuilder(COMPONENT_OPENSSL, OPENSSL_VERSION)
 	suite.builders[COMPONENT_ZLIB] = makeBuilder(COMPONENT_ZLIB, ZLIB_VERSION)
 	suite.builders[COMPONENT_OPENRESTY] = makeBuilder(COMPONENT_OPENRESTY, OPENRESTY_VERSION)
+	suite.builders[COMPONENT_TENGINE] = makeBuilder(COMPONENT_TENGINE, TENGINE_VERSION)
 }
 
 func (suite *BuilderTestSuite) TestName() {
@@ -28,6 +29,7 @@ func (suite *BuilderTestSuite) TestName() {
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].name(), "openssl")
 	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].name(), "zlib")
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].name(), "ngx_openresty")
+	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].name(), "tengine")
 }
 
 func (suite *BuilderTestSuite) TestOption() {
@@ -42,6 +44,7 @@ func (suite *BuilderTestSuite) TestDownloadURL() {
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].downloadURL(), fmt.Sprintf("%s/openssl-%s.tar.gz", OPENSSL_DOWNLOAD_URL_PREFIX, OPENSSL_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].downloadURL(), fmt.Sprintf("%s/zlib-%s.tar.gz", ZLIB_DOWNLOAD_URL_PREFIX, ZLIB_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].downloadURL(), fmt.Sprintf("%s/ngx_openresty-%s.tar.gz", OPENRESTY_DOWNLOAD_URL_PREFIX, OPENRESTY_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].downloadURL(), fmt.Sprintf("%s/tengine-%s.tar.gz", TENGINE_DOWNLOAD_URL_PREFIX, TENGINE_VERSION))
 }
 
 func (suite *BuilderTestSuite) TestSourcePath() {
@@ -50,6 +53,7 @@ func (suite *BuilderTestSuite) TestSourcePath() {
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].sourcePath(), fmt.Sprintf("openssl-%s", OPENSSL_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].sourcePath(), fmt.Sprintf("zlib-%s", ZLIB_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].sourcePath(), fmt.Sprintf("ngx_openresty-%s", OPENRESTY_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].sourcePath(), fmt.Sprintf("tengine-%s", TENGINE_VERSION))
 }
 
 func (suite *BuilderTestSuite) TestArchivePath() {
@@ -58,6 +62,7 @@ func (suite *BuilderTestSuite) TestArchivePath() {
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].archivePath(), fmt.Sprintf("openssl-%s.tar.gz", OPENSSL_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].archivePath(), fmt.Sprintf("zlib-%s.tar.gz", ZLIB_VERSION))
 	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].archivePath(), fmt.Sprintf("ngx_openresty-%s.tar.gz", OPENRESTY_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].archivePath(), fmt.Sprintf("tengine-%s.tar.gz", TENGINE_VERSION))
 }
 
 func TestBuilderTestSuite(t *testing.T) {
