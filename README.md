@@ -8,7 +8,7 @@
 
  * [nginx](http://nginx.org/)
  * [OpenResty](http://www.openresty.com/)
- * [tengine](http://tengine.taobao.org/)
+ * [Tengine](http://tengine.taobao.org/)
 
 ## Install
 
