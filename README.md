@@ -4,6 +4,12 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
+## Build Support
+
+ * [nginx](http://nginx.org/)
+ * [OpenResty](http://www.openresty.com/)
+ * [tengine](http://tengine.taobao.org/)
+
 ## Install
 
 ```bash
