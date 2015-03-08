@@ -4,6 +4,11 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
+## Required
+
+ * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
+ * [git](http://git-scm.com/) for downloading 3rd party module
+
 ## Build Support
 
  * [nginx](http://nginx.org/)
