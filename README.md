@@ -99,7 +99,7 @@ $ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.1j
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
-Prepare a ini-file like the following.
+Prepare a ini-file below.
 
 ```ini
 [echo-nginx-module]
