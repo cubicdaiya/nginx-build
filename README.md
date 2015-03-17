@@ -62,7 +62,7 @@ Give `-zlib` to `nginx-build`.
 $ nginx-build -d ~/opt/nginx -zlib
 ```
 
-`-zlibverson` is an option to set a version of ZLIB.
+`-zlibversion` is an option to set a version of ZLIB.
 
 ```bash
 $ nginx-build -d ~/opt/nginx -zlib -zlibversion=1.2.8
@@ -76,7 +76,7 @@ Give `-pcre` to `nginx-build`.
 $ nginx-build -d ~/opt/nginx -pcre
 ```
 
-`-pcreverson` is an option to set a version of PCRE.
+`-pcreversion` is an option to set a version of PCRE.
 
 ```bash
 $ nginx-build -d ~/opt/nginx -pcre -pcreversion=8.35
@@ -90,7 +90,7 @@ Give `-openssl` to `nginx-build`.
 $ nginx-build -d ~/opt/nginx -openssl
 ```
 
-`-opensslverson` is an option to set a version of OPENSSL.
+`-opensslversion` is an option to set a version of OPENSSL.
 
 ```bash
 $ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.1j
