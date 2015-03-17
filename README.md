@@ -40,7 +40,7 @@ objs/bin/nginx -V
 Prepare a configure script like the following.
 
 ```bash
-#!bin/sh
+#!/bin/sh
 
 ./configure \
 --sbin-path=/usr/sbin/nginx \
