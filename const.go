@@ -4,7 +4,7 @@ const NGINX_BUILD_VERSION = "0.3.2"
 
 // nginx
 const (
-	NGINX_VERSION             = "1.7.10"
+	NGINX_VERSION             = "1.7.11"
 	NGINX_DOWNLOAD_URL_PREFIX = "http://nginx.org/download"
 )
 
