@@ -79,7 +79,7 @@ $ nginx-build -d ~/opt/nginx -pcre
 `-pcreversion` is an option to set a version of PCRE.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -pcre -pcreversion=8.35
+$ nginx-build -d ~/opt/nginx -pcre -pcreversion=8.36
 ```
 
 ### Embedding OpenSSL statically
@@ -93,7 +93,7 @@ $ nginx-build -d ~/opt/nginx -openssl
 `-opensslversion` is an option to set a version of OPENSSL.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.1j
+$ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.2a
 ```
 
 ### Embedding 3rd-party modules
@@ -105,7 +105,7 @@ Prepare a ini-file below.
 [echo-nginx-module]
 form=git
 url=https://github.com/openresty/echo-nginx-module.git
-rev=v0.53
+rev=v0.57
 
 [ngx_devel_kit]
 form=git
