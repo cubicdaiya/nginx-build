@@ -1,10 +1,10 @@
 package main
 
-const NGINX_BUILD_VERSION = "0.3.2"
+const NGINX_BUILD_VERSION = "0.3.3"
 
 // nginx
 const (
-	NGINX_VERSION             = "1.7.11"
+	NGINX_VERSION             = "1.7.12"
 	NGINX_DOWNLOAD_URL_PREFIX = "http://nginx.org/download"
 )
 
