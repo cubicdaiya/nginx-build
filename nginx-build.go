@@ -39,6 +39,7 @@ func main() {
 	tengine := flag.Bool("tengine", false, "download tengine instead of nginx")
 	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
 	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
+	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
 	flag.Parse()
 
 	if *versionPrint {
@@ -209,6 +210,11 @@ func main() {
 		log.Fatalf("Failed to configure %s", nginxBuilder.sourcePath())
 	}
 
+	if *configureOnly {
+		printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)
+		return
+	}
+
 	log.Printf("Build %s.....", nginxBuilder.sourcePath())
 	if *openSSLStatic {
 		// Workarounds for protecting a failure of building nginx with static-linked OpenSSL.
@@ -231,7 +237,7 @@ func main() {
 		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
 	}
 
-	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty)
+	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)
 
 	// cd rootDir
 	os.Chdir(rootDir)

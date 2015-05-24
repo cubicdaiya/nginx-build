@@ -43,7 +43,7 @@ Compiler: %s %s
 		runtime.Version())
 }
 
-func printLastMsg(workDir, srcDir string, openResty bool) {
+func printLastMsg(workDir, srcDir string, openResty, configureOnly bool) {
 	log.Println("Complete building nginx!")
 
 	fmt.Println()
@@ -57,10 +57,14 @@ func printLastMsg(workDir, srcDir string, openResty bool) {
 
 	lastMsgFormat := `Enter the following command for install nginx.
 
-   $ cd %s/%s
+   $ cd %s/%s%s
    $ sudo make install
 `
-	log.Printf(lastMsgFormat, workDir, srcDir)
+	if configureOnly {
+		log.Printf(lastMsgFormat, workDir, srcDir, "\n   $ make")
+	} else {
+		log.Printf(lastMsgFormat, workDir, srcDir, "")
+	}
 }
 
 func versionCheck(version string) {
