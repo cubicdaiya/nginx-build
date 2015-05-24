@@ -53,7 +53,7 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 		case "ngx_small_light":
 			assert.Equal(suite.T(), m.Name, "ngx_small_light")
 			assert.Equal(suite.T(), m.Url, "https://github.com/cubicdaiya/ngx_small_light")
-			assert.Equal(suite.T(), m.Rev, "v0.6.6")
+			assert.Equal(suite.T(), m.Rev, "v0.6.8")
 			assert.Equal(suite.T(), m.Shprov, "./setup --with-gd")
 		}
 	}
