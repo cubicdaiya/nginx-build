@@ -28,7 +28,7 @@ func main() {
 	verbose := flag.Bool("verbose", false, "verbose mode")
 	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
 	pcreVersion := flag.String("pcreversion", PCRE_VERSION, "PCRE version")
-	openSSLStatic := flag.Bool("openssl", false, "embedded PCRE statically")
+	openSSLStatic := flag.Bool("openssl", false, "embedded OpenSSL statically")
 	openSSLVersion := flag.String("opensslversion", OPENSSL_VERSION, "OpenSSL version")
 	zlibStatic := flag.Bool("zlib", false, "embedded zlib statically")
 	zlibVersion := flag.String("zlibversion", ZLIB_VERSION, "zlib version")
