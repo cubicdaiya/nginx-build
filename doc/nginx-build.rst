@@ -86,3 +86,7 @@ OPTIONS
 **\-verbose**
 
  enable verbose mode
+
+**\-configureonly**
+
+ configuring nginx only not building
