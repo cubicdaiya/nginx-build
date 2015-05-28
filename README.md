@@ -36,7 +36,7 @@ brew install nginx-build
 ```bash
 mkdir -p ~/opt/nginx
 nginx-build -d ~/opt/nginx
-cd ~/opt/nginx/1.9.0/nginx-1.9.0
+cd ~/opt/nginx/1.9.1/nginx-1.9.1
 objs/bin/nginx -V
 ```
 
