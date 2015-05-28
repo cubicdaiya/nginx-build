@@ -4,7 +4,7 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
-## Required
+## Requirements
 
  * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
  * [git](http://git-scm.com/) for downloading 3rd party modules
@@ -15,7 +15,7 @@
  * [OpenResty](http://www.openresty.com/)
  * [Tengine](http://tengine.taobao.org/)
 
-## Install
+## Installation
 
 ```bash
 go get -u github.com/cubicdaiya/nginx-build
