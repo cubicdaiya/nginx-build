@@ -86,7 +86,7 @@ $ nginx-build -d work -pcre
 `-pcreversion` is an option to set a version of PCRE.
 
 ```bash
-$ nginx-build -d work -pcre -pcreversion=8.36
+$ nginx-build -d work -pcre -pcreversion=8.37
 ```
 
 ### Embedding OpenSSL statically
