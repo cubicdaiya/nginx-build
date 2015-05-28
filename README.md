@@ -34,9 +34,8 @@ brew install nginx-build
 ## Quick Start
 
 ```bash
-mkdir -p ~/opt/nginx
-nginx-build -d ~/opt/nginx
-cd ~/opt/nginx/1.9.1/nginx-1.9.1
+nginx-build -d work
+cd work/1.9.1/nginx-1.9.1
 objs/bin/nginx -V
 ```
 
