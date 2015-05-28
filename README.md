@@ -52,7 +52,6 @@ Prepare a configure script like the following.
 ./configure \
 --sbin-path=/usr/sbin/nginx \
 --conf-path=/etc/nginx/nginx.conf \
---with-cc-opt="-Wno-deprecated-declarations" \
 ```
 
 Give this file to `nginx-build` with `-c`.
