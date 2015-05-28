@@ -58,7 +58,7 @@ Prepare a configure script like the following.
 Give this file to `nginx-build` with `-c`.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -c configure.example
+$ nginx-build -d work -c configure.example
 ```
 
 ### Embedding ZLIB statically
@@ -66,13 +66,13 @@ $ nginx-build -d ~/opt/nginx -c configure.example
 Give `-zlib` to `nginx-build`.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -zlib
+$ nginx-build -d work -zlib
 ```
 
 `-zlibversion` is an option to set a version of ZLIB.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -zlib -zlibversion=1.2.8
+$ nginx-build -d work -zlib -zlibversion=1.2.8
 ```
 
 ### Embedding PCRE statically
@@ -80,13 +80,13 @@ $ nginx-build -d ~/opt/nginx -zlib -zlibversion=1.2.8
 Give `-pcre` to `nginx-build`.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -pcre
+$ nginx-build -d work -pcre
 ```
 
 `-pcreversion` is an option to set a version of PCRE.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -pcre -pcreversion=8.36
+$ nginx-build -d work -pcre -pcreversion=8.36
 ```
 
 ### Embedding OpenSSL statically
@@ -94,13 +94,13 @@ $ nginx-build -d ~/opt/nginx -pcre -pcreversion=8.36
 Give `-openssl` to `nginx-build`.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -openssl
+$ nginx-build -d work -openssl
 ```
 
 `-opensslversion` is an option to set a version of OPENSSL.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -openssl -opensslversion=1.0.2a
+$ nginx-build -d work -openssl -opensslversion=1.0.2a
 ```
 
 ### Embedding 3rd-party modules
@@ -123,5 +123,5 @@ rev=v0.2.19
 Give this file to `nginx-build` with `-m`.
 
 ```bash
-$ nginx-build -d ~/opt/nginx -m modules.cfg.example
+$ nginx-build -d work -m modules.cfg.example
 ```
