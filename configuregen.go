@@ -62,7 +62,11 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 			if option.Name == "--add-module" {
 				configure += normalizeAddModulePaths(*option.Value, rootDir)
 			} else {
-				configure += option.Name + "=" + *option.Value + " \\\n"
+				if strings.Contains(*option.Value, " ") {
+					configure += option.Name + "=" + "'" + *option.Value + "'" + " \\\n"
+				} else {
+					configure += option.Name + "=" + *option.Value + " \\\n"
+				}
 			}
 		}
 	}
