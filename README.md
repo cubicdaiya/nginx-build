@@ -60,6 +60,29 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -d work -c configure.example
 ```
 
+From `v0.4.0` it is possible to use nginx's configure options directly.
+
+```bash
+$ nginx-build -d work --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log
+```
+
+On the other hand, the interface of `--add-module` is a little different from nginx's.
+nginx's allows multiple `--add-module`. But `nginx-build`'s does not allow. (This limitation is attributed by the flag package of Go.)
+As workaround, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` like the following.
+
+```bash
+$ nginx-build \
+-d work \
+--add-module=../nginx/ngx_small_light,../nginx/ngx_dynamic_upstream
+```
+
+The values of `--add-module` of `nginx-build` must be separated by ','.
+
+And there are the another limitations below.
+
+ * `--with-pcre`(force PCRE library usage) is not allowed`
+ * `--with-libatomic`(force libatomic_ops library usage) is not allowed
+
 ### Embedding ZLIB statically
 
 Give `-zlib` to `nginx-build`.
