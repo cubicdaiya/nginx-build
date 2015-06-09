@@ -65,7 +65,22 @@ $ nginx-build -d work -c configure.example
 From `v0.4.0` it is possible to use nginx's configure options directly.
 
 ```bash
-$ nginx-build -d work --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log
+$ nginx-build -d work \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--error-log-path=/var/log/nginx/error.log
+--pid-path=/var/run/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--http-log-path=/var/log/nginx/access.log \
+--http-client-body-temp-path=/var/lib/nginx/body \
+--http-proxy-temp-path=/var/lib/nginx/proxy \
+--with-http_stub_status_module \
+--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+--with-debug \
+--with-http_gzip_static_module \
+--with-http_spdy_module \
+--with-http_ssl_module \
+--with-pcre-jit \
 ```
 
 On the other hand, the interface of `--add-module` is a little different from nginx's.
