@@ -60,6 +60,8 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -d work -c configure.example
 ```
 
+# Direct configuration for building nginx
+
 From `v0.4.0` it is possible to use nginx's configure options directly.
 
 ```bash
