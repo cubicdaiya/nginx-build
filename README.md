@@ -97,7 +97,7 @@ The values of `--add-module` of `nginx-build` must be separated by ','.
 
 And there are the another limitations below.
 
- * `--with-pcre`(force PCRE library usage) is not allowed`
+ * `--with-pcre`(force PCRE library usage) is not allowed
  * `--with-libatomic`(force libatomic_ops library usage) is not allowed
 
 ### Embedding ZLIB statically
