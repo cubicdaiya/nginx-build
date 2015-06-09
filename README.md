@@ -68,7 +68,7 @@ From `v0.4.0` it is possible to use nginx's configure options directly.
 $ nginx-build -d work \
 --sbin-path=/usr/sbin/nginx \
 --conf-path=/etc/nginx/nginx.conf \
---error-log-path=/var/log/nginx/error.log
+--error-log-path=/var/log/nginx/error.log \
 --pid-path=/var/run/nginx.pid \
 --lock-path=/var/lock/nginx.lock \
 --http-log-path=/var/log/nginx/access.log \
