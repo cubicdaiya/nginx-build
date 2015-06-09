@@ -40,7 +40,25 @@ func main() {
 	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
 	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
 	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
+
+	var configureOptions ConfigureOptions
+	argsString := makeArgsString()
+	argsBool := makeArgsBool()
+
+	for k, v := range argsString {
+		v.Value = flag.String(k, "", v.Desc)
+		argsString[k] = v
+	}
+
+	for k, v := range argsBool {
+		v.Enabled = flag.Bool(k, false, v.Desc)
+		argsBool[k] = v
+	}
+
 	flag.Parse()
+
+	configureOptions.Values = argsString
+	configureOptions.Bools = argsBool
 
 	if *versionPrint {
 		printNginxBuildVersion()
@@ -199,7 +217,7 @@ func main() {
 		log.Println("[warn]Using '--add-module' is discouraged. Instead give ini-file with '-m' to 'nginx-build'")
 	}
 
-	configureScript := configureGen(nginxConfigure, modules3rd, dependencies)
+	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())

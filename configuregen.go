@@ -31,7 +31,7 @@ func configureGenModule3rd(modules3rd []Module3rd) string {
 	return result
 }
 
-func configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary) string {
+func configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary, options ConfigureOptions, rootDir string) string {
 	openSSLStatic := false
 	if len(configure) == 0 {
 		configure = `#!/bin/sh
@@ -56,6 +56,26 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 
 	configure_modules3rd := configureGenModule3rd(modules3rd)
 	configure += configure_modules3rd
+
+	for _, option := range options.Values {
+		if *option.Value != "" {
+			if option.Name == "--add-module" {
+				configure += normalizeAddModulePaths(*option.Value, rootDir)
+			} else {
+				if strings.Contains(*option.Value, " ") {
+					configure += option.Name + "=" + "'" + *option.Value + "'" + " \\\n"
+				} else {
+					configure += option.Name + "=" + *option.Value + " \\\n"
+				}
+			}
+		}
+	}
+
+	for _, option := range options.Bools {
+		if *option.Enabled {
+			configure += option.Name + " \\\n"
+		}
+	}
 
 	return configure
 }
