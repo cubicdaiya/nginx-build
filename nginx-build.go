@@ -217,7 +217,7 @@ func main() {
 		log.Println("[warn]Using '--add-module' is discouraged. Instead give ini-file with '-m' to 'nginx-build'")
 	}
 
-	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions)
+	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())

@@ -146,3 +146,22 @@ func clearWorkDir(workDir string) error {
 	}
 	return err
 }
+
+func normalizeAddModulePaths(path, rootDir string) string {
+	var result string
+	if len(path) == 0 {
+		return path
+	}
+
+	module_paths := strings.Split(path, ",")
+
+	for _, module_path := range module_paths {
+		if strings.HasPrefix(module_path, "/") {
+			result += fmt.Sprintf("--add-module=%s \\\n", module_path)
+		} else {
+			result += fmt.Sprintf("--add-module=%s/%s \\\n", rootDir, module_path)
+		}
+	}
+
+	return result
+}
