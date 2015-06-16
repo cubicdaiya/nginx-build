@@ -35,7 +35,7 @@ brew install nginx-build
 
 ```bash
 nginx-build -d work
-cd work/1.9.1/nginx-1.9.1
+cd work/1.9.2/nginx-1.9.2
 objs/bin/nginx -V
 ```
 
