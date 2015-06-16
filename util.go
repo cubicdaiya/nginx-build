@@ -46,11 +46,13 @@ Compiler: %s %s
 func printLastMsg(workDir, srcDir string, openResty, configureOnly bool) {
 	log.Println("Complete building nginx!")
 
-	fmt.Println()
 	if !openResty {
-		err := printConfigureOptions()
-		if err != nil {
-			fmt.Println(err.Error())
+		if !configureOnly {
+			fmt.Println()
+			err := printConfigureOptions()
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 		}
 	}
 	fmt.Println()
