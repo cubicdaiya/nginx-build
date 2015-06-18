@@ -81,6 +81,7 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	argsBool["without-mail_smtp_module"] = ConfigureOptionBool{Name: "--without-mail_smtp_module", Desc: "disable ngx_mail_smtp_module"}
 	argsBool["with-stream"] = ConfigureOptionBool{Name: "--with-stream", Desc: "enable TCP proxy module"}
 	argsBool["with-stream_ssl_module"] = ConfigureOptionBool{Name: "--with-stream_ssl_module", Desc: "enable ngx_stream_ssl_module"}
+	argsBool["without-stream_access_module"] = ConfigureOptionBool{Name: "--without-stream_access_module", Desc: "disable ngx_stream_access_module"}
 	argsBool["without-stream_upstream_hash_module"] = ConfigureOptionBool{Name: "--without-stream_upstream_hash_module", Desc: "disable ngx_stream_upstream_hash_module"}
 	argsBool["without-stream_upstream_least_conn_module"] = ConfigureOptionBool{Name: "--without-stream_upstream_least_conn_module", Desc: "disable ngx_stream_upstream_least_conn_module"}
 	argsBool["without-stream_upstream_zone_module"] = ConfigureOptionBool{Name: "--without-stream_upstream_zone_module", Desc: "disable ngx_stream_upstream_zone_module"}
