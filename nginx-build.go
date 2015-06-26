@@ -44,10 +44,15 @@ func main() {
 	var configureOptions ConfigureOptions
 	argsString := makeArgsString()
 	argsBool := makeArgsBool()
+	var multiflag StringFlag
 
 	for k, v := range argsString {
-		v.Value = flag.String(k, "", v.Desc)
-		argsString[k] = v
+		if k == "add-module" {
+			flag.Var(&multiflag, k, v.Desc)
+		} else {
+			v.Value = flag.String(k, "", v.Desc)
+			argsString[k] = v
+		}
 	}
 
 	for k, v := range argsBool {
@@ -56,6 +61,14 @@ func main() {
 	}
 
 	flag.Parse()
+
+	// Allow multiple flags for `--add-module`
+	{
+		tmp := argsString["add-module"]
+		tmp_ := multiflag.String()
+		tmp.Value = &tmp_
+		argsString["add-module"] = tmp
+	}
 
 	configureOptions.Values = argsString
 	configureOptions.Bools = argsBool
