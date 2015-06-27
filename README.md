@@ -60,9 +60,9 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -d work -c configure.example
 ```
 
-# Direct configuration for building nginx
+### Direct configuration for building nginx
 
-From `v0.4.0` it is possible to use nginx's configure options directly.
+From `v0.4.0`, `nginx-build` allows to use nginx's configure options directly.
 
 ```bash
 $ nginx-build -d work \
@@ -83,9 +83,18 @@ $ nginx-build -d work \
 --with-pcre-jit \
 ```
 
-On the other hand, the interface of `--add-module` is a little different from nginx's.
-nginx's allows multiple `--add-module`. But `nginx-build`'s does not allow. (This limitation is attributed by the flag package of Go.)
-As workaround, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` like the following.
+#### About `--add-module`
+
+`nginx-build` allows to use multiple `--add-module` from `v0.4.2`.
+
+```bash
+$ nginx-build \
+-d work \
+--add-module=../nginx/ngx_small_light \
+--add-module=../nginx/ngx_dynamic_upstream
+```
+
+On the other hand, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` like the following, too.
 
 ```bash
 $ nginx-build \
@@ -93,12 +102,18 @@ $ nginx-build \
 --add-module=../nginx/ngx_small_light,../nginx/ngx_dynamic_upstream
 ```
 
-The values of `--add-module` of `nginx-build` must be separated by ','.
+The values of `--add-module` of `nginx-build` must be separated by ','. This feature is introduced in `v0.4.0`.
 
-And there are the another limitations below.
+#### Limitations
+
+And there are the limitations for the direct configuration below.
 
  * `--with-pcre`(force PCRE library usage) is not allowed
+  * `--with-pcre=DIR`(set path to PCRE library sources) is allowed
  * `--with-libatomic`(force libatomic_ops library usage) is not allowed
+ * `--with-libatomic=DIR`(set path to libatomic_ops library sources) is allowed
+
+The limitations above are attributed by the flag package of Go. (multiple and different types from each other are not allowed)
 
 ### Embedding ZLIB statically
 
