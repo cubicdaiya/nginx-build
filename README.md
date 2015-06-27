@@ -108,7 +108,7 @@ Give `-zlib` to `nginx-build`.
 $ nginx-build -d work -zlib
 ```
 
-`-zlibversion` is an option to set a version of ZLIB.
+`-zlibversion` is an option to set a version of zlib.
 
 ```bash
 $ nginx-build -d work -zlib -zlibversion=1.2.8
@@ -136,7 +136,7 @@ Give `-openssl` to `nginx-build`.
 $ nginx-build -d work -openssl
 ```
 
-`-opensslversion` is an option to set a version of OPENSSL.
+`-opensslversion` is an option to set a version of OpenSSL.
 
 ```bash
 $ nginx-build -d work -openssl -opensslversion=1.0.2c
