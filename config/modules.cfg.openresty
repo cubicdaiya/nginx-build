@@ -13,5 +13,5 @@ url=https://github.com/cubicdaiya/ngx_access_token
 [ngx_small_light]
 form=git
 url=https://github.com/cubicdaiya/ngx_small_light
-rev=v0.6.3
+rev=v0.6.9
 shprov=./setup --with-gd

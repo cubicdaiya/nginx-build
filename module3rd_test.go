@@ -29,11 +29,11 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 		case "echo-nginx-module":
 			assert.Equal(suite.T(), m.Name, "echo-nginx-module")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/echo-nginx-module.git")
-			assert.Equal(suite.T(), m.Rev, "v0.57")
+			assert.Equal(suite.T(), m.Rev, "v0.58")
 		case "headers-more-nginx-module":
 			assert.Equal(suite.T(), m.Name, "headers-more-nginx-module")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/headers-more-nginx-module.git")
-			assert.Equal(suite.T(), m.Rev, "v0.25")
+			assert.Equal(suite.T(), m.Rev, "v0.26")
 		case "ngx_devel_kit":
 			assert.Equal(suite.T(), m.Name, "ngx_devel_kit")
 			assert.Equal(suite.T(), m.Url, "https://github.com/simpl/ngx_devel_kit")
@@ -53,7 +53,7 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 		case "ngx_small_light":
 			assert.Equal(suite.T(), m.Name, "ngx_small_light")
 			assert.Equal(suite.T(), m.Url, "https://github.com/cubicdaiya/ngx_small_light")
-			assert.Equal(suite.T(), m.Rev, "v0.6.8")
+			assert.Equal(suite.T(), m.Rev, "v0.6.9")
 			assert.Equal(suite.T(), m.Shprov, "./setup --with-gd")
 		}
 	}

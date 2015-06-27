@@ -151,7 +151,7 @@ Prepare a ini-file below.
 [echo-nginx-module]
 form=git
 url=https://github.com/openresty/echo-nginx-module.git
-rev=v0.57
+rev=v0.58
 
 [ngx_devel_kit]
 form=git
