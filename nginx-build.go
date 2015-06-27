@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -238,7 +237,8 @@ func main() {
 	log.Printf("Configure %s.....", nginxBuilder.sourcePath())
 	err = configureNginx()
 	if err != nil {
-		log.Fatalf("Failed to configure %s", nginxBuilder.sourcePath())
+		log.Printf("Failed to configure %s\n", nginxBuilder.sourcePath())
+		fatalLog(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
@@ -264,8 +264,8 @@ func main() {
 	}
 	err = buildNginx(*jobs)
 	if err != nil {
-		fmt.Println(err.Error())
-		log.Fatalf("Failed to build %s", nginxBuilder.sourcePath())
+		log.Printf("Failed to build %s\n", nginxBuilder.sourcePath())
+		fatalLog(err, "nginx-build.log")
 	}
 
 	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -89,11 +90,41 @@ func fileGetContents(path string) (string, error) {
 }
 
 func configureNginx() error {
-	return runCommand(exec.Command("sh", "./nginx-configure"))
+	if VerboseEnabled {
+		return runCommand(exec.Command("sh", "./nginx-configure"))
+	}
+
+	f, err := os.Create("nginx-configure.log")
+	if err != nil {
+		return runCommand(exec.Command("sh", "./nginx-configure"))
+	}
+	defer f.Close()
+
+	cmd := exec.Command("sh", "./nginx-configure")
+	writer := bufio.NewWriter(f)
+	cmd.Stdout = writer
+	defer writer.Flush()
+
+	return cmd.Run()
 }
 
 func buildNginx(jobs int) error {
-	return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+	if VerboseEnabled {
+		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+	}
+
+	f, err := os.Create("nginx-build.log")
+	if err != nil {
+		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+	}
+	defer f.Close()
+
+	cmd := exec.Command("make", "-j", strconv.Itoa(jobs))
+	writer := bufio.NewWriter(f)
+	cmd.Stderr = writer
+	defer writer.Flush()
+
+	return cmd.Run()
 }
 
 func extractArchive(path string) error {
@@ -166,4 +197,25 @@ func normalizeAddModulePaths(path, rootDir string) string {
 	}
 
 	return result
+}
+
+func fatalLog(err error, path string) {
+	if VerboseEnabled {
+		log.Fatal(err)
+	}
+
+	f, err2 := os.Open(path)
+	if err2 != nil {
+		log.Printf("error-log: %s is not found\n", path)
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		os.Stderr.Write(scanner.Bytes())
+		os.Stderr.Write([]byte("\n"))
+	}
+
+	log.Fatal(err)
 }
