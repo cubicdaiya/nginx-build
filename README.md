@@ -179,3 +179,28 @@ Give this file to `nginx-build` with `-m`.
 ```bash
 $ nginx-build -d work -m modules.cfg.example
 ```
+
+## Build OpenResty
+
+`nginx-build` supports to build [OpenResty](http://www.openresty.com/).
+If you don't install PCRE in your system, it is required to add the option `-pcre`.
+
+```bash
+$ nginx-build -d work -openresty -pcre
+```
+
+There is the limitation for the support of OpenResty.
+`nginx-build` does not allow to use OpenResty's unique configure options directly.
+But you can use the common options of nginx and OpenResty directly.
+
+## Build Tengine
+
+`nginx-build` supports to build [Tengine](http://tengine.taobao.org/).
+
+```bash
+$ nginx-build -d work -tengine
+```
+
+There is the limitation for the support of [Tengine](http://tengine.taobao.org/).
+`nginx-build` does not allow to use Tengine's unique configure options directly.
+But you can use the common options of nginx and Tengine. directly.
