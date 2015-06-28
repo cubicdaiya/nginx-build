@@ -115,7 +115,7 @@ And there are the limitations for the direct configuration below.
 
 The limitations above are attributed by the flag package of Go. (multiple and different types from each other are not allowed)
 
-### Embedding ZLIB statically
+### Embedding zlib statically
 
 Give `-zlib` to `nginx-build`.
 
