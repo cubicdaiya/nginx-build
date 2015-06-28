@@ -183,13 +183,15 @@ $ nginx-build -d work -m modules.cfg.example
 ## Build OpenResty
 
 `nginx-build` supports to build [OpenResty](http://www.openresty.com/).
-If you don't install PCRE in your system, it is required to add the option `-pcre`.
 
 ```bash
 $ nginx-build -d work -openresty -pcre
 ```
 
-There is the limitation for the support of OpenResty.
+If you don't install PCRE on your system, it is required to add the option `-pcre`.
+
+
+And there is the limitation for the support of OpenResty.
 `nginx-build` does not allow to use OpenResty's unique configure options directly.
 But you can use the common options of nginx and OpenResty directly.
 
