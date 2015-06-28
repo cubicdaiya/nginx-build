@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -101,17 +100,21 @@ func makeStaticLibrary(builder *Builder) StaticLibrary {
 }
 
 func buildNginx(jobs int) error {
+	args := []string{"make", "-j", strconv.Itoa(jobs)}
 	if VerboseEnabled {
-		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+		return runCommand(args)
 	}
 
 	f, err := os.Create("nginx-build.log")
 	if err != nil {
-		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+		return runCommand(args)
 	}
 	defer f.Close()
 
-	cmd := exec.Command("make", "-j", strconv.Itoa(jobs))
+	cmd, err := makeCmd(args)
+	if err != nil {
+		return err
+	}
 	writer := bufio.NewWriter(f)
 	cmd.Stderr = writer
 	defer writer.Flush()

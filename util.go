@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,7 +12,26 @@ import (
 	"runtime"
 )
 
-func runCommand(cmd *exec.Cmd) error {
+func makeCmd(args []string) (*exec.Cmd, error) {
+	var cmd *exec.Cmd
+	switch len(args) {
+	case 0:
+		return nil, errors.New("empty command")
+	case 1:
+		cmd = exec.Command(args[0])
+	default:
+		cmd = exec.Command(args[0], args[1:]...)
+	}
+
+	return cmd, nil
+}
+
+func runCommand(args []string) error {
+	cmd, err := makeCmd(args)
+	if err != nil {
+		return err
+	}
+
 	checkVerboseEnabled(cmd)
 	return cmd.Run()
 }
@@ -100,7 +120,6 @@ func printLastMsg(workDir, srcDir string, openResty, configureOnly bool) {
 		log.Printf(lastMsgFormat, workDir, srcDir, "")
 	}
 }
-
 
 func printFatalMsg(err error, path string) {
 	if VerboseEnabled {

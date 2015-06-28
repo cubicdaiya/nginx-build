@@ -3,15 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
-	"os/exec"
 )
 
 func extractArchive(path string) error {
-	return runCommand(exec.Command("tar", "zxvf", path))
+	return runCommand([]string{"tar", "zxvf", path})
 }
 
 func download(url string) error {
-	return runCommand(exec.Command("wget", url))
+	return runCommand([]string{"wget", url})
 }
 
 func downloadModule3rd(module3rd Module3rd) error {
@@ -19,7 +18,7 @@ func downloadModule3rd(module3rd Module3rd) error {
 	url := module3rd.Url
 	switch form {
 	case "git":
-		return runCommand(exec.Command("git", "clone", url))
+		return runCommand([]string{"git", "clone", url})
 	case "local":
 		return nil
 	}

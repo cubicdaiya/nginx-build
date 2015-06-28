@@ -5,7 +5,6 @@ import (
 	"github.com/robfig/config"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -61,9 +60,9 @@ func provideShell(sh string) error {
 	args := strings.Split(strings.Trim(sh, " "), " ")
 	var err error
 	if len(args) == 1 {
-		err = runCommand(exec.Command(args[0]))
+		err = runCommand(args)
 	} else {
-		err = runCommand(exec.Command(args[0], args[1:]...))
+		err = runCommand(args)
 	}
 	return err
 }
@@ -91,5 +90,5 @@ func provideModule3rd(m *Module3rd) {
 }
 
 func switchRev(rev string) error {
-	return runCommand(exec.Command("git", "checkout", rev))
+	return runCommand([]string{"git", "checkout", rev})
 }

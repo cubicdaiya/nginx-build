@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"runtime"
 	"strings"
 )
@@ -100,17 +99,22 @@ func normalizeAddModulePaths(path, rootDir string) string {
 }
 
 func configureNginx() error {
+	args := []string{"sh", "./nginx-configure"}
 	if VerboseEnabled {
-		return runCommand(exec.Command("sh", "./nginx-configure"))
+		return runCommand(args)
 	}
 
 	f, err := os.Create("nginx-configure.log")
 	if err != nil {
-		return runCommand(exec.Command("sh", "./nginx-configure"))
+		return runCommand(args)
 	}
 	defer f.Close()
 
-	cmd := exec.Command("sh", "./nginx-configure")
+	cmd, err := makeCmd(args)
+	if err != nil {
+		return err
+	}
+
 	writer := bufio.NewWriter(f)
 	cmd.Stdout = writer
 	defer writer.Flush()
