@@ -238,7 +238,7 @@ func main() {
 	err = configureNginx()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.sourcePath())
-		fatalLog(err, "nginx-configure.log")
+		printFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
@@ -265,7 +265,7 @@ func main() {
 	err = buildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.sourcePath())
-		fatalLog(err, "nginx-build.log")
+		printFatalMsg(err, "nginx-build.log")
 	}
 
 	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)

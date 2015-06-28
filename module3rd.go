@@ -5,6 +5,8 @@ import (
 	"github.com/robfig/config"
 	"log"
 	"os"
+	"os/exec"
+	"strings"
 )
 
 type Module3rd struct {
@@ -52,6 +54,20 @@ func loadModules3rdFile(path string) ([]Module3rd, error) {
 	return modules3rd, nil
 }
 
+func provideShell(sh string) error {
+	if len(sh) == 0 {
+		return nil
+	}
+	args := strings.Split(strings.Trim(sh, " "), " ")
+	var err error
+	if len(args) == 1 {
+		err = runCommand(exec.Command(args[0]))
+	} else {
+		err = runCommand(exec.Command(args[0], args[1:]...))
+	}
+	return err
+}
+
 func provideModule3rd(m *Module3rd) {
 	if len(m.Rev) > 0 {
 		dir := saveCurrentDir()
@@ -72,4 +88,8 @@ func provideModule3rd(m *Module3rd) {
 		}
 		os.Chdir(dir)
 	}
+}
+
+func switchRev(rev string) error {
+	return runCommand(exec.Command("git", "checkout", rev))
 }

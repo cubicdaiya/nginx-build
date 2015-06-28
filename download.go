@@ -6,6 +6,10 @@ import (
 	"os/exec"
 )
 
+func extractArchive(path string) error {
+	return runCommand(exec.Command("tar", "zxvf", path))
+}
+
 func download(url string) error {
 	return runCommand(exec.Command("wget", url))
 }

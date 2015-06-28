@@ -1,23 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"os/exec"
 	"runtime"
 	"strings"
 )
-
-type StaticLibrary struct {
-	Name    string
-	Version string
-	Option  string
-}
-
-func makeStaticLibrary(builder *Builder) StaticLibrary {
-	return StaticLibrary{
-		Name:    builder.name(),
-		Version: builder.Version,
-		Option:  builder.option()}
-}
 
 func configureGenModule3rd(modules3rd []Module3rd) string {
 	result := ""
@@ -78,4 +68,52 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 	}
 
 	return configure
+}
+
+func normalizeConfigure(configure string) string {
+	configure = strings.TrimRight(configure, "\n")
+	configure = strings.TrimRight(configure, " ")
+	configure = strings.TrimRight(configure, "\\")
+	if configure != "" {
+		configure += " "
+	}
+	return configure
+}
+
+func normalizeAddModulePaths(path, rootDir string) string {
+	var result string
+	if len(path) == 0 {
+		return path
+	}
+
+	module_paths := strings.Split(path, ",")
+
+	for _, module_path := range module_paths {
+		if strings.HasPrefix(module_path, "/") {
+			result += fmt.Sprintf("--add-module=%s \\\n", module_path)
+		} else {
+			result += fmt.Sprintf("--add-module=%s/%s \\\n", rootDir, module_path)
+		}
+	}
+
+	return result
+}
+
+func configureNginx() error {
+	if VerboseEnabled {
+		return runCommand(exec.Command("sh", "./nginx-configure"))
+	}
+
+	f, err := os.Create("nginx-configure.log")
+	if err != nil {
+		return runCommand(exec.Command("sh", "./nginx-configure"))
+	}
+	defer f.Close()
+
+	cmd := exec.Command("sh", "./nginx-configure")
+	writer := bufio.NewWriter(f)
+	cmd.Stdout = writer
+	defer writer.Flush()
+
+	return cmd.Run()
 }

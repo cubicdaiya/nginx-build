@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -9,6 +13,12 @@ type Builder struct {
 	Version           string
 	DownloadURLPrefix string
 	Component         int
+}
+
+type StaticLibrary struct {
+	Name    string
+	Version string
+	Option  string
 }
 
 func (builder *Builder) name() string {
@@ -81,4 +91,30 @@ func makeBuilder(component int, version string) Builder {
 		panic("invalid component")
 	}
 	return builder
+}
+
+func makeStaticLibrary(builder *Builder) StaticLibrary {
+	return StaticLibrary{
+		Name:    builder.name(),
+		Version: builder.Version,
+		Option:  builder.option()}
+}
+
+func buildNginx(jobs int) error {
+	if VerboseEnabled {
+		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+	}
+
+	f, err := os.Create("nginx-build.log")
+	if err != nil {
+		return runCommand(exec.Command("make", "-j", strconv.Itoa(jobs)))
+	}
+	defer f.Close()
+
+	cmd := exec.Command("make", "-j", strconv.Itoa(jobs))
+	writer := bufio.NewWriter(f)
+	cmd.Stderr = writer
+	defer writer.Flush()
+
+	return cmd.Run()
 }

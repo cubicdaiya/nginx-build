@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"runtime"
 )
 
@@ -50,4 +51,11 @@ Copyright (C) 2014,2015 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 		runtime.Compiler,
 		runtime.Version())
 
+}
+
+func versionCheck(version string) {
+	if len(version) == 0 {
+		log.Println("[warn]nginx version is not set.")
+		log.Printf("[warn]nginx-build use %s.\n", NGINX_VERSION)
+	}
 }
