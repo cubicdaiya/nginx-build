@@ -205,4 +205,4 @@ $ nginx-build -d work -tengine
 
 There is the limitation for the support of [Tengine](http://tengine.taobao.org/).
 `nginx-build` does not allow to use Tengine's unique configure options directly.
-But you can use the common options of nginx and Tengine. directly.
+But you can use the common options of nginx and Tengine directly.
