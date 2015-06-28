@@ -106,7 +106,7 @@ The values of `--add-module` of `nginx-build` must be separated by ','. This fea
 
 #### Limitations
 
-And there are the limitations for the direct configuration below.
+There are the limitations for the direct configuration below.
 
  * `--with-pcre`(force PCRE library usage) is not allowed
   * `--with-pcre=DIR`(set path to PCRE library sources) is allowed
