@@ -111,7 +111,7 @@ And there are the limitations for the direct configuration below.
  * `--with-pcre`(force PCRE library usage) is not allowed
   * `--with-pcre=DIR`(set path to PCRE library sources) is allowed
  * `--with-libatomic`(force libatomic_ops library usage) is not allowed
- * `--with-libatomic=DIR`(set path to libatomic_ops library sources) is allowed
+  * `--with-libatomic=DIR`(set path to libatomic_ops library sources) is allowed
 
 The limitations above are attributed by the flag package of Go. (multiple and different types from each other are not allowed)
 
