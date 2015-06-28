@@ -230,11 +230,14 @@ func main() {
 	}
 
 	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
+
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())
 	}
+
 	log.Printf("Configure %s.....", nginxBuilder.sourcePath())
+
 	err = configureNginx()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.sourcePath())
@@ -247,6 +250,7 @@ func main() {
 	}
 
 	log.Printf("Build %s.....", nginxBuilder.sourcePath())
+
 	if *openSSLStatic {
 		// Workarounds for protecting a failure of building nginx with static-linked OpenSSL.
 
@@ -262,6 +266,7 @@ func main() {
 			os.Setenv("KERNEL_BITS", "64")
 		}
 	}
+
 	err = buildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.sourcePath())
