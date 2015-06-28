@@ -41,9 +41,10 @@ objs/bin/nginx -V
 
 ## Custom Configuration
 
+`nginx-build` provides a mechanism for customizing configuration for building nginx.
+
 ### Configuration for building nginx
 
-`nginx-build` provides a mechanism for customizing configuration for building nginx.
 Prepare a configure script like the following.
 
 ```bash
