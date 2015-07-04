@@ -34,9 +34,25 @@ brew install nginx-build
 ## Quick Start
 
 ```bash
-nginx-build -d work
-cd work/1.9.2/nginx-1.9.2
-objs/bin/nginx -V
+$ nginx-build -d work
+nginx-build: 0.4.2
+Compiler: gc go1.4.2
+2015/07/04 12:15:04 Download nginx-1.9.2.....
+2015/07/04 12:15:06 Extract nginx-1.9.2.tar.gz.....
+2015/07/04 12:15:06 Generate configure script for nginx-1.9.2.....
+2015/07/04 12:15:06 Configure nginx-1.9.2.....
+2015/07/04 12:15:13 Build nginx-1.9.2.....
+2015/07/04 12:15:17 Complete building nginx!
+
+nginx version: nginx/1.9.2
+built by clang 6.1.0 (clang-602.0.53) (based on LLVM 3.6.0svn)
+configure arguments: --with-cc-opt=-Wno-deprecated-declarations
+
+2015/07/04 12:15:17 Enter the following command for install nginx.
+
+   $ cd work/1.9.2/nginx-1.9.2
+   $ sudo make install
+$
 ```
 
 ## Custom Configuration
