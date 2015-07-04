@@ -32,13 +32,13 @@ func downloadAndExtract(builder *Builder) error {
 			url := builder.downloadURL()
 			err := download(url)
 			if err != nil {
-				return fmt.Errorf("Failed to download %s", builder.sourcePath())
+				return fmt.Errorf("Failed to download %s. %s", builder.sourcePath(), err.Error())
 			}
 		}
 		log.Printf("Extract %s.....", builder.archivePath())
 		err := extractArchive(builder.archivePath())
 		if err != nil {
-			return fmt.Errorf("Failed to extract %s", builder.archivePath())
+			return fmt.Errorf("Failed to extract %s. %s", builder.archivePath(), err.Error())
 		}
 	} else {
 		log.Printf("%s already exists.", builder.sourcePath())
