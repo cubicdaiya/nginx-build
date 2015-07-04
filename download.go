@@ -28,14 +28,18 @@ func downloadModule3rd(module3rd Module3rd) error {
 func downloadAndExtract(builder *Builder) error {
 	if !fileExists(builder.sourcePath()) {
 		if !fileExists(builder.archivePath()) {
+
 			log.Printf("Download %s.....", builder.sourcePath())
+
 			url := builder.downloadURL()
 			err := download(url)
 			if err != nil {
 				return fmt.Errorf("Failed to download %s. %s", builder.sourcePath(), err.Error())
 			}
 		}
+
 		log.Printf("Extract %s.....", builder.archivePath())
+
 		err := extractArchive(builder.archivePath())
 		if err != nil {
 			return fmt.Errorf("Failed to extract %s. %s", builder.archivePath(), err.Error())
