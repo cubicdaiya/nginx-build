@@ -33,7 +33,7 @@ brew install nginx-build
 
 ## Quick Start
 
-```bash
+```console
 $ nginx-build -d work
 nginx-build: 0.4.2
 Compiler: gc go1.4.2
