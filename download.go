@@ -73,8 +73,7 @@ func downloadAndExtractModule3rdParallel(m Module3rd, done chan bool) {
 		}
 		err := downloadModule3rd(m)
 		if err != nil {
-			log.Println(err.Error())
-			log.Fatalf("Failed to download %s", m.Name)
+			log.Fatalf("Failed to download %s. %s", m.Name, err.Error())
 		}
 	} else if !fileExists(m.Url) {
 		log.Fatalf("no such directory:%s", m.Url)
