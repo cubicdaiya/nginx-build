@@ -65,6 +65,15 @@ func (suite *BuilderTestSuite) TestArchivePath() {
 	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].archivePath(), fmt.Sprintf("tengine-%s.tar.gz", TENGINE_VERSION))
 }
 
+func (suite *BuilderTestSuite) TestLogPath() {
+	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].logPath(), fmt.Sprintf("nginx-%s.log", NGINX_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].logPath(), fmt.Sprintf("pcre-%s.log", PCRE_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].logPath(), fmt.Sprintf("openssl-%s.log", OPENSSL_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].logPath(), fmt.Sprintf("zlib-%s.log", ZLIB_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].logPath(), fmt.Sprintf("ngx_openresty-%s.log", OPENRESTY_VERSION))
+	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].logPath(), fmt.Sprintf("tengine-%s.log", TENGINE_VERSION))
+}
+
 func TestBuilderTestSuite(t *testing.T) {
 	suite.Run(t, new(BuilderTestSuite))
 }

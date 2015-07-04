@@ -57,6 +57,10 @@ func (builder *Builder) archivePath() string {
 	return fmt.Sprintf("%s.tar.gz", builder.sourcePath())
 }
 
+func (builder *Builder) logPath() string {
+	return fmt.Sprintf("%s-%s.log", builder.name(), builder.Version)
+}
+
 func (builder *Builder) isIncludeWithOption(nginxConfigure string) bool {
 	if strings.Contains(nginxConfigure, builder.option()+"=") {
 		return true
