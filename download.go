@@ -1,9 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
-	"bufio"
 	"os"
 )
 
