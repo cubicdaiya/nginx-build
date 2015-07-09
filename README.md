@@ -171,7 +171,7 @@ $ nginx-build -d work -openssl
 `-opensslversion` is an option to set a version of OpenSSL.
 
 ```bash
-$ nginx-build -d work -openssl -opensslversion=1.0.2c
+$ nginx-build -d work -openssl -opensslversion=1.0.2d
 ```
 
 ### Embedding 3rd-party modules
