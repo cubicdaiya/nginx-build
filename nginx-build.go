@@ -109,13 +109,13 @@ func main() {
 
 	nginxConfigure, err := fileGetContents(*nginxConfigurePath)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 	nginxConfigure = normalizeConfigure(nginxConfigure)
 
 	modules3rd, err := loadModules3rdFile(*modulesConfPath)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 
 	if len(*workParentDir) == 0 {
@@ -140,7 +140,7 @@ func main() {
 	if *clear {
 		err := clearWorkDir(workDir)
 		if err != nil {
-			log.Fatal(err.Error())
+			log.Fatal(err)
 		}
 	}
 
@@ -155,7 +155,7 @@ func main() {
 	// cd workDir
 	err = os.Chdir(workDir)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(err)
 	}
 
 	if *pcreStatic {
