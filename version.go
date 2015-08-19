@@ -35,8 +35,26 @@ func versionsGen() []string {
 	return versions
 }
 
+func versionsGenOpenResty() []string {
+	var versions []string
+
+	versions = append(versions, fmt.Sprintf("openresty-%s", OPENRESTY_VERSION))
+
+	return versions
+}
+
+func versionsGenTengine() []string {
+	var versions []string
+
+	versions = append(versions, fmt.Sprintf("tengine-%s", TENGINE_VERSION))
+
+	return versions
+}
+
 func printNginxVersions() {
 	versions := versionsGen()
+	versions = append(versions, versionsGenOpenResty()...)
+	versions = append(versions, versionsGenTengine()...)
 	for _, v := range versions {
 		fmt.Println(v)
 	}
