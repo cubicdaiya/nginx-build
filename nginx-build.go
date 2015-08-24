@@ -131,11 +131,11 @@ func main() {
 
 	var workDir string
 	if *openResty {
-		workDir = *workParentDir + "/" + *openRestyVersion
+		workDir = *workParentDir + "/openresty/" + *openRestyVersion
 	} else if *tengine {
-		workDir = *workParentDir + "/" + *tengineVersion
+		workDir = *workParentDir + "/tengine/" + *tengineVersion
 	} else {
-		workDir = *workParentDir + "/" + *version
+		workDir = *workParentDir + "/nginx/" + *version
 	}
 	if *clear {
 		err := clearWorkDir(workDir)
@@ -145,7 +145,7 @@ func main() {
 	}
 
 	if !fileExists(workDir) {
-		err := os.Mkdir(workDir, 0755)
+		err := os.MkdirAll(workDir, 0755)
 		if err != nil {
 			log.Fatalf("Failed to create working directory(%s) does not exist.", workDir)
 		}
