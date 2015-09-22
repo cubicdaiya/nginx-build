@@ -29,6 +29,7 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	argsBool["with-ipv6"] = ConfigureOptionBool{Name: "--with-ipv6", Desc: "enable IPv6 support"}
 	argsBool["with-http_ssl_module"] = ConfigureOptionBool{Name: "--with-http_ssl_module", Desc: "enable ngx_http_ssl_module"}
 	argsBool["with-http_spdy_module"] = ConfigureOptionBool{Name: "--with-http_spdy_module", Desc: "enable ngx_http_spdy_module"}
+	argsBool["with-http_v2_module"] = ConfigureOptionBool{Name: "--with-http_v2_module", Desc: "enable ngx_http_v2_module"}
 	argsBool["with-http_realip_module"] = ConfigureOptionBool{Name: "--with-http_realip_module", Desc: "enable ngx_http_realip_module"}
 	argsBool["with-http_addition_module"] = ConfigureOptionBool{Name: "--with-http_addition_module", Desc: "enable ngx_http_addition_module"}
 	argsBool["with-http_xslt_module"] = ConfigureOptionBool{Name: "--with-http_xslt_module", Desc: "enable ngx_http_xslt_module"}
