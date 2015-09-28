@@ -42,7 +42,9 @@ func downloadModule3rd(module3rd Module3rd, logName string) error {
 
 	switch form {
 	case "git":
-		args := []string{"git", "clone", url}
+		fallthrough
+	case "hg":
+		args := []string{form, "clone", url}
 		if VerboseEnabled {
 			return runCommand(args)
 		}

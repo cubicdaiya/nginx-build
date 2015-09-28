@@ -9,11 +9,12 @@ import (
 )
 
 type Module3rd struct {
-	Name   string
-	Form   string
-	Url    string
-	Rev    string
-	Shprov string
+	Name      string
+	Form      string
+	Url       string
+	Rev       string
+	Shprov    string
+	ShprovDir string
 }
 
 func loadModule3rd(name string, c *config.Config) Module3rd {
@@ -23,6 +24,7 @@ func loadModule3rd(name string, c *config.Config) Module3rd {
 	module3rd.Url, _ = c.String(name, "url")
 	module3rd.Rev, _ = c.String(name, "rev")
 	module3rd.Shprov, _ = c.String(name, "shprov")
+	module3rd.ShprovDir, _ = c.String(name, "shprovdir")
 	return module3rd
 }
 
@@ -57,21 +59,24 @@ func provideShell(sh string) error {
 	if len(sh) == 0 {
 		return nil
 	}
-	args := strings.Split(strings.Trim(sh, " "), " ")
-	var err error
-	if len(args) == 1 {
-		err = runCommand(args)
-	} else {
-		err = runCommand(args)
+
+	cmds := strings.Split(strings.Trim(sh, " "), "&&")
+
+	for _, cmd := range cmds {
+		args := strings.Split(strings.Trim(cmd, " "), " ")
+		if err := runCommand(args); err != nil {
+			return err
+		}
 	}
-	return err
+
+	return nil
 }
 
 func provideModule3rd(m *Module3rd) {
 	if len(m.Rev) > 0 {
 		dir := saveCurrentDir()
 		os.Chdir(m.Name)
-		err := switchRev(m.Rev)
+		err := switchRev(m.Form, m.Rev)
 		if err != nil {
 			log.Println(err.Error())
 		}
@@ -80,7 +85,11 @@ func provideModule3rd(m *Module3rd) {
 
 	if len(m.Shprov) > 0 {
 		dir := saveCurrentDir()
-		os.Chdir(m.Name)
+		if len(m.ShprovDir) > 0 {
+			os.Chdir(m.Name + "/" + m.ShprovDir)
+		} else {
+			os.Chdir(m.Name)
+		}
 		err := provideShell(m.Shprov)
 		if err != nil {
 			log.Println(err.Error())
@@ -89,6 +98,17 @@ func provideModule3rd(m *Module3rd) {
 	}
 }
 
-func switchRev(rev string) error {
-	return runCommand([]string{"git", "checkout", rev})
+func switchRev(form, rev string) error {
+	var err error
+
+	switch form {
+	case "git":
+		err = runCommand([]string{"git", "checkout", rev})
+	case "hg":
+		err = runCommand([]string{"hg", "checkout", rev})
+	default:
+		err = fmt.Errorf("form=%s is not supported", form)
+	}
+
+	return err
 }
