@@ -7,7 +7,7 @@
 ## Requirements
 
  * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
- * [git](http://git-scm.com/) for downloading 3rd party modules
+ * [git](https://git-scm.com/) for downloading 3rd party modules
 
 ## Build Support
 
