@@ -7,13 +7,13 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"sync"
 	"syscall"
 )
 
 func main() {
 	var dependencies []StaticLibrary
-	parallels := 0
-	done := make(chan bool)
+	wg := new(sync.WaitGroup)
 
 	// set parallel numbers
 	runtime.GOMAXPROCS(runtime.NumCPU())
@@ -159,35 +159,33 @@ func main() {
 	}
 
 	if *pcreStatic {
-		parallels++
-		go downloadAndExtractParallel(&pcreBuilder, done)
+		wg.Add(1)
+		go downloadAndExtractParallel(&pcreBuilder, wg)
 	}
 
 	if *openSSLStatic {
-		parallels++
-		go downloadAndExtractParallel(&openSSLBuilder, done)
+		wg.Add(1)
+		go downloadAndExtractParallel(&openSSLBuilder, wg)
 	}
 
 	if *zlibStatic {
-		parallels++
-		go downloadAndExtractParallel(&zlibBuilder, done)
+		wg.Add(1)
+		go downloadAndExtractParallel(&zlibBuilder, wg)
 	}
 
-	parallels++
-	go downloadAndExtractParallel(&nginxBuilder, done)
+	wg.Add(1)
+	go downloadAndExtractParallel(&nginxBuilder, wg)
 
 	if len(modules3rd) > 0 {
-		parallels += len(modules3rd)
+		wg.Add(len(modules3rd))
 		for _, m := range modules3rd {
-			go downloadAndExtractModule3rdParallel(m, done)
+			go downloadAndExtractModule3rdParallel(m, wg)
 		}
 
 	}
 
 	// wait until all downloading processes by goroutine finish
-	for i := 0; i < parallels; i++ {
-		<-done
-	}
+	wg.Wait()
 
 	if len(modules3rd) > 0 {
 		for _, m := range modules3rd {

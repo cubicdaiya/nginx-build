@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 )
 
 func extractArchive(path string) error {
@@ -97,18 +98,18 @@ func downloadAndExtract(builder *Builder) error {
 	return nil
 }
 
-func downloadAndExtractParallel(builder *Builder, done chan bool) {
+func downloadAndExtractParallel(builder *Builder, wg *sync.WaitGroup) {
 	err := downloadAndExtract(builder)
 	if err != nil {
 		printFatalMsg(err, builder.logPath())
 	}
-	done <- true
+	wg.Done()
 }
 
-func downloadAndExtractModule3rdParallel(m Module3rd, done chan bool) {
+func downloadAndExtractModule3rdParallel(m Module3rd, wg *sync.WaitGroup) {
 	if fileExists(m.Name) {
 		log.Printf("%s already exists.", m.Name)
-		done <- true
+		wg.Done()
 		return
 	}
 
@@ -129,5 +130,5 @@ func downloadAndExtractModule3rdParallel(m Module3rd, done chan bool) {
 		log.Fatalf("no such directory:%s", m.Url)
 	}
 
-	done <- true
+	wg.Done()
 }
