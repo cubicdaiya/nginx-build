@@ -1,6 +1,6 @@
 package main
 
-const NGINX_BUILD_VERSION = "0.6.1"
+const NGINX_BUILD_VERSION = "0.6.2"
 
 // nginx
 const (
