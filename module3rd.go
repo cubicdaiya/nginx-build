@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/robfig/config"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/robfig/config"
 )
 
 type Module3rd struct {

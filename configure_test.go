@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
-	"os"
+	"log"
 	"runtime"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type ConfiguregenTestSuite struct {
@@ -25,8 +26,7 @@ func (suite *ConfiguregenTestSuite) SetupTest() {
 	modules3rdConf := "./config/modules.cfg.example"
 	modules3rd, err := loadModules3rdFile(modules3rdConf)
 	if err != nil {
-		fmt.Printf("Failed to load %s\n", modules3rdConf)
-		os.Exit(1)
+		log.Fatalf("Failed to load %s\n", modules3rdConf)
 	}
 	suite.modules3rd = modules3rd
 }

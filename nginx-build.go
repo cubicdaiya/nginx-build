@@ -74,12 +74,12 @@ func main() {
 
 	if *versionPrint {
 		printNginxBuildVersion()
-		os.Exit(0)
+		return
 	}
 
 	if *versionsPrint {
 		printNginxVersions()
-		os.Exit(0)
+		return
 	}
 
 	printFirstMsg()
