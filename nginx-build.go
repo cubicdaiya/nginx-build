@@ -15,9 +15,6 @@ func main() {
 	var dependencies []StaticLibrary
 	wg := new(sync.WaitGroup)
 
-	// set parallel numbers
-	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	// Parse flags
 	version := flag.String("v", NGINX_VERSION, "nginx version")
 	nginxConfigurePath := flag.String("c", "", "configuration file for building nginx")
