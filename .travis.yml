@@ -1,7 +1,6 @@
 language: go
 go:
-  - 1.4.2
-  - 1.5.1
+  - 1.5.2
   - tip
 before_install:
   - go get github.com/mattn/gom
