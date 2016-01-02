@@ -16,26 +16,27 @@ func main() {
 	wg := new(sync.WaitGroup)
 
 	// Parse flags
-	version := flag.String("v", NGINX_VERSION, "nginx version")
-	nginxConfigurePath := flag.String("c", "", "configuration file for building nginx")
-	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
-	workParentDir := flag.String("d", "", "working directory")
-	jobs := flag.Int("j", runtime.NumCPU(), "jobs to build nginx")
-	verbose := flag.Bool("verbose", false, "verbose mode")
-	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
-	pcreVersion := flag.String("pcreversion", PCRE_VERSION, "PCRE version")
-	openSSLStatic := flag.Bool("openssl", false, "embedded OpenSSL statically")
-	openSSLVersion := flag.String("opensslversion", OPENSSL_VERSION, "OpenSSL version")
-	zlibStatic := flag.Bool("zlib", false, "embedded zlib statically")
-	zlibVersion := flag.String("zlibversion", ZLIB_VERSION, "zlib version")
-	clear := flag.Bool("clear", false, "remove entries in working directory")
-	versionPrint := flag.Bool("version", false, "print nginx-build versions")
-	versionsPrint := flag.Bool("versions", false, "print nginx versions")
-	openResty := flag.Bool("openresty", false, "download openresty instead of nginx")
-	tengine := flag.Bool("tengine", false, "download tengine instead of nginx")
-	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
-	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
-	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
+	flags := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+	version := flags.String("v", NGINX_VERSION, "nginx version")
+	nginxConfigurePath := flags.String("c", "", "configuration file for building nginx")
+	modulesConfPath := flags.String("m", "", "configuration file for 3rd party modules")
+	workParentDir := flags.String("d", "", "working directory")
+	jobs := flags.Int("j", runtime.NumCPU(), "jobs to build nginx")
+	verbose := flags.Bool("verbose", false, "verbose mode")
+	pcreStatic := flags.Bool("pcre", false, "embedded PCRE statically")
+	pcreVersion := flags.String("pcreversion", PCRE_VERSION, "PCRE version")
+	openSSLStatic := flags.Bool("openssl", false, "embedded OpenSSL statically")
+	openSSLVersion := flags.String("opensslversion", OPENSSL_VERSION, "OpenSSL version")
+	zlibStatic := flags.Bool("zlib", false, "embedded zlib statically")
+	zlibVersion := flags.String("zlibversion", ZLIB_VERSION, "zlib version")
+	clear := flags.Bool("clear", false, "remove entries in working directory")
+	versionPrint := flags.Bool("version", false, "print nginx-build versions")
+	versionsPrint := flags.Bool("versions", false, "print nginx versions")
+	openResty := flags.Bool("openresty", false, "download openresty instead of nginx")
+	tengine := flags.Bool("tengine", false, "download tengine instead of nginx")
+	openRestyVersion := flags.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
+	tengineVersion := flags.String("tengineversion", TENGINE_VERSION, "tengine version")
+	configureOnly := flags.Bool("configureonly", false, "configuring nginx only not building")
 
 	var configureOptions ConfigureOptions
 	argsString := makeArgsString()
@@ -44,19 +45,22 @@ func main() {
 
 	for k, v := range argsString {
 		if k == "add-module" {
-			flag.Var(&multiflag, k, v.Desc)
+			flags.Var(&multiflag, k, v.Desc)
 		} else {
-			v.Value = flag.String(k, "", v.Desc)
+			v.Value = flags.String(k, "", v.Desc)
 			argsString[k] = v
 		}
 	}
 
 	for k, v := range argsBool {
-		v.Enabled = flag.Bool(k, false, v.Desc)
+		v.Enabled = flags.Bool(k, false, v.Desc)
 		argsBool[k] = v
 	}
 
-	flag.Parse()
+	flags.SetOutput(os.Stdout)
+	if err := flags.Parse(os.Args[1:]); err != nil {
+		log.Fatal(err)
+	}
 
 	// Allow multiple flags for `--add-module`
 	{
