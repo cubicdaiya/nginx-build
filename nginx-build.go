@@ -212,16 +212,16 @@ func main() {
 	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
 
 	if *pcreStatic && pcreBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Printf(pcreBuilder.warnMsgWithLibrary())
+		log.Println(pcreBuilder.warnMsgWithLibrary())
 	}
 
 	if *openSSLStatic && openSSLBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Printf(openSSLBuilder.warnMsgWithLibrary())
+		log.Println(openSSLBuilder.warnMsgWithLibrary())
 
 	}
 
 	if *zlibStatic && zlibBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Printf(zlibBuilder.warnMsgWithLibrary())
+		log.Println(zlibBuilder.warnMsgWithLibrary())
 	}
 
 	if strings.Contains(nginxConfigure, "--add-module=") {
