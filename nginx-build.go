@@ -59,7 +59,6 @@ func main() {
 	flag.CommandLine.SetOutput(os.Stdout)
 	flag.Parse()
 
-
 	// Allow multiple flags for `--add-module`
 	{
 		tmp := argsString["add-module"]
