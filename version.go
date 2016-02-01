@@ -19,7 +19,7 @@ func versionsSubmajorGen(major, submajor, minor int) []string {
 func versionsGen() []string {
 	var versions []string
 
-	versionsMinor0 := []int{45, 6, 61, 14, 38, 39, 69, 55, 7}  // 0.x.x
+	versionsMinor0 := []int{45, 6, 61, 14, 38, 39, 69, 55, 7}   // 0.x.x
 	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 3, 12, 1, 10} // 1.x.x
 
 	// 0.1.0 ~ 0.9.7
