@@ -1,4 +1,4 @@
-VERSION=0.6.8
+VERSION=0.6.9
 
 nginx-build: *.go
 	gom build -o nginx-build
