@@ -28,8 +28,8 @@ const (
 
 // openResty
 const (
-	OPENRESTY_VERSION             = "1.9.7.2"
-	OPENRESTY_DOWNLOAD_URL_PREFIX = "http://openresty.org/download"
+	OPENRESTY_VERSION             = "1.9.7.3"
+	OPENRESTY_DOWNLOAD_URL_PREFIX = "https://openresty.org/download"
 )
 
 // tengine
