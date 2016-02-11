@@ -102,6 +102,7 @@ func makeArgsString() map[string]ConfigureOptionValue {
 
 	argsString["prefix"] = ConfigureOptionValue{Name: "--prefix", Desc: "set installation prefix"}
 	argsString["sbin-path"] = ConfigureOptionValue{Name: "--sbin-path", Desc: "set nginx binary pathname"}
+	argsString["modules-path"] = ConfigureOptionValue{Name: "--modules-path", Desc: "set modules path"}
 	argsString["conf-path"] = ConfigureOptionValue{Name: "--conf-path", Desc: "set ginx.conf pathname"}
 	argsString["error-log-path"] = ConfigureOptionValue{Name: "--error-log-path", Desc: "set error log pathname"}
 	argsString["pid-path"] = ConfigureOptionValue{Name: "--pid-path", Desc: "set nginx.pid pathname"}
@@ -118,7 +119,8 @@ func makeArgsString() map[string]ConfigureOptionValue {
 	argsString["http-fastcgi-temp-path"] = ConfigureOptionValue{Name: "--http-fastcgi-temp-path", Desc: "set path to store http fastcgi temporary files"}
 	argsString["http-uwsgi-temp-path"] = ConfigureOptionValue{Name: "--http-uwsgi-temp-path", Desc: "set path to store http uwsgi temporary files"}
 	argsString["http-scgi-temp-path"] = ConfigureOptionValue{Name: "--http-scgi-temp-path", Desc: "set path to store http scgi temporary files"}
-	argsString["add-module"] = ConfigureOptionValue{Name: "--add-module", Desc: "enable an external module"}
+	argsString["add-module"] = ConfigureOptionValue{Name: "--add-module", Desc: "enable external module"}
+	argsString["add-dynamic-module"] = ConfigureOptionValue{Name: "--add-dynamic module", Desc: "enable dynamic external module"}
 	argsString["with-cc"] = ConfigureOptionValue{Name: "--with-cc", Desc: "set C compiler pathname"}
 	argsString["with-cpp"] = ConfigureOptionValue{Name: "--with-cpp", Desc: "set c preprocessor pathname"}
 	argsString["with-cc-opt"] = ConfigureOptionValue{Name: "--with-cc-opt", Desc: "set additional C compiler options"}
