@@ -45,6 +45,8 @@ func main() {
 	for k, v := range argsString {
 		if k == "add-module" {
 			flag.Var(&multiflag, k, v.Desc)
+		} else if k == "add-dynamic-module" {
+			flag.Var(&multiflag, k, v.Desc)
 		} else {
 			v.Value = flag.String(k, "", v.Desc)
 			argsString[k] = v
@@ -65,6 +67,14 @@ func main() {
 		tmp_ := multiflag.String()
 		tmp.Value = &tmp_
 		argsString["add-module"] = tmp
+	}
+
+	// Allow multiple flags for `--add-dynamic-module`
+	{
+		tmp := argsString["add-dynamic-module"]
+		tmp_ := multiflag.String()
+		tmp.Value = &tmp_
+		argsString["add-dynamic-module"] = tmp
 	}
 
 	configureOptions.Values = argsString
