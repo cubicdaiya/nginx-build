@@ -100,26 +100,24 @@ $ nginx-build -d work \
 --with-pcre-jit \
 ```
 
-#### About `--add-module`
+#### About `--add-module` and `--add-dynamic-module`
 
-`nginx-build` allows to use multiple `--add-module` from `v0.4.2`.
-
-```bash
-$ nginx-build \
--d work \
---add-module=../nginx/ngx_small_light \
---add-module=../nginx/ngx_dynamic_upstream
-```
-
-On the other hand, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` like the following, too.
+`nginx-build` allows to use multiple `--add-module` and `--add-dynamic-module`.
 
 ```bash
 $ nginx-build \
 -d work \
---add-module=../nginx/ngx_small_light,../nginx/ngx_dynamic_upstream
+--add-module=/path/to/ngx_dynamic_upstream \
+--add-dynamic-module=/path/to/ngx_small_light
 ```
 
-The values of `--add-module` of `nginx-build` must be separated by ','. This feature is introduced in `v0.4.0`.
+On the other hand, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` and `--add-dynamic-module` like the following, too.
+
+```bash
+$ nginx-build \
+-d work \
+--add-module=/path/to/ngx_small_light,/path/to/ngx_dynamic_upstream
+```
 
 #### Limitations
 
@@ -197,6 +195,17 @@ Give this file to `nginx-build` with `-m`.
 
 ```bash
 $ nginx-build -d work -m modules.cfg.example
+```
+
+#### Embedding 3rd-paty module dynamically
+
+Give `dynamic=true`.
+
+```ini
+[ngx_dynamic_upstream]
+form=git
+url=https://github.com/cubicdaiya/ngx_dynamic_upstream.git
+dynamic=true
 ```
 
 ## Build OpenResty
