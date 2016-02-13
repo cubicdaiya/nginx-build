@@ -132,7 +132,7 @@ There are the limitations for the direct configuration below.
  * `--with-xxx=dynamic` is not allowed (e.g. `--with-stream=dynamic`)
 
 The limitations above are attributed by the flag package of Go. (multiple and different types from each other are not allowed)
-By the way, the options above are allowed in a prepared configure script, of course.
+By the way, the options above are allowed in [a prepared configure script](https://github.com/cubicdaiya/nginx-build#configuration-for-building-nginx), of course.
 
 ### Embedding zlib statically
 
