@@ -157,7 +157,7 @@ $ nginx-build -d work -pcre
 `-pcreversion` is an option to set a version of PCRE.
 
 ```bash
-$ nginx-build -d work -pcre -pcreversion=8.37
+$ nginx-build -d work -pcre -pcreversion=8.38
 ```
 
 ### Embedding OpenSSL statically
@@ -171,7 +171,7 @@ $ nginx-build -d work -openssl
 `-opensslversion` is an option to set a version of OpenSSL.
 
 ```bash
-$ nginx-build -d work -openssl -opensslversion=1.0.2d
+$ nginx-build -d work -openssl -opensslversion=1.0.2f
 ```
 
 ### Embedding 3rd-party modules
