@@ -197,7 +197,7 @@ Give this file to `nginx-build` with `-m`.
 $ nginx-build -d work -m modules.cfg.example
 ```
 
-#### Embedding 3rd-paty module dynamically
+#### Embedding 3rd-party module dynamically
 
 Give `dynamic=true`.
 
