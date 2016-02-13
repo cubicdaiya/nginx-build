@@ -11,10 +11,14 @@ import (
 func configureGenModule3rd(modules3rd []Module3rd) string {
 	result := ""
 	for _, m := range modules3rd {
+		opt := "--add-module"
+		if m.Dynamic {
+			opt = "--add-dynamic-module"
+		}
 		if m.Form == "local" {
-			result += fmt.Sprintf("--add-module=%s \\\n", m.Url)
+			result += fmt.Sprintf("%s=%s \\\n", opt, m.Url)
 		} else {
-			result += fmt.Sprintf("--add-module=../%s \\\n", m.Name)
+			result += fmt.Sprintf("%s=../%s \\\n", opt, m.Name)
 		}
 	}
 	return result
@@ -49,7 +53,9 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 	for _, option := range options.Values {
 		if *option.Value != "" {
 			if option.Name == "--add-module" {
-				configure += normalizeAddModulePaths(*option.Value, rootDir)
+				configure += normalizeAddModulePaths(*option.Value, rootDir, false)
+			} else if option.Name == "--add-dynamic-module" {
+				configure += normalizeAddModulePaths(*option.Value, rootDir, true)
 			} else {
 				if strings.Contains(*option.Value, " ") {
 					configure += option.Name + "=" + "'" + *option.Value + "'" + " \\\n"
@@ -79,7 +85,7 @@ func normalizeConfigure(configure string) string {
 	return configure
 }
 
-func normalizeAddModulePaths(path, rootDir string) string {
+func normalizeAddModulePaths(path, rootDir string, dynamic bool) string {
 	var result string
 	if len(path) == 0 {
 		return path
@@ -87,11 +93,16 @@ func normalizeAddModulePaths(path, rootDir string) string {
 
 	module_paths := strings.Split(path, ",")
 
+	opt := "--add-module"
+	if dynamic {
+		opt = "--add-dynamic-module"
+	}
+
 	for _, module_path := range module_paths {
 		if strings.HasPrefix(module_path, "/") {
-			result += fmt.Sprintf("--add-module=%s \\\n", module_path)
+			result += fmt.Sprintf("%s=%s \\\n", opt, module_path)
 		} else {
-			result += fmt.Sprintf("--add-module=%s/%s \\\n", rootDir, module_path)
+			result += fmt.Sprintf("%s=%s/%s \\\n", opt, rootDir, module_path)
 		}
 	}
 

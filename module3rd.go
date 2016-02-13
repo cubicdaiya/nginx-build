@@ -14,6 +14,7 @@ type Module3rd struct {
 	Form      string
 	Url       string
 	Rev       string
+	Dynamic   bool
 	Shprov    string
 	ShprovDir string
 }
@@ -24,6 +25,7 @@ func loadModule3rd(name string, c *config.Config) Module3rd {
 	module3rd.Form, _ = c.String(name, "form")
 	module3rd.Url, _ = c.String(name, "url")
 	module3rd.Rev, _ = c.String(name, "rev")
+	module3rd.Dynamic, _ = c.Bool(name, "dynamic")
 	module3rd.Shprov, _ = c.String(name, "shprov")
 	module3rd.ShprovDir, _ = c.String(name, "shprovdir")
 	return module3rd
