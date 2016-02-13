@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"strings"
 	"sync"
 	"syscall"
 )
@@ -229,10 +228,6 @@ func main() {
 
 	if *zlibStatic && zlibBuilder.isIncludeWithOption(nginxConfigure) {
 		log.Println(zlibBuilder.warnMsgWithLibrary())
-	}
-
-	if strings.Contains(nginxConfigure, "--add-module=") {
-		log.Println("[warn]Using '--add-module' is discouraged. Instead give ini-file with '-m' to 'nginx-build'")
 	}
 
 	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
