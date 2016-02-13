@@ -208,6 +208,26 @@ url=https://github.com/cubicdaiya/ngx_dynamic_upstream.git
 dynamic=true
 ```
 
+#### Provision for 3rd-party module
+
+There are some 3rd-party modules expected provision. `nginx-build` provides the options such as `shprov` and `shprovdir` for this problem.
+There is the example configuration below.
+
+```ini
+[njs/nginx]
+form=hg
+url=http://hg.nginx.org/njs
+shprov=./configure && make
+shprovdir=..
+
+[ngx_small_light]
+form=git
+url=https://github.com/cubicdaiya/ngx_small_light
+rev=v0.6.15
+dynamic=true
+shprov=./setup
+```
+
 ## Build OpenResty
 
 `nginx-build` supports to build [OpenResty](http://www.openresty.com/).
