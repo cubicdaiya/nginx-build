@@ -4,7 +4,7 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
-![gif](https://raw.githubusercontent.com/cubicdaiya/nginx-build/master/img/nginx-build.gif)
+![gif](https://raw.githubusercontent.com/cubicdaiya/nginx-build/master/images/nginx-build.gif)
 
 ## Requirements
 
