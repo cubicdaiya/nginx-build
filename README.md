@@ -4,6 +4,8 @@
 
 `nginx-build` - provides a command to build nginx seamlessly.
 
+![gif](https://raw.githubusercontent.com/cubicdaiya/nginx-build/master/img/nginx-build.gif)
+
 ## Requirements
 
  * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
