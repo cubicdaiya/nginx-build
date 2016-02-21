@@ -95,7 +95,7 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	argsBool["with-debug"] = ConfigureOptionBool{Name: "--with-debug", Desc: "enable debug logging"}
 
 	//
-	// TODO: The options below is not suitable for flag package.
+	// TODO: The options below are not suitable for flag package.
 	//
 	// argsBool["with-http_xslt_module=dynamic"] = ConfigureOptionBool{Name: "--with-http_xslt_module=dynamic", Desc: "enable dynamic ngx_http_xslt_module"}
 	// argsBool["with-http_image_filter_module=dynamic"] = ConfigureOptionBool{Name: "--with-http_image_filter_module=dynamic", Desc: "enable dynamic ngx_http_image_filter_module"}
