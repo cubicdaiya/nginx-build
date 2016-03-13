@@ -357,7 +357,7 @@ func makeArgsString() map[string]ConfigureOptionValue {
 	}
 	argsString["conf-path"] = ConfigureOptionValue{
 		Name: "--conf-path",
-		Desc: "set ginx.conf pathname",
+		Desc: "set nginx.conf pathname",
 	}
 	argsString["error-log-path"] = ConfigureOptionValue{
 		Name: "--error-log-path",
