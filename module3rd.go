@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -75,13 +74,13 @@ func provideShell(sh string) error {
 	return nil
 }
 
-func provideModule3rd(m *Module3rd) {
+func provideModule3rd(m *Module3rd) error {
 	if len(m.Rev) > 0 {
 		dir := saveCurrentDir()
 		os.Chdir(m.Name)
 		err := switchRev(m.Form, m.Rev)
 		if err != nil {
-			log.Println(err.Error())
+			return fmt.Errorf("%s (%s checkout %s): %s", m.Name, m.Form, m.Rev, err.Error())
 		}
 		os.Chdir(dir)
 	}
@@ -95,10 +94,12 @@ func provideModule3rd(m *Module3rd) {
 		}
 		err := provideShell(m.Shprov)
 		if err != nil {
-			log.Println(err.Error())
+			return fmt.Errorf("%s's shprov(%s): %s", m.Name, m.Shprov, err.Error())
 		}
 		os.Chdir(dir)
 	}
+
+	return nil
 }
 
 func switchRev(form, rev string) error {

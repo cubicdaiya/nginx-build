@@ -196,7 +196,9 @@ func main() {
 
 	if len(modules3rd) > 0 {
 		for _, m := range modules3rd {
-			provideModule3rd(&m)
+			if err := provideModule3rd(&m); err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 
