@@ -49,10 +49,6 @@ func saveCurrentDir() string {
 	return prevDir
 }
 
-func restoreCurrentDir(prevDir string) {
-	os.Chdir(prevDir)
-}
-
 func clearWorkDir(workDir string) error {
 	err := os.RemoveAll(workDir)
 	if err != nil {
