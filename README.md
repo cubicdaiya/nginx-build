@@ -1,7 +1,5 @@
 # nginx-build
 
-[![Build Status](https://drone.io/github.com/cubicdaiya/nginx-build/status.png)](https://drone.io/github.com/cubicdaiya/nginx-build/latest)
-
 `nginx-build` - provides a command to build nginx seamlessly.
 
 ![gif](https://raw.githubusercontent.com/cubicdaiya/nginx-build/master/images/nginx-build.gif)
