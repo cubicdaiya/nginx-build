@@ -235,10 +235,10 @@ shprov=./setup
 `nginx-build` supports to build [OpenResty](http://www.openresty.com/).
 
 ```bash
-$ nginx-build -d work -openresty -pcre
+$ nginx-build -d work -openresty -pcre -openssl
 ```
 
-If you don't install PCRE on your system, it is required to add the option `-pcre`.
+If you don't install PCRE and OpenSSL on your system, it is required to add the option `-pcre` and `-openssl`.
 
 
 And there is the limitation for the support of OpenResty.
