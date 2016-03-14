@@ -248,8 +248,10 @@ But you can use the common options of nginx and OpenResty directly.
 `nginx-build` supports to build [Tengine](http://tengine.taobao.org/).
 
 ```bash
-$ nginx-build -d work -tengine
+$ nginx-build -d work -tengine -openssl
 ```
+
+If you don't install OpenSSL on your system, it is required to add the option `-openssl`.
 
 There is the limitation for the support of [Tengine](http://tengine.taobao.org/).
 `nginx-build` does not allow to use Tengine's unique configure options directly.
