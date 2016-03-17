@@ -28,7 +28,7 @@ const (
 
 // openResty
 const (
-	OPENRESTY_VERSION             = "1.9.7.3"
+	OPENRESTY_VERSION             = "1.9.7.4"
 	OPENRESTY_DOWNLOAD_URL_PREFIX = "https://openresty.org/download"
 )
 
