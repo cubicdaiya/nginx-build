@@ -36,16 +36,19 @@ func main() {
 	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
 	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
 
-	var configureOptions ConfigureOptions
 	argsString := makeArgsString()
 	argsBool := makeArgsBool()
-	var multiflag StringFlag
+	var (
+		configureOptions ConfigureOptions
+		multiflag StringFlag
+		multiflagDynamic StringFlag
+	)
 
 	for k, v := range argsString {
 		if k == "add-module" {
 			flag.Var(&multiflag, k, v.Desc)
 		} else if k == "add-dynamic-module" {
-			flag.Var(&multiflag, k, v.Desc)
+			flag.Var(&multiflagDynamic, k, v.Desc)
 		} else {
 			v.Value = flag.String(k, "", v.Desc)
 			argsString[k] = v
@@ -71,7 +74,7 @@ func main() {
 	// Allow multiple flags for `--add-dynamic-module`
 	{
 		tmp := argsString["add-dynamic-module"]
-		tmp_ := multiflag.String()
+		tmp_ := multiflagDynamic.String()
 		tmp.Value = &tmp_
 		argsString["add-dynamic-module"] = tmp
 	}

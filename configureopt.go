@@ -424,7 +424,7 @@ func makeArgsString() map[string]ConfigureOptionValue {
 		Desc: "enable external module",
 	}
 	argsString["add-dynamic-module"] = ConfigureOptionValue{
-		Name: "--add-dynamic module",
+		Name: "--add-dynamic-module",
 		Desc: "enable dynamic external module",
 	}
 	argsString["with-cc"] = ConfigureOptionValue{
