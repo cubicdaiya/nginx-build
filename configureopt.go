@@ -262,7 +262,7 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	}
 	argsBool["with-stream"] = ConfigureOptionBool{
 		Name: "--with-stream",
-		Desc: "enable TCP proxy module",
+		Desc: "enable TCP/UDP proxy module",
 	}
 	argsBool["with-stream_ssl_module"] = ConfigureOptionBool{
 		Name: "--with-stream_ssl_module",
