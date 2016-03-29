@@ -37,10 +37,6 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 			assert.Equal(suite.T(), m.Name, "ngx_devel_kit")
 			assert.Equal(suite.T(), m.Url, "https://github.com/simpl/ngx_devel_kit")
 			assert.Equal(suite.T(), m.Rev, "v0.2.19")
-		case "ngx_access_token":
-			assert.Equal(suite.T(), m.Name, "ngx_access_token")
-			assert.Equal(suite.T(), m.Url, "https://github.com/cubicdaiya/ngx_access_token")
-			assert.Equal(suite.T(), m.Rev, "")
 		case "ngx_small_light":
 			assert.Equal(suite.T(), m.Name, "ngx_small_light")
 			assert.Equal(suite.T(), m.Url, "https://github.com/cubicdaiya/ngx_small_light")

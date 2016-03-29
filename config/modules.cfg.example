@@ -13,10 +13,6 @@ form=git
 url=https://github.com/simpl/ngx_devel_kit
 rev=v0.2.19
 
-[ngx_access_token]
-form=git
-url=https://github.com/cubicdaiya/ngx_access_token
-
 [ngx_small_light]
 form=git
 url=https://github.com/cubicdaiya/ngx_small_light
