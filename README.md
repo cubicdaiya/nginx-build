@@ -100,6 +100,8 @@ $ nginx-build -d work \
 --with-pcre-jit \
 ```
 
+But there are limitations. See [here](https://github.com/cubicdaiya/nginx-build#limitations) about details.
+
 #### About `--add-module` and `--add-dynamic-module`
 
 `nginx-build` allows to use multiple `--add-module` and `--add-dynamic-module`.
