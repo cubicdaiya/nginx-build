@@ -328,6 +328,10 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	//	Name: "--with-http_geoip_module=dynamic",
 	//	Desc: "enable dynamic ngx_http_geoip_module",
 	//}
+	//argsBool["with-http_perl_module=dynamic"] = ConfigureOptionBool{
+	//	Name: "--with-http_perl_module=dynamic",
+	//	Desc: "enable dynamic ngx_http_perl_module",
+	//}
 	//argsBool["with-mail=dynamic"] = ConfigureOptionBool{
 	//	Name: "--with-mail=dynamic",
 	//	Desc: "enable dynamic POP3/IMAP4/SMTP proxy module",
