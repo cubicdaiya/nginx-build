@@ -6,7 +6,7 @@ rev=v0.58
 [headers-more-nginx-module]
 form=git
 url=https://github.com/openresty/headers-more-nginx-module.git
-rev=v0.26
+rev=v0.29
 
 [ngx_devel_kit]
 form=git
@@ -16,6 +16,6 @@ rev=v0.2.19
 [ngx_small_light]
 form=git
 url=https://github.com/cubicdaiya/ngx_small_light
-rev=v0.6.15
+rev=v0.6.17
 dynamic=true
 shprov=./setup --with-gd
