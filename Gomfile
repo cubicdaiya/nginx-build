@@ -1,2 +1,2 @@
 gom 'github.com/robfig/config',	   :commit => '0f78529c8c7e3e9a25f15876532ecbc07c7d99e6'
-gom 'github.com/stretchr/testify', :tag    => 'v1.0'
+gom 'github.com/stretchr/testify', :tag    => 'v1.1.3'
