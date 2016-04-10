@@ -40,7 +40,7 @@ func main() {
 	argsBool := makeArgsBool()
 	var (
 		configureOptions ConfigureOptions
-		multiflag StringFlag
+		multiflag        StringFlag
 		multiflagDynamic StringFlag
 	)
 
