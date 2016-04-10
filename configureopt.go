@@ -313,33 +313,32 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 		Desc: "enable debug logging",
 	}
 
-	//
-	// TODO: The options below are not suitable for flag package.
-	//
-	//argsBool["with-http_xslt_module=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-http_xslt_module=dynamic",
-	//	Desc: "enable dynamic ngx_http_xslt_module",
-	//}
-	//argsBool["with-http_image_filter_module=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-http_image_filter_module=dynamic",
-	//	Desc: "enable dynamic ngx_http_image_filter_module",
-	//}
-	//argsBool["with-http_geoip_module=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-http_geoip_module=dynamic",
-	//	Desc: "enable dynamic ngx_http_geoip_module",
-	//}
-	//argsBool["with-http_perl_module=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-http_perl_module=dynamic",
-	//	Desc: "enable dynamic ngx_http_perl_module",
-	//}
-	//argsBool["with-mail=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-mail=dynamic",
-	//	Desc: "enable dynamic POP3/IMAP4/SMTP proxy module",
-	//}
-	//argsBool["with-stream=dynamic"] = ConfigureOptionBool{
-	//	Name: "--with-stream=dynamic",
-	//	Desc: "enable dynamic TCP proxy module",
-	//}
+	// The args below are not actual and converted.
+	// An option such as 'with-xxx_dynamic' is converted to 'with-xxx=dynamic'.
+	argsBool["with-http_xslt_module_dynamic"] = ConfigureOptionBool{
+		Name: "--with-http_xslt_module=dynamic",
+		Desc: "enable dynamic ngx_http_xslt_module. This option is dummy for faking flag package. Use --with-http_xslt_module=dynamic.",
+	}
+	argsBool["with-http_image_filter_module_dynamic"] = ConfigureOptionBool{
+		Name: "--with-http_image_filter_module=dynamic",
+		Desc: "enable dynamic ngx_http_image_filter_module. This option is dummy for faking flag package. Use --with-http_image_filter_module=dynamic.",
+	}
+	argsBool["with-http_geoip_module_dynamic"] = ConfigureOptionBool{
+		Name: "--with-http_geoip_module=dynamic",
+		Desc: "enable dynamic ngx_http_geoip_module. This option is dummy for faking flag package. Use --with-http_geoip_module=dynamic.",
+	}
+	argsBool["with-http_perl_module_dynamic"] = ConfigureOptionBool{
+		Name: "--with-http_perl_module=dynamic",
+		Desc: "enable dynamic ngx_http_perl_module. This option is dummy for faking flag package. Use --with-http_perl_module=dynamic.",
+	}
+	argsBool["with-mail_dynamic"] = ConfigureOptionBool{
+		Name: "--with-mail=dynamic",
+		Desc: "enable dynamic POP3/IMAP4/SMTP proxy module. This option is dummy for faking flag package. Use --with-mail=dynamic.",
+	}
+	argsBool["with-stream_dynamic"] = ConfigureOptionBool{
+		Name: "--with-stream=dynamic",
+		Desc: "enable dynamic TCP proxy module. This option is dummy for faking flag package. Use --with-stream=dynamic.",
+	}
 
 	return argsBool
 }

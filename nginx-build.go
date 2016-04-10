@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"strings"
 	"sync"
 	"syscall"
 )
@@ -36,14 +37,35 @@ func main() {
 	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
 	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
 
-	argsString := makeArgsString()
-	argsBool := makeArgsBool()
+	// fake flag for --with-xxx=dynamic
+	for i, arg := range os.Args {
+		if strings.Contains(arg, "with-http_xslt_module=dynamic") {
+			os.Args[i] = "--with-http_xslt_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_image_filter_module=dynamic") {
+			os.Args[i] = "--with-http_image_filter_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_geoip_module=dynamic") {
+			os.Args[i] = "--with-http_geoip_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_perl_module=dynamic") {
+			os.Args[i] = "--with-http_perl_module_dynamic"
+		}
+		if strings.Contains(arg, "with-mail=dynamic") {
+			os.Args[i] = "--with-mail_dynamic"
+		}
+		if strings.Contains(arg, "with-stream=dynamic") {
+			os.Args[i] = "--with-stream_dynamic"
+		}
+	}
+
 	var (
 		configureOptions ConfigureOptions
 		multiflag        StringFlag
 		multiflagDynamic StringFlag
 	)
 
+	argsString := makeArgsString()
 	for k, v := range argsString {
 		if k == "add-module" {
 			flag.Var(&multiflag, k, v.Desc)
@@ -55,6 +77,7 @@ func main() {
 		}
 	}
 
+	argsBool := makeArgsBool()
 	for k, v := range argsBool {
 		v.Enabled = flag.Bool(k, false, v.Desc)
 		argsBool[k] = v
