@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robfig/config"
+	"github.com/go-ini/ini"
 )
 
 type Module3rd struct {
@@ -18,26 +18,29 @@ type Module3rd struct {
 	ShprovDir string
 }
 
-func loadModule3rd(name string, c *config.Config) Module3rd {
-	var module3rd Module3rd
-	module3rd.Name = name
-	module3rd.Form, _ = c.String(name, "form")
-	module3rd.Url, _ = c.String(name, "url")
-	module3rd.Rev, _ = c.String(name, "rev")
-	module3rd.Dynamic, _ = c.Bool(name, "dynamic")
-	module3rd.Shprov, _ = c.String(name, "shprov")
-	module3rd.ShprovDir, _ = c.String(name, "shprovdir")
+func loadModule3rd(s *ini.Section) Module3rd {
+	var (
+		module3rd Module3rd
+	)
+
+	module3rd.Name = s.Name()
+	module3rd.Form = s.Key("form").String()
+	module3rd.Url = s.Key("url").String()
+	module3rd.Rev = s.Key("rev").String()
+	module3rd.Shprov = s.Key("shprov").String()
+	module3rd.ShprovDir = s.Key("shprovdir").String()
+	module3rd.Dynamic = s.Key("dynamic").MustBool()
+
 	return module3rd
 }
 
-func loadModules3rd(c *config.Config) []Module3rd {
-	sections := c.Sections()
+func loadModules3rd(f *ini.File) []Module3rd {
 	var modules3rd []Module3rd
-	for _, s := range sections {
-		if s == config.DEFAULT_SECTION {
+	for _, s := range f.Sections() {
+		if s.Name() == "DEFAULT" {
 			continue
 		}
-		modules3rd = append(modules3rd, loadModule3rd(s, c))
+		modules3rd = append(modules3rd, loadModule3rd(s))
 	}
 	return modules3rd
 }
@@ -48,7 +51,7 @@ func loadModules3rdFile(path string) ([]Module3rd, error) {
 		if !fileExists(path) {
 			return modules3rd, fmt.Errorf("modulesConfPath(%s) does not exist.", path)
 		}
-		modulesConf, err := config.ReadDefault(path)
+		modulesConf, err := ini.Load(path)
 		if err != nil {
 			return modules3rd, err
 		}
