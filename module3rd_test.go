@@ -27,21 +27,29 @@ func (suite *Module3rdTestSuite) TestModules3rd() {
 		switch m.Name {
 		case "echo-nginx-module":
 			assert.Equal(suite.T(), m.Name, "echo-nginx-module")
+			assert.Equal(suite.T(), m.Form, "git")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/echo-nginx-module.git")
 			assert.Equal(suite.T(), m.Rev, "v0.58")
+			assert.Equal(suite.T(), m.Dynamic, false)
 		case "headers-more-nginx-module":
 			assert.Equal(suite.T(), m.Name, "headers-more-nginx-module")
+			assert.Equal(suite.T(), m.Form, "git")
 			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/headers-more-nginx-module.git")
 			assert.Equal(suite.T(), m.Rev, "v0.29")
+			assert.Equal(suite.T(), m.Dynamic, false)
 		case "ngx_devel_kit":
 			assert.Equal(suite.T(), m.Name, "ngx_devel_kit")
+			assert.Equal(suite.T(), m.Form, "git")
 			assert.Equal(suite.T(), m.Url, "https://github.com/simpl/ngx_devel_kit")
 			assert.Equal(suite.T(), m.Rev, "v0.2.19")
+			assert.Equal(suite.T(), m.Dynamic, false)
 		case "ngx_small_light":
 			assert.Equal(suite.T(), m.Name, "ngx_small_light")
+			assert.Equal(suite.T(), m.Form, "git")
 			assert.Equal(suite.T(), m.Url, "https://github.com/cubicdaiya/ngx_small_light")
 			assert.Equal(suite.T(), m.Rev, "v0.6.17")
 			assert.Equal(suite.T(), m.Shprov, "./setup --with-gd")
+			assert.Equal(suite.T(), m.Dynamic, true)
 		}
 	}
 }
