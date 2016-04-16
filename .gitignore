@@ -1,5 +1,6 @@
 _vendor
 nginx-build
 .vendor
+vendor
 doc/_build/doctrees/
 *.tar.gz

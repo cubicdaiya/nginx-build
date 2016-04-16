@@ -1,0 +1,8 @@
+hash: d1cf59d8c5138998edbd3c081a8a6fb73ff00ebe542ed3ea07b9dbb8fba8481b
+updated: 2016-04-16T12:55:30.63894081+09:00
+imports:
+- name: github.com/go-ini/ini
+  version: 12f418cc7edc5a618a51407b7ac1f1f512139df3
+- name: github.com/stretchr/testify
+  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+devImports: []

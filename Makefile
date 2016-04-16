@@ -1,11 +1,12 @@
 VERSION=0.8.0
+TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go
-	gom build -o nginx-build
+	GO15VENDOREXPERIMENT=1 go build -o nginx-build
 
 build-cross:
-	GOOS=linux GOARCH=amd64 gom build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
-	GOOS=darwin GOARCH=amd64 gom build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
+	GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
+	GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	cd bin/linux/amd64/ && tar zcvf nginx-build-linux-amd64-${VERSION}.tar.gz nginx-build
@@ -15,17 +16,14 @@ dist: build-cross
 build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
-gom:
-	go get -u github.com/mattn/gom
-
 bundle:
-	gom install
+	glide install
 
 check:
-	gom test
+	GO15VENDOREXPERIMENT=1 go test $(TARGETS_NOVENDOR)
 
 fmt:
-	go fmt ./...
+	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 
 install:
 	install nginx-build /usr/local/bin/nginx-build
