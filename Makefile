@@ -1,4 +1,4 @@
-VERSION=0.8.0
+VERSION=0.9.0
 TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go
