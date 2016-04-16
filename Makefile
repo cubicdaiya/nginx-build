@@ -5,8 +5,8 @@ nginx-build: *.go
 	GO15VENDOREXPERIMENT=1 go build -o nginx-build
 
 build-cross:
-	GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
-	GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
+	GO15VENDOREXPERIMENT=1 GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
+	GO15VENDOREXPERIMENT=1 GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	cd bin/linux/amd64/ && tar zcvf nginx-build-linux-amd64-${VERSION}.tar.gz nginx-build
