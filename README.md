@@ -231,7 +231,7 @@ shprov=./setup
 
 ## Build OpenResty
 
-`nginx-build` supports to build [OpenResty](http://www.openresty.com/).
+`nginx-build` supports to build [OpenResty](https://openresty.org/).
 
 ```bash
 $ nginx-build -d work -openresty -pcre -openssl
