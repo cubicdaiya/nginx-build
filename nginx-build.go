@@ -283,8 +283,15 @@ func main() {
 	if *openSSLStatic {
 		// Workarounds for protecting a failure of building nginx with static-linked OpenSSL.
 
-		// Unfortunately a build of OpenSSL fails when multi-CPUs are used.
-		*jobs = 1
+		// The build of old OpenSSL fails when multi-CPUs are used.
+		// It is fixed in the commit below.
+		//
+		// https://github.com/openssl/openssl/commit/8e6bb99979b95ee8b878e22e043ceb78d79c32a1
+		//
+		// And backported to 1.0.1p and 1.0.2d.
+		if !opensslParallelBuildAvailable(*openSSLVersion) {
+			*jobs = 1
+		}
 
 		// Sometimes machine hardware name('uname -m') is different
 		// from machine processor architecture name('uname -p') on Mac.
