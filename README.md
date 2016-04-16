@@ -12,7 +12,7 @@
 ## Build Support
 
  * [nginx](http://nginx.org/)
- * [OpenResty](http://www.openresty.com/)
+ * [OpenResty](https://openresty.org/)
  * [Tengine](http://tengine.taobao.org/)
 
 ## Installation
