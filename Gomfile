@@ -1,2 +1,0 @@
-gom 'github.com/go-ini/ini',       :tag    => 'v1.11.0'
-gom 'github.com/stretchr/testify', :tag    => 'v1.1.3'
