@@ -52,6 +52,9 @@ func configureGen(configure string, modules3rd []Module3rd, dependencies []Stati
 
 	for _, option := range options.Values {
 		if *option.Value != "" {
+			if option.Name == "--resty-opt" {
+			configure +=  *option.Value + " \\\n"
+			} else
 			if option.Name == "--add-module" {
 				configure += normalizeAddModulePaths(*option.Value, rootDir, false)
 			} else if option.Name == "--add-dynamic-module" {

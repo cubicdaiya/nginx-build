@@ -498,6 +498,9 @@ func makeArgsString() map[string]ConfigureOptionValue {
 		Name: "--with-openssl-opt",
 		Desc: "set additional build options for OpenSSL",
 	}
-
+	argsString["resty-opt"] = ConfigureOptionValue{
+		Name: "--resty-opt",
+		Desc: "option of resty",
+	}
 	return argsString
 }
