@@ -35,23 +35,24 @@ brew install nginx-build
 
 ```console
 $ nginx-build -d work
-nginx-build: 0.7.0
-Compiler: gc go1.5.3
-2016/02/14 02:12:09 Download nginx-1.9.11.....
-2016/02/14 02:12:17 Extract nginx-1.9.11.tar.gz.....
-2016/02/14 02:12:17 Generate configure script for nginx-1.9.11.....
-2016/02/14 02:12:17 Configure nginx-1.9.11.....
-2016/02/14 02:12:21 Build nginx-1.9.11.....
-2016/02/14 02:12:29 Complete building nginx!
+nginx-build: 0.9.1
+Compiler: gc go1.6.1
+2016/04/21 09:40:12 Download nginx-1.9.15.....
+2016/04/21 09:40:19 Extract nginx-1.9.15.tar.gz.....
+2016/04/21 09:40:19 Generate configure script for nginx-1.9.15.....
+2016/04/21 09:40:19 Configure nginx-1.9.15.....
+2016/04/21 09:40:22 Build nginx-1.9.15.....
+2016/04/21 09:40:25 Complete building nginx!
 
-nginx version: nginx/1.9.11
+nginx version: nginx/1.9.15
 built by gcc 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.1)
 configure arguments:
 
-2016/02/14 02:12:29 Enter the following command for install nginx.
+2016/04/21 09:40:25 Enter the following command for install nginx.
 
-   $ cd work/nginx/1.9.11/nginx-1.9.11
+   $ cd work/nginx/1.9.15/nginx-1.9.15
    $ sudo make install
+
 $
 ```
 
