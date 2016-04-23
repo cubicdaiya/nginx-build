@@ -9,6 +9,8 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+
+	"github.com/cubicdaiya/nginx-build/openssl"
 )
 
 func main() {
@@ -289,7 +291,7 @@ func main() {
 		// https://github.com/openssl/openssl/commit/8e6bb99979b95ee8b878e22e043ceb78d79c32a1
 		//
 		// And backported to 1.0.1p and 1.0.2d.
-		if !opensslParallelBuildAvailable(*openSSLVersion) {
+		if !openssl.ParallelBuildAvailable(*openSSLVersion) {
 			*jobs = 1
 		}
 

@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/cubicdaiya/nginx-build/openresty"
 )
 
 type Builder struct {
@@ -32,7 +34,7 @@ func (builder *Builder) name() string {
 	case COMPONENT_ZLIB:
 		name = "zlib"
 	case COMPONENT_OPENRESTY:
-		name = openrestyName(builder.Version)
+		name = openresty.Name(builder.Version)
 	case COMPONENT_TENGINE:
 		name = "tengine"
 	default:

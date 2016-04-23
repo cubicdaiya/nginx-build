@@ -1,4 +1,4 @@
-package main
+package openresty
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func openrestyName(version string) string {
+func Name(version string) string {
 	numbers := strings.Split(version, ".")
 	size := len(numbers)
 	sum := 0

@@ -1,4 +1,4 @@
-package main
+package openssl
 
 import "regexp"
 
@@ -18,7 +18,7 @@ func init() {
 	OpenSSLVersion102Re = regexp.MustCompile("^1\\.0\\.2")
 }
 
-func opensslParallelBuildAvailable(version string) bool {
+func ParallelBuildAvailable(version string) bool {
 	group := OpenSSLVersionRe.FindSubmatch([]byte(version))
 	vn := group[1]
 	sym := group[2]
