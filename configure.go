@@ -6,6 +6,8 @@ import (
 	"os"
 	"runtime"
 	"strings"
+
+	"github.com/cubicdaiya/nginx-build/builder"
 )
 
 func configureGenModule3rd(modules3rd []Module3rd) string {
@@ -24,7 +26,7 @@ func configureGenModule3rd(modules3rd []Module3rd) string {
 	return result
 }
 
-func configureGen(configure string, modules3rd []Module3rd, dependencies []StaticLibrary, options ConfigureOptions, rootDir string) string {
+func configureGen(configure string, modules3rd []Module3rd, dependencies []builder.StaticLibrary, options ConfigureOptions, rootDir string) string {
 	openSSLStatic := false
 	if len(configure) == 0 {
 		configure = `#!/bin/sh

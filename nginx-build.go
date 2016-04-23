@@ -1,20 +1,48 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"io/ioutil"
 	"log"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
 
+	"github.com/cubicdaiya/nginx-build/builder"
 	"github.com/cubicdaiya/nginx-build/openssl"
 )
 
+const NGINX_BUILD_VERSION = "0.9.1"
+
+func buildNginx(jobs int) error {
+	args := []string{"make", "-j", strconv.Itoa(jobs)}
+	if VerboseEnabled {
+		return runCommand(args)
+	}
+
+	f, err := os.Create("nginx-build.log")
+	if err != nil {
+		return runCommand(args)
+	}
+	defer f.Close()
+
+	cmd, err := makeCmd(args)
+	if err != nil {
+		return err
+	}
+	writer := bufio.NewWriter(f)
+	cmd.Stderr = writer
+	defer writer.Flush()
+
+	return cmd.Run()
+}
+
 func main() {
-	var dependencies []StaticLibrary
+	var dependencies []builder.StaticLibrary
 	wg := new(sync.WaitGroup)
 
 	// Parse flags
@@ -29,15 +57,15 @@ func main() {
 	tengine := flag.Bool("tengine", false, "download tengine instead of nginx")
 	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
 	jobs := flag.Int("j", runtime.NumCPU(), "jobs to build nginx")
-	version := flag.String("v", NGINX_VERSION, "nginx version")
+	version := flag.String("v", builder.NGINX_VERSION, "nginx version")
 	nginxConfigurePath := flag.String("c", "", "configuration file for building nginx")
 	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
 	workParentDir := flag.String("d", "", "working directory")
-	pcreVersion := flag.String("pcreversion", PCRE_VERSION, "PCRE version")
-	openSSLVersion := flag.String("opensslversion", OPENSSL_VERSION, "OpenSSL version")
-	zlibVersion := flag.String("zlibversion", ZLIB_VERSION, "zlib version")
-	openRestyVersion := flag.String("openrestyversion", OPENRESTY_VERSION, "openresty version")
-	tengineVersion := flag.String("tengineversion", TENGINE_VERSION, "tengine version")
+	pcreVersion := flag.String("pcreversion", builder.PCRE_VERSION, "PCRE version")
+	openSSLVersion := flag.String("opensslversion", builder.OPENSSL_VERSION, "OpenSSL version")
+	zlibVersion := flag.String("zlibversion", builder.ZLIB_VERSION, "zlib version")
+	openRestyVersion := flag.String("openrestyversion", builder.OPENRESTY_VERSION, "openresty version")
+	tengineVersion := flag.String("tengineversion", builder.TENGINE_VERSION, "tengine version")
 
 	// fake flag for --with-xxx=dynamic
 	for i, arg := range os.Args {
@@ -122,20 +150,20 @@ func main() {
 	// set verbose mode
 	VerboseEnabled = *verbose
 
-	var nginxBuilder Builder
+	var nginxBuilder builder.Builder
 	if *openResty && *tengine {
 		log.Fatal("select one between '-openresty' and '-tengine'.")
 	}
 	if *openResty {
-		nginxBuilder = makeBuilder(COMPONENT_OPENRESTY, *openRestyVersion)
+		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_OPENRESTY, *openRestyVersion)
 	} else if *tengine {
-		nginxBuilder = makeBuilder(COMPONENT_TENGINE, *tengineVersion)
+		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_TENGINE, *tengineVersion)
 	} else {
-		nginxBuilder = makeBuilder(COMPONENT_NGINX, *version)
+		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_NGINX, *version)
 	}
-	pcreBuilder := makeBuilder(COMPONENT_PCRE, *pcreVersion)
-	openSSLBuilder := makeBuilder(COMPONENT_OPENSSL, *openSSLVersion)
-	zlibBuilder := makeBuilder(COMPONENT_ZLIB, *zlibVersion)
+	pcreBuilder := builder.MakeBuilder(builder.COMPONENT_PCRE, *pcreVersion)
+	openSSLBuilder := builder.MakeBuilder(builder.COMPONENT_OPENSSL, *openSSLVersion)
+	zlibBuilder := builder.MakeBuilder(builder.COMPONENT_ZLIB, *zlibVersion)
 
 	// change default umask
 	_ = syscall.Umask(0)
@@ -231,56 +259,56 @@ func main() {
 	}
 
 	// cd workDir/nginx-${version}
-	os.Chdir(nginxBuilder.sourcePath())
+	os.Chdir(nginxBuilder.SourcePath())
 
 	if *pcreStatic {
-		dependencies = append(dependencies, makeStaticLibrary(&pcreBuilder))
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&pcreBuilder))
 	}
 
 	if *openSSLStatic {
-		dependencies = append(dependencies, makeStaticLibrary(&openSSLBuilder))
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&openSSLBuilder))
 	}
 
 	if *zlibStatic {
-		dependencies = append(dependencies, makeStaticLibrary(&zlibBuilder))
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibBuilder))
 	}
 
-	log.Printf("Generate configure script for %s.....", nginxBuilder.sourcePath())
+	log.Printf("Generate configure script for %s.....", nginxBuilder.SourcePath())
 
-	if *pcreStatic && pcreBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Println(pcreBuilder.warnMsgWithLibrary())
+	if *pcreStatic && pcreBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(pcreBuilder.WarnMsgWithLibrary())
 	}
 
-	if *openSSLStatic && openSSLBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Println(openSSLBuilder.warnMsgWithLibrary())
+	if *openSSLStatic && openSSLBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(openSSLBuilder.WarnMsgWithLibrary())
 
 	}
 
-	if *zlibStatic && zlibBuilder.isIncludeWithOption(nginxConfigure) {
-		log.Println(zlibBuilder.warnMsgWithLibrary())
+	if *zlibStatic && zlibBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(zlibBuilder.WarnMsgWithLibrary())
 	}
 
 	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
 
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
-		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.sourcePath())
+		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
-	log.Printf("Configure %s.....", nginxBuilder.sourcePath())
+	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
 
 	err = configureNginx()
 	if err != nil {
-		log.Printf("Failed to configure %s\n", nginxBuilder.sourcePath())
+		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
 		printFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
-		printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)
+		printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 		return
 	}
 
-	log.Printf("Build %s.....", nginxBuilder.sourcePath())
+	log.Printf("Build %s.....", nginxBuilder.SourcePath())
 
 	if *openSSLStatic {
 		// Workarounds for protecting a failure of building nginx with static-linked OpenSSL.
@@ -307,11 +335,11 @@ func main() {
 
 	err = buildNginx(*jobs)
 	if err != nil {
-		log.Printf("Failed to build %s\n", nginxBuilder.sourcePath())
+		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
 		printFatalMsg(err, "nginx-build.log")
 	}
 
-	printLastMsg(workDir, nginxBuilder.sourcePath(), *openResty, *configureOnly)
+	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 
 	// cd rootDir
 	os.Chdir(rootDir)

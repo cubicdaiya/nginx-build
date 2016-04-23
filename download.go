@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"sync"
+
+	"github.com/cubicdaiya/nginx-build/builder"
 )
 
 func extractArchive(path string) error {
@@ -74,34 +76,34 @@ func downloadModule3rd(module3rd Module3rd, logName string) error {
 	return fmt.Errorf("form=%s is not supported", form)
 }
 
-func downloadAndExtract(builder *Builder) error {
-	if !fileExists(builder.sourcePath()) {
-		if !fileExists(builder.archivePath()) {
+func downloadAndExtract(b *builder.Builder) error {
+	if !fileExists(b.SourcePath()) {
+		if !fileExists(b.ArchivePath()) {
 
-			log.Printf("Download %s.....", builder.sourcePath())
+			log.Printf("Download %s.....", b.SourcePath())
 
-			err := download(builder.downloadURL(), builder.logPath())
+			err := download(b.DownloadURL(), b.LogPath())
 			if err != nil {
-				return fmt.Errorf("Failed to download %s. %s", builder.sourcePath(), err.Error())
+				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
 			}
 		}
 
-		log.Printf("Extract %s.....", builder.archivePath())
+		log.Printf("Extract %s.....", b.ArchivePath())
 
-		err := extractArchive(builder.archivePath())
+		err := extractArchive(b.ArchivePath())
 		if err != nil {
-			return fmt.Errorf("Failed to extract %s. %s", builder.archivePath(), err.Error())
+			return fmt.Errorf("Failed to extract %s. %s", b.ArchivePath(), err.Error())
 		}
 	} else {
-		log.Printf("%s already exists.", builder.sourcePath())
+		log.Printf("%s already exists.", b.SourcePath())
 	}
 	return nil
 }
 
-func downloadAndExtractParallel(builder *Builder, wg *sync.WaitGroup) {
-	err := downloadAndExtract(builder)
+func downloadAndExtractParallel(b *builder.Builder, wg *sync.WaitGroup) {
+	err := downloadAndExtract(b)
 	if err != nil {
-		printFatalMsg(err, builder.logPath())
+		printFatalMsg(err, b.LogPath())
 	}
 	wg.Done()
 }

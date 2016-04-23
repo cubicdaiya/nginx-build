@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"runtime"
+
+	"github.com/cubicdaiya/nginx-build/builder"
 )
 
 func versionsSubmajorGen(major, submajor, minor int) []string {
@@ -38,7 +40,7 @@ func versionsGen() []string {
 func versionsGenOpenResty() []string {
 	var versions []string
 
-	versions = append(versions, fmt.Sprintf("openresty-%s", OPENRESTY_VERSION))
+	versions = append(versions, fmt.Sprintf("openresty-%s", builder.OPENRESTY_VERSION))
 
 	return versions
 }
@@ -46,7 +48,7 @@ func versionsGenOpenResty() []string {
 func versionsGenTengine() []string {
 	var versions []string
 
-	versions = append(versions, fmt.Sprintf("tengine-%s", TENGINE_VERSION))
+	versions = append(versions, fmt.Sprintf("tengine-%s", builder.TENGINE_VERSION))
 
 	return versions
 }
@@ -74,6 +76,6 @@ Copyright (C) 2014-2016 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 func versionCheck(version string) {
 	if len(version) == 0 {
 		log.Println("[warn]nginx version is not set.")
-		log.Printf("[warn]nginx-build use %s.\n", NGINX_VERSION)
+		log.Printf("[warn]nginx-build use %s.\n", builder.NGINX_VERSION)
 	}
 }

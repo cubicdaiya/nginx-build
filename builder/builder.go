@@ -1,10 +1,7 @@
-package main
+package builder
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
 	"strings"
 
 	"github.com/cubicdaiya/nginx-build/openresty"
@@ -47,35 +44,35 @@ func (builder *Builder) option() string {
 	return fmt.Sprintf("--with-%s", builder.name())
 }
 
-func (builder *Builder) downloadURL() string {
-	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.archivePath())
+func (builder *Builder) DownloadURL() string {
+	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.ArchivePath())
 }
 
-func (builder *Builder) sourcePath() string {
+func (builder *Builder) SourcePath() string {
 	return fmt.Sprintf("%s-%s", builder.name(), builder.Version)
 }
 
-func (builder *Builder) archivePath() string {
-	return fmt.Sprintf("%s.tar.gz", builder.sourcePath())
+func (builder *Builder) ArchivePath() string {
+	return fmt.Sprintf("%s.tar.gz", builder.SourcePath())
 }
 
-func (builder *Builder) logPath() string {
+func (builder *Builder) LogPath() string {
 	return fmt.Sprintf("%s-%s.log", builder.name(), builder.Version)
 }
 
-func (builder *Builder) isIncludeWithOption(nginxConfigure string) bool {
+func (builder *Builder) IsIncludeWithOption(nginxConfigure string) bool {
 	if strings.Contains(nginxConfigure, builder.option()+"=") {
 		return true
 	}
 	return false
 }
 
-func (builder *Builder) warnMsgWithLibrary() string {
+func (builder *Builder) WarnMsgWithLibrary() string {
 	return fmt.Sprintf("[warn]Using '%s' is discouraged. Instead give '-%s' and '-%sversion' to 'nginx-build'",
 		builder.option(), builder.name(), builder.name())
 }
 
-func makeBuilder(component int, version string) Builder {
+func MakeBuilder(component int, version string) Builder {
 	var builder Builder
 	builder.Component = component
 	builder.Version = version
@@ -98,32 +95,9 @@ func makeBuilder(component int, version string) Builder {
 	return builder
 }
 
-func makeStaticLibrary(builder *Builder) StaticLibrary {
+func MakeStaticLibrary(builder *Builder) StaticLibrary {
 	return StaticLibrary{
 		Name:    builder.name(),
 		Version: builder.Version,
 		Option:  builder.option()}
-}
-
-func buildNginx(jobs int) error {
-	args := []string{"make", "-j", strconv.Itoa(jobs)}
-	if VerboseEnabled {
-		return runCommand(args)
-	}
-
-	f, err := os.Create("nginx-build.log")
-	if err != nil {
-		return runCommand(args)
-	}
-	defer f.Close()
-
-	cmd, err := makeCmd(args)
-	if err != nil {
-		return err
-	}
-	writer := bufio.NewWriter(f)
-	cmd.Stderr = writer
-	defer writer.Flush()
-
-	return cmd.Run()
 }

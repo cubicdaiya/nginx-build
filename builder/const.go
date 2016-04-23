@@ -1,6 +1,4 @@
-package main
-
-const NGINX_BUILD_VERSION = "0.9.1"
+package builder
 
 // nginx
 const (
