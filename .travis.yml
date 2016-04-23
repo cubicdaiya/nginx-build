@@ -3,11 +3,10 @@ go:
   - 1.6.2
   - tip
 before_install:
-  - go get github.com/mattn/gom
+  - go get github.com/Masterminds/glide
 script:
   - sudo apt-get install -y libgd2-xpm-dev
-  - $HOME/gopath/bin/gom install
-  - $HOME/gopath/bin/gom test
-  - $HOME/gopath/bin/gom build
-  - mkdir work
+  - make bundle
+  - make
+  - make check
   - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl
