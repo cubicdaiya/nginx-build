@@ -8,25 +8,28 @@ import (
 	"sync"
 
 	"github.com/cubicdaiya/nginx-build/builder"
+	"github.com/cubicdaiya/nginx-build/command"
+	"github.com/cubicdaiya/nginx-build/module3rd"
+	"github.com/cubicdaiya/nginx-build/util"
 )
 
 func extractArchive(path string) error {
-	return runCommand([]string{"tar", "zxvf", path})
+	return command.Run([]string{"tar", "zxvf", path})
 }
 
 func download(url string, logName string) error {
 	args := []string{"wget", url}
-	if VerboseEnabled {
-		return runCommand(args)
+	if command.VerboseEnabled {
+		return command.Run(args)
 	}
 
 	f, err := os.Create(logName)
 	if err != nil {
-		return runCommand(args)
+		return command.Run(args)
 	}
 	defer f.Close()
 
-	cmd, err := makeCmd(args)
+	cmd, err := command.Make(args)
 	if err != nil {
 		return err
 	}
@@ -39,26 +42,26 @@ func download(url string, logName string) error {
 	return cmd.Run()
 }
 
-func downloadModule3rd(module3rd Module3rd, logName string) error {
-	form := module3rd.Form
-	url := module3rd.Url
+func downloadModule3rd(m module3rd.Module3rd, logName string) error {
+	form := m.Form
+	url := m.Url
 
 	switch form {
 	case "git":
 		fallthrough
 	case "hg":
 		args := []string{form, "clone", url}
-		if VerboseEnabled {
-			return runCommand(args)
+		if command.VerboseEnabled {
+			return command.Run(args)
 		}
 
 		f, err := os.Create(logName)
 		if err != nil {
-			return runCommand(args)
+			return command.Run(args)
 		}
 		defer f.Close()
 
-		cmd, err := makeCmd(args)
+		cmd, err := command.Make(args)
 		if err != nil {
 			return err
 		}
@@ -77,8 +80,8 @@ func downloadModule3rd(module3rd Module3rd, logName string) error {
 }
 
 func downloadAndExtract(b *builder.Builder) error {
-	if !fileExists(b.SourcePath()) {
-		if !fileExists(b.ArchivePath()) {
+	if !util.FileExists(b.SourcePath()) {
+		if !util.FileExists(b.ArchivePath()) {
 
 			log.Printf("Download %s.....", b.SourcePath())
 
@@ -103,13 +106,13 @@ func downloadAndExtract(b *builder.Builder) error {
 func downloadAndExtractParallel(b *builder.Builder, wg *sync.WaitGroup) {
 	err := downloadAndExtract(b)
 	if err != nil {
-		printFatalMsg(err, b.LogPath())
+		util.PrintFatalMsg(err, b.LogPath())
 	}
 	wg.Done()
 }
 
-func downloadAndExtractModule3rdParallel(m Module3rd, wg *sync.WaitGroup) {
-	if fileExists(m.Name) {
+func downloadAndExtractModule3rdParallel(m module3rd.Module3rd, wg *sync.WaitGroup) {
+	if util.FileExists(m.Name) {
 		log.Printf("%s already exists.", m.Name)
 		wg.Done()
 		return
@@ -126,9 +129,9 @@ func downloadAndExtractModule3rdParallel(m Module3rd, wg *sync.WaitGroup) {
 
 		err := downloadModule3rd(m, logName)
 		if err != nil {
-			printFatalMsg(err, logName)
+			util.PrintFatalMsg(err, logName)
 		}
-	} else if !fileExists(m.Url) {
+	} else if !util.FileExists(m.Url) {
 		log.Fatalf("no such directory:%s", m.Url)
 	}
 

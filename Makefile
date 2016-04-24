@@ -1,7 +1,7 @@
 VERSION=0.9.1
 TARGETS_NOVENDOR=$(shell glide novendor)
 
-nginx-build: *.go openresty/*.go openssl/*.go
+nginx-build: *.go openresty/*.go openssl/*.go command/*.go configure/*.go module3rd/*.go util/*.go
 	GO15VENDOREXPERIMENT=1 go build -o nginx-build
 
 build-cross:

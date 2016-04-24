@@ -1,4 +1,4 @@
-package main
+package configure
 
 type ConfigureOptions struct {
 	Values map[string]ConfigureOptionValue
@@ -17,7 +17,7 @@ type ConfigureOptionBool struct {
 	Enabled *bool
 }
 
-func makeArgsBool() map[string]ConfigureOptionBool {
+func MakeArgsBool() map[string]ConfigureOptionBool {
 	argsBool := make(map[string]ConfigureOptionBool)
 
 	argsBool["with-select_module"] = ConfigureOptionBool{
@@ -343,7 +343,7 @@ func makeArgsBool() map[string]ConfigureOptionBool {
 	return argsBool
 }
 
-func makeArgsString() map[string]ConfigureOptionValue {
+func MakeArgsString() map[string]ConfigureOptionValue {
 	argsString := make(map[string]ConfigureOptionValue)
 
 	argsString["prefix"] = ConfigureOptionValue{

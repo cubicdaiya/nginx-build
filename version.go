@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"runtime"
 
 	"github.com/cubicdaiya/nginx-build/builder"
 )
@@ -60,17 +59,6 @@ func printNginxVersions() {
 	for _, v := range versions {
 		fmt.Println(v)
 	}
-}
-
-func printNginxBuildVersion() {
-	fmt.Printf(`nginx-build %s
-Compiler: %s %s
-Copyright (C) 2014-2016 Tatsuhiko Kubo <cubicdaiya@gmail.com>
-`,
-		NGINX_BUILD_VERSION,
-		runtime.Compiler,
-		runtime.Version())
-
 }
 
 func versionCheck(version string) {

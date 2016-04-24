@@ -1,4 +1,4 @@
-package main
+package configure
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/cubicdaiya/nginx-build/builder"
+	"github.com/cubicdaiya/nginx-build/module3rd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -14,7 +15,7 @@ import (
 type ConfiguregenTestSuite struct {
 	suite.Suite
 	builders   []builder.Builder
-	modules3rd []Module3rd
+	modules3rd []module3rd.Module3rd
 }
 
 func (suite *ConfiguregenTestSuite) SetupTest() {
@@ -24,8 +25,8 @@ func (suite *ConfiguregenTestSuite) SetupTest() {
 	suite.builders[builder.COMPONENT_OPENSSL] = builder.MakeBuilder(builder.COMPONENT_OPENSSL, builder.OPENSSL_VERSION)
 	suite.builders[builder.COMPONENT_ZLIB] = builder.MakeBuilder(builder.COMPONENT_ZLIB, builder.ZLIB_VERSION)
 
-	modules3rdConf := "./config/modules.cfg.example"
-	modules3rd, err := loadModules3rdFile(modules3rdConf)
+	modules3rdConf := "../config/modules.cfg.example"
+	modules3rd, err := module3rd.Load(modules3rdConf)
 	if err != nil {
 		log.Fatalf("Failed to load %s\n", modules3rdConf)
 	}
@@ -33,7 +34,7 @@ func (suite *ConfiguregenTestSuite) SetupTest() {
 }
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
-	configure_modules3rd := configureGenModule3rd(suite.modules3rd)
+	configure_modules3rd := generateForModule3rd(suite.modules3rd)
 
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../echo-nginx-module")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../headers-more-nginx-module")
@@ -43,7 +44,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenDefault() {
 	var configureOptions ConfigureOptions
-	configureScript := configureGen("", []Module3rd{}, []builder.StaticLibrary{}, configureOptions, "")
+	configureScript := Generate("", []module3rd.Module3rd{}, []builder.StaticLibrary{}, configureOptions, "")
 
 	if runtime.GOOS == "darwin" {
 		assert.Contains(suite.T(), configureScript, "--with-cc-opt=\"-Wno-deprecated-declarations\" \\")
@@ -56,7 +57,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_OPENSSL]))
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_ZLIB]))
 	var configureOptions ConfigureOptions
-	configureScript := configureGen("", []Module3rd{}, dependencies, configureOptions, "")
+	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "")
 
 	assert.Contains(suite.T(), configureScript, "--with-http_ssl_module")
 	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-pcre=../pcre-%s \\\n", builder.PCRE_VERSION))

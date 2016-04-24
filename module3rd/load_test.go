@@ -1,4 +1,4 @@
-package main
+package module3rd
 
 import (
 	"log"
@@ -14,8 +14,8 @@ type Module3rdTestSuite struct {
 }
 
 func (suite *Module3rdTestSuite) SetupTest() {
-	modules3rdConf := "./config/modules.cfg.example"
-	modules3rd, err := loadModules3rdFile(modules3rdConf)
+	modules3rdConf := "../config/modules.cfg.example"
+	modules3rd, err := Load(modules3rdConf)
 	if err != nil {
 		log.Fatalf("Failed to load %s\n", modules3rdConf)
 	}

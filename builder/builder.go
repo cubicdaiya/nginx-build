@@ -13,12 +13,6 @@ type Builder struct {
 	Component         int
 }
 
-type StaticLibrary struct {
-	Name    string
-	Version string
-	Option  string
-}
-
 func (builder *Builder) name() string {
 	var name string
 	switch builder.Component {
@@ -93,11 +87,4 @@ func MakeBuilder(component int, version string) Builder {
 		panic("invalid component")
 	}
 	return builder
-}
-
-func MakeStaticLibrary(builder *Builder) StaticLibrary {
-	return StaticLibrary{
-		Name:    builder.name(),
-		Version: builder.Version,
-		Option:  builder.option()}
 }

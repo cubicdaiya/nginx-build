@@ -1,45 +1,26 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"io/ioutil"
 	"log"
 	"os"
 	"runtime"
-	"strconv"
 	"strings"
 	"sync"
 	"syscall"
 
 	"github.com/cubicdaiya/nginx-build/builder"
+	"github.com/cubicdaiya/nginx-build/command"
+	"github.com/cubicdaiya/nginx-build/configure"
+	"github.com/cubicdaiya/nginx-build/module3rd"
 	"github.com/cubicdaiya/nginx-build/openssl"
+	"github.com/cubicdaiya/nginx-build/util"
 )
 
-const NGINX_BUILD_VERSION = "0.9.1"
-
-func buildNginx(jobs int) error {
-	args := []string{"make", "-j", strconv.Itoa(jobs)}
-	if VerboseEnabled {
-		return runCommand(args)
-	}
-
-	f, err := os.Create("nginx-build.log")
-	if err != nil {
-		return runCommand(args)
-	}
-	defer f.Close()
-
-	cmd, err := makeCmd(args)
-	if err != nil {
-		return err
-	}
-	writer := bufio.NewWriter(f)
-	cmd.Stderr = writer
-	defer writer.Flush()
-
-	return cmd.Run()
-}
+const (
+	NGINX_BUILD_VERSION = "0.9.1"
+)
 
 func main() {
 	var dependencies []builder.StaticLibrary
@@ -90,12 +71,12 @@ func main() {
 	}
 
 	var (
-		configureOptions ConfigureOptions
+		configureOptions configure.ConfigureOptions
 		multiflag        StringFlag
 		multiflagDynamic StringFlag
 	)
 
-	argsString := makeArgsString()
+	argsString := configure.MakeArgsString()
 	for k, v := range argsString {
 		if k == "add-module" {
 			flag.Var(&multiflag, k, v.Desc)
@@ -107,7 +88,7 @@ func main() {
 		}
 	}
 
-	argsBool := makeArgsBool()
+	argsBool := configure.MakeArgsBool()
 	for k, v := range argsBool {
 		v.Enabled = flag.Bool(k, false, v.Desc)
 		argsBool[k] = v
@@ -148,7 +129,7 @@ func main() {
 	printFirstMsg()
 
 	// set verbose mode
-	VerboseEnabled = *verbose
+	command.VerboseEnabled = *verbose
 
 	var nginxBuilder builder.Builder
 	if *openResty && *tengine {
@@ -174,9 +155,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	nginxConfigure = normalizeConfigure(nginxConfigure)
+	nginxConfigure = configure.Normalize(nginxConfigure)
 
-	modules3rd, err := loadModules3rdFile(*modulesConfPath)
+	modules3rd, err := module3rd.Load(*modulesConfPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -185,7 +166,7 @@ func main() {
 		log.Fatal("set working directory with -d")
 	}
 
-	if !fileExists(*workParentDir) {
+	if !util.FileExists(*workParentDir) {
 		err := os.Mkdir(*workParentDir, 0755)
 		if err != nil {
 			log.Fatalf("Failed to create working directory(%s) does not exist.", *workParentDir)
@@ -207,14 +188,14 @@ func main() {
 		}
 	}
 
-	if !fileExists(workDir) {
+	if !util.FileExists(workDir) {
 		err := os.MkdirAll(workDir, 0755)
 		if err != nil {
 			log.Fatalf("Failed to create working directory(%s) does not exist.", workDir)
 		}
 	}
 
-	rootDir := saveCurrentDir()
+	rootDir := util.SaveCurrentDir()
 	// cd workDir
 	err = os.Chdir(workDir)
 	if err != nil {
@@ -252,7 +233,7 @@ func main() {
 
 	if len(modules3rd) > 0 {
 		for _, m := range modules3rd {
-			if err := provideModule3rd(&m); err != nil {
+			if err := module3rd.Provide(&m); err != nil {
 				log.Fatal(err)
 			}
 		}
@@ -288,7 +269,7 @@ func main() {
 		log.Println(zlibBuilder.WarnMsgWithLibrary())
 	}
 
-	configureScript := configureGen(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
+	configureScript := configure.Generate(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
 
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
@@ -297,10 +278,10 @@ func main() {
 
 	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
 
-	err = configureNginx()
+	err = configure.Run()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
-		printFatalMsg(err, "nginx-configure.log")
+		util.PrintFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
@@ -333,10 +314,10 @@ func main() {
 		}
 	}
 
-	err = buildNginx(*jobs)
+	err = builder.BuildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
-		printFatalMsg(err, "nginx-build.log")
+		util.PrintFatalMsg(err, "nginx-build.log")
 	}
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
