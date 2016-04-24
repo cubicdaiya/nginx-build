@@ -223,7 +223,7 @@ func main() {
 	if len(modules3rd) > 0 {
 		wg.Add(len(modules3rd))
 		for _, m := range modules3rd {
-			go downloadAndExtractModule3rdParallel(m, wg)
+			go module3rd.DownloadAndExtractParallel(m, wg)
 		}
 
 	}
