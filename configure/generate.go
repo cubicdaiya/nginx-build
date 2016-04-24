@@ -9,7 +9,7 @@ import (
 	"github.com/cubicdaiya/nginx-build/module3rd"
 )
 
-func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies []builder.StaticLibrary, options ConfigureOptions, rootDir string) string {
+func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies []builder.StaticLibrary, options Options, rootDir string) string {
 	openSSLStatic := false
 	if len(configure) == 0 {
 		configure = `#!/bin/sh

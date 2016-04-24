@@ -43,7 +43,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
 }
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenDefault() {
-	var configureOptions ConfigureOptions
+	var configureOptions Options
 	configureScript := Generate("", []module3rd.Module3rd{}, []builder.StaticLibrary{}, configureOptions, "")
 
 	if runtime.GOOS == "darwin" {
@@ -56,7 +56,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_PCRE]))
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_OPENSSL]))
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_ZLIB]))
-	var configureOptions ConfigureOptions
+	var configureOptions Options
 	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "")
 
 	assert.Contains(suite.T(), configureScript, "--with-http_ssl_module")

@@ -71,7 +71,7 @@ func main() {
 	}
 
 	var (
-		configureOptions configure.ConfigureOptions
+		configureOptions configure.Options
 		multiflag        StringFlag
 		multiflagDynamic StringFlag
 	)
