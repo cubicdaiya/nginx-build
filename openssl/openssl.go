@@ -3,35 +3,35 @@ package openssl
 import "regexp"
 
 var (
-	OpenSSLVersionRe    *regexp.Regexp
-	OpenSSLVersion09xRe *regexp.Regexp
-	OpenSSLVersion100Re *regexp.Regexp
-	OpenSSLVersion101Re *regexp.Regexp
-	OpenSSLVersion102Re *regexp.Regexp
+	openSSLVersionRe    *regexp.Regexp
+	openSSLVersion09xRe *regexp.Regexp
+	openSSLVersion100Re *regexp.Regexp
+	openSSLVersion101Re *regexp.Regexp
+	openSSLVersion102Re *regexp.Regexp
 )
 
 func init() {
-	OpenSSLVersionRe = regexp.MustCompile("(\\d+\\.\\d+\\.\\d+)([a-z]+)?")
-	OpenSSLVersion09xRe = regexp.MustCompile("^0\\.9\\.")
-	OpenSSLVersion100Re = regexp.MustCompile("^1\\.0\\.0")
-	OpenSSLVersion101Re = regexp.MustCompile("^1\\.0\\.1")
-	OpenSSLVersion102Re = regexp.MustCompile("^1\\.0\\.2")
+	openSSLVersionRe = regexp.MustCompile("(\\d+\\.\\d+\\.\\d+)([a-z]+)?")
+	openSSLVersion09xRe = regexp.MustCompile("^0\\.9\\.")
+	openSSLVersion100Re = regexp.MustCompile("^1\\.0\\.0")
+	openSSLVersion101Re = regexp.MustCompile("^1\\.0\\.1")
+	openSSLVersion102Re = regexp.MustCompile("^1\\.0\\.2")
 }
 
 func ParallelBuildAvailable(version string) bool {
-	group := OpenSSLVersionRe.FindSubmatch([]byte(version))
+	group := openSSLVersionRe.FindSubmatch([]byte(version))
 	vn := group[1]
 	sym := group[2]
 
-	if OpenSSLVersion09xRe.Match(vn) {
+	if openSSLVersion09xRe.Match(vn) {
 		return false
 	}
 
-	if OpenSSLVersion100Re.Match(vn) {
+	if openSSLVersion100Re.Match(vn) {
 		return false
 	}
 
-	if OpenSSLVersion101Re.Match(vn) {
+	if openSSLVersion101Re.Match(vn) {
 		if len(sym) == 0 {
 			return false
 		}
@@ -46,7 +46,7 @@ func ParallelBuildAvailable(version string) bool {
 		return false
 	}
 
-	if OpenSSLVersion102Re.Match(vn) {
+	if openSSLVersion102Re.Match(vn) {
 		if len(sym) == 0 {
 			return false
 		}
