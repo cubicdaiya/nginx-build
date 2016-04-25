@@ -9,8 +9,8 @@ build-cross:
 	GO15VENDOREXPERIMENT=1 GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
-	cd bin/linux/amd64/ && tar zcvf nginx-build-linux-amd64-${VERSION}.tar.gz nginx-build
-	cd bin/darwin/amd64/ && tar zcvf nginx-build-darwin-amd64-${VERSION}.tar.gz nginx-build
+	cd bin/linux/amd64/ && tar cvf nginx-build-linux-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-linux-amd64-${VERSION}.tar
+	cd bin/darwin/amd64/ && tar cvf nginx-build-darwin-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-darwin-amd64-${VERSION}.tar
 
 # ImageMagick and GD are required for ngx_small_light
 build-example: nginx-build
