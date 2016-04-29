@@ -18,7 +18,7 @@ func Name(version string) string {
 		sum += int(math.Pow10(size-i-1)) * n
 	}
 
-	// the source distribution name of openresty is renamed from 1.9.7.3
+	// the source distribution name of openresty is renamed in the 1.9.7.3 or later
 	if sum > 1972 {
 		return "openresty"
 	}

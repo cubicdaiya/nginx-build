@@ -82,7 +82,7 @@ $ nginx-build -d work -c configure.example
 
 ### Direct configuration for building nginx
 
-From `v0.4.0`, `nginx-build` allows to use nginx's configure options directly.
+In the `v0.4.0` or later, `nginx-build` allows to use nginx's configure options directly.
 
 ```bash
 $ nginx-build -d work \
