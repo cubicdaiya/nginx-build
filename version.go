@@ -24,12 +24,12 @@ func versionsGen() []string {
 	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 3, 12, 1, 15} // 1.x.x
 
 	// 0.1.0 ~ 0.9.7
-	for i := 0; i < 9; i++ {
+	for i := 0; i < len(versionsMinor0); i++ {
 		versions = append(versions, versionsSubmajorGen(0, i+1, versionsMinor0[i])...)
 	}
 
 	// 1.0.0 ~
-	for i := 0; i < 10; i++ {
+	for i := 0; i < len(versionsMinor1); i++ {
 		versions = append(versions, versionsSubmajorGen(1, i, versionsMinor1[i])...)
 	}
 
