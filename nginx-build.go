@@ -22,31 +22,31 @@ const (
 	NGINX_BUILD_VERSION = "0.9.2"
 )
 
+var (
+	nginxBuildOptions Options
+)
+
+func init() {
+	nginxBuildOptions = makeNginxBuildOptions()
+}
+
 func main() {
 	var dependencies []builder.StaticLibrary
 	wg := new(sync.WaitGroup)
 
 	// Parse flags
-	verbose := flag.Bool("verbose", false, "verbose mode")
-	pcreStatic := flag.Bool("pcre", false, "embedded PCRE statically")
-	openSSLStatic := flag.Bool("openssl", false, "embedded OpenSSL statically")
-	zlibStatic := flag.Bool("zlib", false, "embedded zlib statically")
-	clear := flag.Bool("clear", false, "remove entries in working directory")
-	versionPrint := flag.Bool("version", false, "print nginx-build versions")
-	versionsPrint := flag.Bool("versions", false, "print nginx versions")
-	openResty := flag.Bool("openresty", false, "download openresty instead of nginx")
-	tengine := flag.Bool("tengine", false, "download tengine instead of nginx")
-	configureOnly := flag.Bool("configureonly", false, "configuring nginx only not building")
-	jobs := flag.Int("j", runtime.NumCPU(), "jobs to build nginx")
-	version := flag.String("v", builder.NGINX_VERSION, "nginx version")
-	nginxConfigurePath := flag.String("c", "", "configuration file for building nginx")
-	modulesConfPath := flag.String("m", "", "configuration file for 3rd party modules")
-	workParentDir := flag.String("d", "", "working directory")
-	pcreVersion := flag.String("pcreversion", builder.PCRE_VERSION, "PCRE version")
-	openSSLVersion := flag.String("opensslversion", builder.OPENSSL_VERSION, "OpenSSL version")
-	zlibVersion := flag.String("zlibversion", builder.ZLIB_VERSION, "zlib version")
-	openRestyVersion := flag.String("openrestyversion", builder.OPENRESTY_VERSION, "openresty version")
-	tengineVersion := flag.String("tengineversion", builder.TENGINE_VERSION, "tengine version")
+	for k, v := range nginxBuildOptions.Bools {
+		v.Enabled = flag.Bool(k, false, v.Desc)
+		nginxBuildOptions.Bools[k] = v
+	}
+	for k, v := range nginxBuildOptions.Values {
+		v.Value = flag.String(k, v.Default, v.Desc)
+		nginxBuildOptions.Values[k] = v
+	}
+	for k, v := range nginxBuildOptions.Numbers {
+		v.Value = flag.Int(k, v.Default, v.Desc)
+		nginxBuildOptions.Numbers[k] = v
+	}
 
 	// fake flag for --with-xxx=dynamic
 	for i, arg := range os.Args {
@@ -95,7 +95,32 @@ func main() {
 	}
 
 	flag.CommandLine.SetOutput(os.Stdout)
+	// The output of original flag.Usage() is too long
+	flag.Usage = usage
 	flag.Parse()
+
+	jobs := nginxBuildOptions.Numbers["j"].Value
+
+	verbose := nginxBuildOptions.Bools["verbose"].Enabled
+	pcreStatic := nginxBuildOptions.Bools["pcre"].Enabled
+	openSSLStatic := nginxBuildOptions.Bools["openssl"].Enabled
+	zlibStatic := nginxBuildOptions.Bools["zlib"].Enabled
+	clear := nginxBuildOptions.Bools["clear"].Enabled
+	versionPrint := nginxBuildOptions.Bools["version"].Enabled
+	versionsPrint := nginxBuildOptions.Bools["versions"].Enabled
+	openResty := nginxBuildOptions.Bools["openresty"].Enabled
+	tengine := nginxBuildOptions.Bools["tengine"].Enabled
+	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
+
+	version := nginxBuildOptions.Values["v"].Value
+	nginxConfigurePath := nginxBuildOptions.Values["c"].Value
+	modulesConfPath := nginxBuildOptions.Values["m"].Value
+	workParentDir := nginxBuildOptions.Values["d"].Value
+	pcreVersion := nginxBuildOptions.Values["pcreversion"].Value
+	openSSLVersion := nginxBuildOptions.Values["opensslversion"].Value
+	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
+	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
+	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
 
 	// Allow multiple flags for `--add-module`
 	{
