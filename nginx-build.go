@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -29,28 +28,6 @@ var (
 
 func init() {
 	nginxBuildOptions = makeNginxBuildOptions()
-}
-
-func usage() {
-	fmt.Fprintf(os.Stdout, "Usage of %s:\n", os.Args[0])
-	flag.VisitAll(func(f *flag.Flag) {
-		if !isNginxBuildOption(f.Name) {
-			return
-		}
-		s := fmt.Sprintf("  -%s", f.Name)
-		_, usage := flag.UnquoteUsage(f)
-		s += "\n\t"
-		s += usage
-		defValue := defaultStringValue(f.Name)
-		if defValue != "" {
-			s += fmt.Sprintf(" ( default: %s )", defValue)
-		}
-
-		fmt.Fprintf(os.Stdout, "%s\n", s)
-	})
-	fmt.Fprintf(os.Stdout, `
-And nginx-build accepts nginx-self options directly.
-`)
 }
 
 func main() {
