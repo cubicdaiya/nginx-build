@@ -68,7 +68,7 @@ func download(m Module3rd, logName string) error {
 		cmd.Stderr = writer
 
 		return cmd.Run()
-	case "local":
+	case "local": // not implemented yet
 		return nil
 	}
 
