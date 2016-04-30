@@ -1,5 +1,4 @@
 [echo-nginx-module]
-form=git
 url=https://github.com/openresty/echo-nginx-module.git
 rev=v0.58
 

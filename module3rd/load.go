@@ -29,6 +29,9 @@ func loadModule(s *ini.Section) Module3rd {
 
 	module.Name = s.Name()
 	module.Form = s.Key("form").String()
+	if module.Form == "" {
+		module.Form = "git"
+	}
 	module.Url = s.Key("url").String()
 	module.Rev = s.Key("rev").String()
 	module.Shprov = s.Key("shprov").String()
