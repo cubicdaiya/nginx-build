@@ -69,9 +69,8 @@ func usage() {
 			return
 		}
 		s := fmt.Sprintf("  -%s", f.Name)
-		_, usage := flag.UnquoteUsage(f)
 		s += "\n\t"
-		s += usage
+		s += f.Usage
 		defValue := defaultStringValue(f.Name)
 		if defValue != "" {
 			s += fmt.Sprintf(" ( default: %s )", defValue)
