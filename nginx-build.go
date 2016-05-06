@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	NGINX_BUILD_VERSION = "0.9.2"
+	NGINX_BUILD_VERSION = "0.9.3"
 )
 
 var (
