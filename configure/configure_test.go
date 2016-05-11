@@ -44,7 +44,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenDefault() {
 	var configureOptions Options
-	configureScript := Generate("", []module3rd.Module3rd{}, []builder.StaticLibrary{}, configureOptions, "")
+	configureScript := Generate("", []module3rd.Module3rd{}, []builder.StaticLibrary{}, configureOptions, "", false, 1)
 
 	if runtime.GOOS == "darwin" {
 		assert.Contains(suite.T(), configureScript, "--with-cc-opt=\"-Wno-deprecated-declarations\" \\")
@@ -57,7 +57,7 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_OPENSSL]))
 	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_ZLIB]))
 	var configureOptions Options
-	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "")
+	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "", false, 1)
 
 	assert.Contains(suite.T(), configureScript, "--with-http_ssl_module")
 	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-pcre=../pcre-%s \\\n", builder.PCRE_VERSION))
