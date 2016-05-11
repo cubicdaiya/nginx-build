@@ -9,7 +9,7 @@ import (
 	"github.com/cubicdaiya/nginx-build/module3rd"
 )
 
-func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies []builder.StaticLibrary, options Options, rootDir string) string {
+func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies []builder.StaticLibrary, options Options, rootDir string, openResty bool, jobs int) string {
 	openSSLStatic := false
 	if len(configure) == 0 {
 		configure = `#!/bin/sh
@@ -17,8 +17,12 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 ./configure \
 `
 		if runtime.GOOS == "darwin" {
-			configure += "--with-cc-opt=\"-Wno-deprecated-declarations\" \\"
+			configure += "--with-cc-opt=\"-Wno-deprecated-declarations\" \\\n"
 		}
+	}
+
+	if openResty {
+		configure += fmt.Sprintf("-j%d \\\n", jobs)
 	}
 
 	for _, d := range dependencies {

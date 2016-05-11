@@ -294,7 +294,7 @@ func main() {
 		log.Println(zlibBuilder.WarnMsgWithLibrary())
 	}
 
-	configureScript := configure.Generate(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir)
+	configureScript := configure.Generate(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir, *openResty, *jobs)
 
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
