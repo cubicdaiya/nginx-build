@@ -176,7 +176,7 @@ func main() {
 
 	versionCheck(*version)
 
-	nginxConfigure, err := fileGetContents(*nginxConfigurePath)
+	nginxConfigure, err := util.FileGetContents(*nginxConfigurePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -207,7 +207,7 @@ func main() {
 		workDir = *workParentDir + "/nginx/" + *version
 	}
 	if *clear {
-		err := clearWorkDir(workDir)
+		err := util.ClearWorkDir(workDir)
 		if err != nil {
 			log.Fatal(err)
 		}
