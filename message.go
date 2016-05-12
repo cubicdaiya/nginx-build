@@ -14,7 +14,7 @@ func printNginxBuildVersion() {
 Compiler: %s %s
 Copyright (C) 2014-2016 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 `,
-		NGINX_BUILD_VERSION,
+		NginxBuildVersion,
 		runtime.Compiler,
 		runtime.Version())
 
@@ -31,7 +31,7 @@ func printFirstMsg() {
 	fmt.Printf(`nginx-build: %s
 Compiler: %s %s
 `,
-		NGINX_BUILD_VERSION,
+		NginxBuildVersion,
 		runtime.Compiler,
 		runtime.Version())
 }
