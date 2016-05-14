@@ -93,6 +93,7 @@ func main() {
 
 	flag.CommandLine.SetOutput(os.Stdout)
 	// The output of original flag.Usage() is too long
+	defaultUsage := flag.Usage
 	flag.Usage = usage
 	flag.Parse()
 
@@ -108,6 +109,7 @@ func main() {
 	openResty := nginxBuildOptions.Bools["openresty"].Enabled
 	tengine := nginxBuildOptions.Bools["tengine"].Enabled
 	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
+	helpAll := nginxBuildOptions.Bools["help-all"].Enabled
 
 	version := nginxBuildOptions.Values["v"].Value
 	nginxConfigurePath := nginxBuildOptions.Values["c"].Value
@@ -137,6 +139,11 @@ func main() {
 
 	configureOptions.Values = argsString
 	configureOptions.Bools = argsBool
+
+	if *helpAll {
+		defaultUsage()
+		return
+	}
 
 	if *versionPrint {
 		printNginxBuildVersion()
