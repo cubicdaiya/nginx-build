@@ -31,9 +31,6 @@ func init() {
 }
 
 func main() {
-	var dependencies []builder.StaticLibrary
-	wg := new(sync.WaitGroup)
-
 	// Parse flags
 	for k, v := range nginxBuildOptions.Bools {
 		v.Enabled = flag.Bool(k, false, v.Desc)
@@ -227,6 +224,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	wg := new(sync.WaitGroup)
 	if *pcreStatic {
 		wg.Add(1)
 		go downloadAndExtractParallel(&pcreBuilder, wg)
@@ -267,6 +265,7 @@ func main() {
 	// cd workDir/nginx-${version}
 	os.Chdir(nginxBuilder.SourcePath())
 
+	var dependencies []builder.StaticLibrary
 	if *pcreStatic {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&pcreBuilder))
 	}
