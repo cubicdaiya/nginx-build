@@ -7,9 +7,15 @@ import (
 	"github.com/cubicdaiya/nginx-build/command"
 )
 
-func patch(path, option string) error {
+func patch(path, option string, reverse bool) error {
 	args := []string{"sh", "-c"}
-	args = append(args, fmt.Sprintf("patch %s < %s", option, path))
+	body := ""
+	if reverse {
+		body = fmt.Sprintf("patch %s -R < %s", option, path)
+	} else {
+		body = fmt.Sprintf("patch %s < %s", option, path)
+	}
+	args = append(args, body)
 
 	cmd, err := command.Make(args)
 	if err != nil {

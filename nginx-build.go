@@ -214,8 +214,7 @@ func main() {
 		workDir = *workParentDir + "/nginx/" + *version
 	}
 
-	// Applying patch is irreversible
-	if *clear || *patchPath != "" {
+	if *clear {
 		err := util.ClearWorkDir(workDir)
 		if err != nil {
 			log.Fatal(err)
@@ -316,7 +315,7 @@ func main() {
 	if *patchPath != "" {
 		absoletePatchPath := fmt.Sprintf("%s/%s", rootDir, *patchPath)
 		if util.FileExists(absoletePatchPath) {
-			if err := patch(absoletePatchPath, *patchOption); err != nil {
+			if err := patch(absoletePatchPath, *patchOption, false); err != nil {
 				log.Fatalf("Failed to apply patch: %s %s", *patchOption, *patchPath)
 			}
 		} else {
@@ -366,6 +365,12 @@ func main() {
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
 		util.PrintFatalMsg(err, "nginx-build.log")
+	}
+
+	log.Printf("Reverting patch: %s", *patchPath)
+
+	if err := patch(fmt.Sprintf("%s/%s", rootDir, *patchPath), *patchOption, true); err != nil {
+		log.Fatalf("Failed to reverse patch: %s -R %s", *patchOption, *patchPath)
 	}
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
