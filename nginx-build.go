@@ -369,8 +369,13 @@ func main() {
 
 	log.Printf("Reverting patch: %s", *patchPath)
 
-	if err := patch(fmt.Sprintf("%s/%s", rootDir, *patchPath), *patchOption, true); err != nil {
-		log.Fatalf("Failed to reverse patch: %s -R %s", *patchOption, *patchPath)
+	if *patchPath != "" {
+		absoletePatchPath := fmt.Sprintf("%s/%s", rootDir, *patchPath)
+		if util.FileExists(absoletePatchPath) {
+			if err := patch(fmt.Sprintf("%s/%s", rootDir, *patchPath), *patchOption, true); err != nil {
+				log.Fatalf("Failed to reverse patch: %s -R %s", *patchOption, *patchPath)
+			}
+		}
 	}
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
