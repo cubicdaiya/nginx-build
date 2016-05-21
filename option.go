@@ -113,6 +113,14 @@ func makeNginxBuildOptions() Options {
 		Desc:    "tengine version",
 		Default: builder.TENGINE_VERSION,
 	}
+	argsString["patch"] = OptionValue{
+		Desc:    "patch path for applying to nginx",
+		Default: "",
+	}
+	argsString["patch-opt"] = OptionValue{
+		Desc:    "option for patch",
+		Default: "",
+	}
 
 	nginxBuildOptions.Bools = argsBool
 	nginxBuildOptions.Values = argsString

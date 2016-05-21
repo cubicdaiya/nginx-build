@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -120,6 +121,8 @@ func main() {
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
+	patchPath := nginxBuildOptions.Values["patch"].Value
+	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
 	// Allow multiple flags for `--add-module`
 	{
@@ -210,7 +213,9 @@ func main() {
 	} else {
 		workDir = *workParentDir + "/nginx/" + *version
 	}
-	if *clear {
+
+	// Applying patch is irreversible
+	if *clear || *patchPath != "" {
 		err := util.ClearWorkDir(workDir)
 		if err != nil {
 			log.Fatal(err)
@@ -225,7 +230,6 @@ func main() {
 	}
 
 	rootDir := util.SaveCurrentDir()
-	// cd workDir
 	err = os.Chdir(workDir)
 	if err != nil {
 		log.Fatal(err)
@@ -305,6 +309,19 @@ func main() {
 	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
+	}
+
+	log.Printf("Applying patch: %s %s", *patchOption, *patchPath)
+
+	if *patchPath != "" {
+		absoletePatchPath := fmt.Sprintf("%s/%s", rootDir, *patchPath)
+		if util.FileExists(absoletePatchPath) {
+			if err := patch(absoletePatchPath, *patchOption); err != nil {
+				log.Fatalf("Failed to apply patch: %s %s", *patchOption, *patchPath)
+			}
+		} else {
+			log.Fatalf("[warn]Patch pathname: %s is not found", *patchPath)
+		}
 	}
 
 	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
