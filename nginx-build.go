@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -310,28 +309,19 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
-	log.Printf("Applying patch: %s %s", *patchOption, *patchPath)
-
-	if *patchPath != "" {
-		absoletePatchPath := fmt.Sprintf("%s/%s", rootDir, *patchPath)
-		if util.FileExists(absoletePatchPath) {
-			if err := patch(absoletePatchPath, *patchOption, false); err != nil {
-				log.Fatalf("Failed to apply patch: %s %s", *patchOption, *patchPath)
-			}
-		} else {
-			log.Fatalf("[warn]Patch pathname: %s is not found", *patchPath)
-		}
-	}
+	util.Patch(*patchPath, *patchOption, rootDir, false)
 
 	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
 
 	err = configure.Run()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		util.PrintFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 		return
 	}
@@ -364,19 +354,11 @@ func main() {
 	err = builder.BuildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		util.PrintFatalMsg(err, "nginx-build.log")
 	}
 
-	log.Printf("Reverting patch: %s", *patchPath)
-
-	if *patchPath != "" {
-		absoletePatchPath := fmt.Sprintf("%s/%s", rootDir, *patchPath)
-		if util.FileExists(absoletePatchPath) {
-			if err := patch(fmt.Sprintf("%s/%s", rootDir, *patchPath), *patchOption, true); err != nil {
-				log.Fatalf("Failed to reverse patch: %s -R %s", *patchOption, *patchPath)
-			}
-		}
-	}
+	util.Patch(*patchPath, *patchOption, rootDir, true)
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 
