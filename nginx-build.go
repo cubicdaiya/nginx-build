@@ -369,8 +369,6 @@ func main() {
 		util.PrintFatalMsg(err, "nginx-build.log")
 	}
 
-	util.Patch(*patchPath, *patchOption, rootDir, true)
-
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 
 	// cd rootDir
