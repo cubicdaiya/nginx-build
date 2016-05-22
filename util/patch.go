@@ -71,6 +71,6 @@ func Patch(path, option, root string, reverse bool) {
 			log.Fatalf("Failed to apply patch: %s %s", option, path)
 		}
 	} else {
-		log.Fatalf("[warn]Patch pathname: %s is not found", path)
+		log.Fatalf("Patch pathname: %s is not found", path)
 	}
 }
