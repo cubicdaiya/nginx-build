@@ -90,3 +90,11 @@ OPTIONS
 **\-configureonly**
 
  configuring nginx only not building
+
+**\-patch**
+
+ patch path for applying to nginx
+
+**\-patch-opt**
+
+ option for patch

@@ -233,6 +233,20 @@ dynamic=true
 shprov=./setup
 ```
 
+## Applying patch before building nginx
+
+`nginx-build` provides the options such as `-patch` and `-patch-opt` for applying patch to nginx.
+
+```console
+nginx-build \
+ -d work \
+ -patch nginx__http2_spdy.patch \
+ -patch-opt "-p1" \
+ -v 1.9.7 \
+ --with-http_spdy_module \
+ --with-http_v2_module
+```
+
 ## Build OpenResty
 
 `nginx-build` supports to build [OpenResty](https://openresty.org/).
