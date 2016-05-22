@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
 	"runtime"
 	"strings"
 	"sync"
@@ -120,6 +121,8 @@ func main() {
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
+	patchPath := nginxBuildOptions.Values["patch"].Value
+	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
 	// Allow multiple flags for `--add-module`
 	{
@@ -210,6 +213,7 @@ func main() {
 	} else {
 		workDir = *workParentDir + "/nginx/" + *version
 	}
+
 	if *clear {
 		err := util.ClearWorkDir(workDir)
 		if err != nil {
@@ -225,7 +229,6 @@ func main() {
 	}
 
 	rootDir := util.SaveCurrentDir()
-	// cd workDir
 	err = os.Chdir(workDir)
 	if err != nil {
 		log.Fatal(err)
@@ -307,15 +310,29 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
+	util.Patch(*patchPath, *patchOption, rootDir, false)
+
+	// reverts source code with patch -R when the build was interrupted.
+	if *patchPath != "" {
+		sigChannel := make(chan os.Signal, 1)
+		signal.Notify(sigChannel, os.Interrupt)
+		go func() {
+			<- sigChannel
+			util.Patch(*patchPath, *patchOption, rootDir, true)
+		}()
+	}
+
 	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
 
 	err = configure.Run()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		util.PrintFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 		return
 	}
@@ -348,8 +365,11 @@ func main() {
 	err = builder.BuildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
+		util.Patch(*patchPath, *patchOption, rootDir, true)
 		util.PrintFatalMsg(err, "nginx-build.log")
 	}
+
+	util.Patch(*patchPath, *patchOption, rootDir, true)
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 
