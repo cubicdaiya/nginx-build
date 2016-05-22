@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
 	"runtime"
 	"strings"
 	"sync"
@@ -310,6 +311,16 @@ func main() {
 	}
 
 	util.Patch(*patchPath, *patchOption, rootDir, false)
+
+	// reverts source code with patch -R when the build was interrupted.
+	if *patchPath != "" {
+		sigChannel := make(chan os.Signal, 1)
+		signal.Notify(sigChannel, os.Interrupt)
+		go func() {
+			<- sigChannel
+			util.Patch(*patchPath, *patchOption, rootDir, true)
+		}()
+	}
 
 	log.Printf("Configure %s.....", nginxBuilder.SourcePath())
 

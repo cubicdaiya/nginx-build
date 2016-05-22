@@ -5,11 +5,33 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/cubicdaiya/nginx-build/command"
 )
 
+var (
+	mutex sync.Mutex
+	patched bool
+)
+
+func init() {
+	patched = false
+}
+
 func patch(path, option string, reverse bool) error {
+
+	if reverse {
+		mutex.Lock()
+		if patched {
+			mutex.Unlock()
+			return nil
+		}
+		patched = true
+		mutex.Unlock()
+	}
+
+
 	args := []string{"sh", "-c"}
 	body := ""
 	if reverse {
@@ -37,7 +59,7 @@ func Patch(path, option, root string, reverse bool) {
 		return
 	}
 	if !strings.HasPrefix(path, "/") {
-		fmt.Sprintf("%s/%s", root, path)
+		path = fmt.Sprintf("%s/%s", root, path)
 	}
 	if FileExists(path) {
 		if reverse {
