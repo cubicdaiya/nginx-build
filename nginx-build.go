@@ -325,7 +325,7 @@ func main() {
 		sigChannel := make(chan os.Signal, 1)
 		signal.Notify(sigChannel, os.Interrupt)
 		go func() {
-			<- sigChannel
+			<-sigChannel
 			util.Patch(*patchPath, *patchOption, rootDir, true)
 		}()
 	}

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	mutex sync.Mutex
+	mutex   sync.Mutex
 	patched bool
 )
 
@@ -30,7 +30,6 @@ func patch(path, option string, reverse bool) error {
 		patched = true
 		mutex.Unlock()
 	}
-
 
 	args := []string{"sh", "-c"}
 	body := ""
