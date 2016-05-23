@@ -234,6 +234,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// remove nginx source code applyed patch
+	if *patchPath != "" && util.FileExists(nginxBuilder.SourcePath()) {
+		err := os.RemoveAll(nginxBuilder.SourcePath())
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	wg := new(sync.WaitGroup)
 	if *pcreStatic {
 		wg.Add(1)
