@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sync"
 
 	"github.com/cubicdaiya/nginx-build/command"
 	"github.com/cubicdaiya/nginx-build/util"
 )
 
-func DownloadAndExtractParallel(m Module3rd, wg *sync.WaitGroup) {
+func DownloadAndExtractParallel(m Module3rd) {
 	if util.FileExists(m.Name) {
 		log.Printf("%s already exists.", m.Name)
-		wg.Done()
 		return
 	}
 
@@ -34,8 +32,6 @@ func DownloadAndExtractParallel(m Module3rd, wg *sync.WaitGroup) {
 	} else if !util.FileExists(m.Url) {
 		log.Fatalf("no such directory:%s", m.Url)
 	}
-
-	wg.Done()
 }
 
 func download(m Module3rd, logName string) error {

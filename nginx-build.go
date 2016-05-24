@@ -245,26 +245,41 @@ func main() {
 	wg := new(sync.WaitGroup)
 	if *pcreStatic {
 		wg.Add(1)
-		go downloadAndExtractParallel(&pcreBuilder, wg)
+		go func() {
+			downloadAndExtractParallel(&pcreBuilder)
+			wg.Done()
+		}()
 	}
 
 	if *openSSLStatic {
 		wg.Add(1)
-		go downloadAndExtractParallel(&openSSLBuilder, wg)
+		go func () {
+			downloadAndExtractParallel(&openSSLBuilder)
+			wg.Done()
+		}()
 	}
 
 	if *zlibStatic {
 		wg.Add(1)
-		go downloadAndExtractParallel(&zlibBuilder, wg)
+		go func () {
+			downloadAndExtractParallel(&zlibBuilder)
+			wg.Done()
+		}()
 	}
 
 	wg.Add(1)
-	go downloadAndExtractParallel(&nginxBuilder, wg)
+	go func() {
+		downloadAndExtractParallel(&nginxBuilder)
+		wg.Done()
+	}()
 
 	if len(modules3rd) > 0 {
 		wg.Add(len(modules3rd))
 		for _, m := range modules3rd {
-			go module3rd.DownloadAndExtractParallel(m, wg)
+			go func() {
+				module3rd.DownloadAndExtractParallel(m)
+				wg.Done()
+			}()
 		}
 
 	}

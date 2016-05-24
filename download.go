@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sync"
 
 	"github.com/cubicdaiya/nginx-build/builder"
 	"github.com/cubicdaiya/nginx-build/command"
@@ -65,10 +64,9 @@ func downloadAndExtract(b *builder.Builder) error {
 	return nil
 }
 
-func downloadAndExtractParallel(b *builder.Builder, wg *sync.WaitGroup) {
+func downloadAndExtractParallel(b *builder.Builder) {
 	err := downloadAndExtract(b)
 	if err != nil {
 		util.PrintFatalMsg(err, b.LogPath())
 	}
-	wg.Done()
 }
