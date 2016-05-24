@@ -276,10 +276,10 @@ func main() {
 	if len(modules3rd) > 0 {
 		wg.Add(len(modules3rd))
 		for _, m := range modules3rd {
-			go func() {
+			go func(m module3rd.Module3rd) {
 				module3rd.DownloadAndExtractParallel(m)
 				wg.Done()
-			}()
+			}(m)
 		}
 
 	}
