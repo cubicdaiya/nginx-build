@@ -393,7 +393,4 @@ func main() {
 	}
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
-
-	// cd rootDir
-	os.Chdir(rootDir)
 }
