@@ -57,19 +57,30 @@ func Patch(path, option, root string, reverse bool) {
 	if path == "" {
 		return
 	}
-	if !strings.HasPrefix(path, "/") {
-		path = fmt.Sprintf("%s/%s", root, path)
-	}
-	if FileExists(path) {
-		if reverse {
-			log.Printf("Reverting patch: %s", path)
-		} else {
-			log.Printf("Applying patch: %s %s", option, path)
-		}
-		if err := patch(path, option, reverse); err != nil {
-			log.Fatalf("Failed to apply patch: %s %s", option, path)
-		}
+
+	var pathes []string
+	if strings.Contains(path, ",") {
+		pathes = strings.Split(path, ",")
 	} else {
-		log.Fatalf("Patch pathname: %s is not found", path)
+		pathes = append(pathes, path)
+	}
+
+	for _, path := range pathes {
+
+		if !strings.HasPrefix(path, "/") {
+			path = fmt.Sprintf("%s/%s", root, path)
+		}
+		if FileExists(path) {
+			if reverse {
+				log.Printf("Reverting patch: %s", path)
+			} else {
+				log.Printf("Applying patch: %s %s", option, path)
+			}
+			if err := patch(path, option, reverse); err != nil {
+				log.Fatalf("Failed to apply patch: %s %s", option, path)
+			}
+		} else {
+			log.Fatalf("Patch pathname: %s is not found", path)
+		}
 	}
 }

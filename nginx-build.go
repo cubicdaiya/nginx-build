@@ -349,14 +349,7 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
-	if strings.Contains(*patchPath, ",") {
-		pathes := strings.Split(*patchPath, ",")
-		for _, path := range pathes {
-			util.Patch(path, *patchOption, rootDir, false)
-		}
-	} else {
-		util.Patch(*patchPath, *patchOption, rootDir, false)
-	}
+	util.Patch(*patchPath, *patchOption, rootDir, false)
 
 	// reverts source code with patch -R when the build was interrupted.
 	if *patchPath != "" {
