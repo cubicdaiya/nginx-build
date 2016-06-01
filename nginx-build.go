@@ -32,14 +32,22 @@ func init() {
 }
 
 func main() {
+	var (
+		multiflagPatch StringFlag
+	)
+
 	// Parse flags
 	for k, v := range nginxBuildOptions.Bools {
 		v.Enabled = flag.Bool(k, false, v.Desc)
 		nginxBuildOptions.Bools[k] = v
 	}
 	for k, v := range nginxBuildOptions.Values {
-		v.Value = flag.String(k, v.Default, v.Desc)
-		nginxBuildOptions.Values[k] = v
+		if k == "patch" {
+			flag.Var(&multiflagPatch, k, v.Desc)
+		} else {
+			v.Value = flag.String(k, v.Default, v.Desc)
+			nginxBuildOptions.Values[k] = v
+		}
 	}
 	for k, v := range nginxBuildOptions.Numbers {
 		v.Value = flag.Int(k, v.Default, v.Desc)
@@ -121,8 +129,15 @@ func main() {
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
-	patchPath := nginxBuildOptions.Values["patch"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
+
+	// Allow multiple flags for `--patch`
+	{
+		tmp := nginxBuildOptions.Values["patch"]
+		tmp_ := multiflagPatch.String()
+		tmp.Value = &tmp_
+		nginxBuildOptions.Values["patch"] = tmp
+	}
 
 	// Allow multiple flags for `--add-module`
 	{
@@ -140,6 +155,7 @@ func main() {
 		argsString["add-dynamic-module"] = tmp
 	}
 
+	patchPath := nginxBuildOptions.Values["patch"].Value
 	configureOptions.Values = argsString
 	configureOptions.Bools = argsBool
 
@@ -253,7 +269,7 @@ func main() {
 
 	if *openSSLStatic {
 		wg.Add(1)
-		go func () {
+		go func() {
 			downloadAndExtractParallel(&openSSLBuilder)
 			wg.Done()
 		}()
@@ -261,7 +277,7 @@ func main() {
 
 	if *zlibStatic {
 		wg.Add(1)
-		go func () {
+		go func() {
 			downloadAndExtractParallel(&zlibBuilder)
 			wg.Done()
 		}()
