@@ -120,6 +120,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-http_degradation_module",
 		Desc: "enable ngx_http_degradation_module",
 	}
+	argsBool["with-http_slice_module"] = OptionBool{
+		Name: "--with-http_slice_module",
+		Desc: "enable ngx_http_slice_module",
+	}
 	argsBool["with-http_stub_status_module"] = OptionBool{
 		Name: "--with-http_stub_status_module",
 		Desc: "enable ngx_http_stub_status_module",
