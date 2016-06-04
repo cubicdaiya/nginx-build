@@ -16,17 +16,17 @@ type Builder struct {
 func (builder *Builder) name() string {
 	var name string
 	switch builder.Component {
-	case COMPONENT_NGINX:
+	case ComponentNginx:
 		name = "nginx"
-	case COMPONENT_PCRE:
+	case ComponentPcre:
 		name = "pcre"
-	case COMPONENT_OPENSSL:
+	case ComponentOpenSSL:
 		name = "openssl"
-	case COMPONENT_ZLIB:
+	case ComponentZlib:
 		name = "zlib"
-	case COMPONENT_OPENRESTY:
+	case ComponentOpenResty:
 		name = openresty.Name(builder.Version)
-	case COMPONENT_TENGINE:
+	case ComponentTengine:
 		name = "tengine"
 	default:
 		panic("invalid component")
@@ -71,18 +71,18 @@ func MakeBuilder(component int, version string) Builder {
 	builder.Component = component
 	builder.Version = version
 	switch component {
-	case COMPONENT_NGINX:
-		builder.DownloadURLPrefix = NGINX_DOWNLOAD_URL_PREFIX
-	case COMPONENT_PCRE:
-		builder.DownloadURLPrefix = PCRE_DOWNLOAD_URL_PREFIX
-	case COMPONENT_OPENSSL:
-		builder.DownloadURLPrefix = OPENSSL_DOWNLOAD_URL_PREFIX
-	case COMPONENT_ZLIB:
-		builder.DownloadURLPrefix = ZLIB_DOWNLOAD_URL_PREFIX
-	case COMPONENT_OPENRESTY:
-		builder.DownloadURLPrefix = OPENRESTY_DOWNLOAD_URL_PREFIX
-	case COMPONENT_TENGINE:
-		builder.DownloadURLPrefix = TENGINE_DOWNLOAD_URL_PREFIX
+	case ComponentNginx:
+		builder.DownloadURLPrefix = NginxDownloadURLPrefix
+	case ComponentPcre:
+		builder.DownloadURLPrefix = PcreDownloadURLPrefix
+	case ComponentOpenSSL:
+		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
+	case ComponentZlib:
+		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
+	case ComponentOpenResty:
+		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
+	case ComponentTengine:
+		builder.DownloadURLPrefix = TengineDownloadURLPrefix
 	default:
 		panic("invalid component")
 	}

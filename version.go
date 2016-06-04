@@ -40,7 +40,7 @@ func versionsGen() []string {
 func versionsGenOpenResty() []string {
 	var versions []string
 
-	versions = append(versions, fmt.Sprintf("openresty-%s", builder.OPENRESTY_VERSION))
+	versions = append(versions, fmt.Sprintf("openresty-%s", builder.OpenRestyVersion))
 
 	return versions
 }
@@ -48,7 +48,7 @@ func versionsGenOpenResty() []string {
 func versionsGenTengine() []string {
 	var versions []string
 
-	versions = append(versions, fmt.Sprintf("tengine-%s", builder.TENGINE_VERSION))
+	versions = append(versions, fmt.Sprintf("tengine-%s", builder.TengineVersion))
 
 	return versions
 }
@@ -65,6 +65,6 @@ func printNginxVersions() {
 func versionCheck(version string) {
 	if len(version) == 0 {
 		log.Println("[warn]nginx version is not set.")
-		log.Printf("[warn]nginx-build use %s.\n", builder.NGINX_VERSION)
+		log.Printf("[warn]nginx-build use %s.\n", builder.NginxVersion)
 	}
 }

@@ -188,15 +188,15 @@ func main() {
 		log.Fatal("select one between '-openresty' and '-tengine'.")
 	}
 	if *openResty {
-		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_OPENRESTY, *openRestyVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
 	} else if *tengine {
-		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_TENGINE, *tengineVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion)
 	} else {
-		nginxBuilder = builder.MakeBuilder(builder.COMPONENT_NGINX, *version)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
 	}
-	pcreBuilder := builder.MakeBuilder(builder.COMPONENT_PCRE, *pcreVersion)
-	openSSLBuilder := builder.MakeBuilder(builder.COMPONENT_OPENSSL, *openSSLVersion)
-	zlibBuilder := builder.MakeBuilder(builder.COMPONENT_ZLIB, *zlibVersion)
+	pcreBuilder := builder.MakeBuilder(builder.ComponentPcre, *pcreVersion)
+	openSSLBuilder := builder.MakeBuilder(builder.ComponentOpenSSL, *openSSLVersion)
+	zlibBuilder := builder.MakeBuilder(builder.ComponentZlib, *zlibVersion)
 
 	// change default umask
 	_ = syscall.Umask(0)

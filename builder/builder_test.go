@@ -14,83 +14,83 @@ type BuilderTestSuite struct {
 }
 
 func (suite *BuilderTestSuite) SetupTest() {
-	suite.builders = make([]Builder, COMPONENT_MAX)
+	suite.builders = make([]Builder, ComponentMax)
 
-	suite.builders[COMPONENT_NGINX] = MakeBuilder(COMPONENT_NGINX, NGINX_VERSION)
-	suite.builders[COMPONENT_PCRE] = MakeBuilder(COMPONENT_PCRE, PCRE_VERSION)
-	suite.builders[COMPONENT_OPENSSL] = MakeBuilder(COMPONENT_OPENSSL, OPENSSL_VERSION)
-	suite.builders[COMPONENT_ZLIB] = MakeBuilder(COMPONENT_ZLIB, ZLIB_VERSION)
-	suite.builders[COMPONENT_OPENRESTY] = MakeBuilder(COMPONENT_OPENRESTY, OPENRESTY_VERSION)
-	suite.builders[COMPONENT_TENGINE] = MakeBuilder(COMPONENT_TENGINE, TENGINE_VERSION)
+	suite.builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion)
+	suite.builders[ComponentPcre] = MakeBuilder(ComponentPcre, PcreVersion)
+	suite.builders[ComponentOpenSSL] = MakeBuilder(ComponentOpenSSL, OpenSSLVersion)
+	suite.builders[ComponentZlib] = MakeBuilder(ComponentZlib, ZlibVersion)
+	suite.builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
+	suite.builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
 }
 
 func (suite *BuilderTestSuite) TestName() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].name(), "nginx")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].name(), "pcre")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].name(), "openssl")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].name(), "zlib")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].name(), "openresty")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].name(), "tengine")
+	assert.Equal(suite.T(), suite.builders[ComponentNginx].name(), "nginx")
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].name(), "pcre")
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].name(), "openssl")
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].name(), "zlib")
+	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].name(), "openresty")
+	assert.Equal(suite.T(), suite.builders[ComponentTengine].name(), "tengine")
 }
 
 func (suite *BuilderTestSuite) TestOption() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].option(), "--with-pcre")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].option(), "--with-openssl")
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].option(), "--with-zlib")
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].option(), "--with-pcre")
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].option(), "--with-openssl")
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].option(), "--with-zlib")
 }
 
 func (suite *BuilderTestSuite) TestDownloadURL() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].DownloadURL(), fmt.Sprintf("%s/nginx-%s.tar.gz", NGINX_DOWNLOAD_URL_PREFIX, NGINX_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].DownloadURL(), fmt.Sprintf("%s/pcre-%s.tar.gz", PCRE_DOWNLOAD_URL_PREFIX, PCRE_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].DownloadURL(), fmt.Sprintf("%s/openssl-%s.tar.gz", OPENSSL_DOWNLOAD_URL_PREFIX, OPENSSL_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].DownloadURL(), fmt.Sprintf("%s/zlib-%s.tar.gz", ZLIB_DOWNLOAD_URL_PREFIX, ZLIB_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].DownloadURL(), fmt.Sprintf("%s/openresty-%s.tar.gz", OPENRESTY_DOWNLOAD_URL_PREFIX, OPENRESTY_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].DownloadURL(), fmt.Sprintf("%s/tengine-%s.tar.gz", TENGINE_DOWNLOAD_URL_PREFIX, TENGINE_VERSION))
+	assert.Equal(suite.T(), suite.builders[ComponentNginx].DownloadURL(), fmt.Sprintf("%s/nginx-%s.tar.gz", NginxDownloadURLPrefix, NginxVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].DownloadURL(), fmt.Sprintf("%s/pcre-%s.tar.gz", PcreDownloadURLPrefix, PcreVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].DownloadURL(), fmt.Sprintf("%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, OpenSSLVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].DownloadURL(), fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, ZlibVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].DownloadURL(), fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, OpenRestyVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentTengine].DownloadURL(), fmt.Sprintf("%s/tengine-%s.tar.gz", TengineDownloadURLPrefix, TengineVersion))
 }
 
 func (suite *BuilderTestSuite) TestSourcePath() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].SourcePath(), fmt.Sprintf("nginx-%s", NGINX_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].SourcePath(), fmt.Sprintf("pcre-%s", PCRE_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].SourcePath(), fmt.Sprintf("openssl-%s", OPENSSL_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].SourcePath(), fmt.Sprintf("zlib-%s", ZLIB_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].SourcePath(), fmt.Sprintf("openresty-%s", OPENRESTY_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].SourcePath(), fmt.Sprintf("tengine-%s", TENGINE_VERSION))
+	assert.Equal(suite.T(), suite.builders[ComponentNginx].SourcePath(), fmt.Sprintf("nginx-%s", NginxVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].SourcePath(), fmt.Sprintf("pcre-%s", PcreVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].SourcePath(), fmt.Sprintf("openssl-%s", OpenSSLVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].SourcePath(), fmt.Sprintf("zlib-%s", ZlibVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].SourcePath(), fmt.Sprintf("openresty-%s", OpenRestyVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentTengine].SourcePath(), fmt.Sprintf("tengine-%s", TengineVersion))
 }
 
 func (suite *BuilderTestSuite) TestArchivePath() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].ArchivePath(), fmt.Sprintf("nginx-%s.tar.gz", NGINX_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].ArchivePath(), fmt.Sprintf("pcre-%s.tar.gz", PCRE_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].ArchivePath(), fmt.Sprintf("openssl-%s.tar.gz", OPENSSL_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].ArchivePath(), fmt.Sprintf("zlib-%s.tar.gz", ZLIB_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].ArchivePath(), fmt.Sprintf("openresty-%s.tar.gz", OPENRESTY_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].ArchivePath(), fmt.Sprintf("tengine-%s.tar.gz", TENGINE_VERSION))
+	assert.Equal(suite.T(), suite.builders[ComponentNginx].ArchivePath(), fmt.Sprintf("nginx-%s.tar.gz", NginxVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].ArchivePath(), fmt.Sprintf("pcre-%s.tar.gz", PcreVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].ArchivePath(), fmt.Sprintf("openssl-%s.tar.gz", OpenSSLVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].ArchivePath(), fmt.Sprintf("zlib-%s.tar.gz", ZlibVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].ArchivePath(), fmt.Sprintf("openresty-%s.tar.gz", OpenRestyVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentTengine].ArchivePath(), fmt.Sprintf("tengine-%s.tar.gz", TengineVersion))
 }
 
 func (suite *BuilderTestSuite) TestLogPath() {
-	assert.Equal(suite.T(), suite.builders[COMPONENT_NGINX].LogPath(), fmt.Sprintf("nginx-%s.log", NGINX_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_PCRE].LogPath(), fmt.Sprintf("pcre-%s.log", PCRE_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENSSL].LogPath(), fmt.Sprintf("openssl-%s.log", OPENSSL_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_ZLIB].LogPath(), fmt.Sprintf("zlib-%s.log", ZLIB_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_OPENRESTY].LogPath(), fmt.Sprintf("openresty-%s.log", OPENRESTY_VERSION))
-	assert.Equal(suite.T(), suite.builders[COMPONENT_TENGINE].LogPath(), fmt.Sprintf("tengine-%s.log", TENGINE_VERSION))
+	assert.Equal(suite.T(), suite.builders[ComponentNginx].LogPath(), fmt.Sprintf("nginx-%s.log", NginxVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].LogPath(), fmt.Sprintf("pcre-%s.log", PcreVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].LogPath(), fmt.Sprintf("openssl-%s.log", OpenSSLVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].LogPath(), fmt.Sprintf("zlib-%s.log", ZlibVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].LogPath(), fmt.Sprintf("openresty-%s.log", OpenRestyVersion))
+	assert.Equal(suite.T(), suite.builders[ComponentTengine].LogPath(), fmt.Sprintf("tengine-%s.log", TengineVersion))
 }
 
 func (suite *BuilderTestSuite) TestMakeStaticLibrary() {
-	pcre := MakeStaticLibrary(&suite.builders[COMPONENT_PCRE])
-	openssl := MakeStaticLibrary(&suite.builders[COMPONENT_OPENSSL])
-	zlib := MakeStaticLibrary(&suite.builders[COMPONENT_ZLIB])
+	pcre := MakeStaticLibrary(&suite.builders[ComponentPcre])
+	openssl := MakeStaticLibrary(&suite.builders[ComponentOpenSSL])
+	zlib := MakeStaticLibrary(&suite.builders[ComponentZlib])
 
-	assert.Equal(suite.T(), pcre.Name, suite.builders[COMPONENT_PCRE].name())
-	assert.Equal(suite.T(), pcre.Version, PCRE_VERSION)
-	assert.Equal(suite.T(), pcre.Option, suite.builders[COMPONENT_PCRE].option())
+	assert.Equal(suite.T(), pcre.Name, suite.builders[ComponentPcre].name())
+	assert.Equal(suite.T(), pcre.Version, PcreVersion)
+	assert.Equal(suite.T(), pcre.Option, suite.builders[ComponentPcre].option())
 
-	assert.Equal(suite.T(), openssl.Name, suite.builders[COMPONENT_OPENSSL].name())
-	assert.Equal(suite.T(), openssl.Version, OPENSSL_VERSION)
-	assert.Equal(suite.T(), openssl.Option, suite.builders[COMPONENT_OPENSSL].option())
+	assert.Equal(suite.T(), openssl.Name, suite.builders[ComponentOpenSSL].name())
+	assert.Equal(suite.T(), openssl.Version, OpenSSLVersion)
+	assert.Equal(suite.T(), openssl.Option, suite.builders[ComponentOpenSSL].option())
 
-	assert.Equal(suite.T(), zlib.Name, suite.builders[COMPONENT_ZLIB].name())
-	assert.Equal(suite.T(), zlib.Version, ZLIB_VERSION)
-	assert.Equal(suite.T(), zlib.Option, suite.builders[COMPONENT_ZLIB].option())
+	assert.Equal(suite.T(), zlib.Name, suite.builders[ComponentZlib].name())
+	assert.Equal(suite.T(), zlib.Version, ZlibVersion)
+	assert.Equal(suite.T(), zlib.Option, suite.builders[ComponentZlib].option())
 }
 
 func TestBuilderTestSuite(t *testing.T) {

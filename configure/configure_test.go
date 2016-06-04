@@ -19,11 +19,11 @@ type ConfiguregenTestSuite struct {
 }
 
 func (suite *ConfiguregenTestSuite) SetupTest() {
-	suite.builders = make([]builder.Builder, builder.COMPONENT_MAX)
+	suite.builders = make([]builder.Builder, builder.ComponentMax)
 
-	suite.builders[builder.COMPONENT_PCRE] = builder.MakeBuilder(builder.COMPONENT_PCRE, builder.PCRE_VERSION)
-	suite.builders[builder.COMPONENT_OPENSSL] = builder.MakeBuilder(builder.COMPONENT_OPENSSL, builder.OPENSSL_VERSION)
-	suite.builders[builder.COMPONENT_ZLIB] = builder.MakeBuilder(builder.COMPONENT_ZLIB, builder.ZLIB_VERSION)
+	suite.builders[builder.ComponentPcre] = builder.MakeBuilder(builder.ComponentPcre, builder.PcreVersion)
+	suite.builders[builder.ComponentOpenSSL] = builder.MakeBuilder(builder.ComponentOpenSSL, builder.OpenSSLVersion)
+	suite.builders[builder.ComponentZlib] = builder.MakeBuilder(builder.ComponentZlib, builder.ZlibVersion)
 
 	modules3rdConf := "../config/modules.cfg.example"
 	modules3rd, err := module3rd.Load(modules3rdConf)
@@ -53,16 +53,16 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenDefault() {
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
 	var dependencies []builder.StaticLibrary
-	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_PCRE]))
-	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_OPENSSL]))
-	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.COMPONENT_ZLIB]))
+	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.ComponentPcre]))
+	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.ComponentOpenSSL]))
+	dependencies = append(dependencies, builder.MakeStaticLibrary(&suite.builders[builder.ComponentZlib]))
 	var configureOptions Options
 	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "", false, 1)
 
 	assert.Contains(suite.T(), configureScript, "--with-http_ssl_module")
-	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-pcre=../pcre-%s \\\n", builder.PCRE_VERSION))
-	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-openssl=../openssl-%s \\\n", builder.OPENSSL_VERSION))
-	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-zlib=../zlib-%s \\\n", builder.ZLIB_VERSION))
+	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-pcre=../pcre-%s \\\n", builder.PcreVersion))
+	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-openssl=../openssl-%s \\\n", builder.OpenSSLVersion))
+	assert.Contains(suite.T(), configureScript, fmt.Sprintf("--with-zlib=../zlib-%s \\\n", builder.ZlibVersion))
 }
 
 func TestConfiguregenTestSuite(t *testing.T) {

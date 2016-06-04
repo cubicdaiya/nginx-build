@@ -79,7 +79,7 @@ func makeNginxBuildOptions() Options {
 
 	argsString["v"] = OptionValue{
 		Desc:    "nginx version",
-		Default: builder.NGINX_VERSION,
+		Default: builder.NginxVersion,
 	}
 	argsString["c"] = OptionValue{
 		Desc:    "configuration file for building nginx",
@@ -95,23 +95,23 @@ func makeNginxBuildOptions() Options {
 	}
 	argsString["pcreversion"] = OptionValue{
 		Desc:    "PCRE version",
-		Default: builder.PCRE_VERSION,
+		Default: builder.PcreVersion,
 	}
 	argsString["opensslversion"] = OptionValue{
 		Desc:    "OpenSSL version",
-		Default: builder.OPENSSL_VERSION,
+		Default: builder.OpenSSLVersion,
 	}
 	argsString["zlibversion"] = OptionValue{
 		Desc:    "zlib version",
-		Default: builder.ZLIB_VERSION,
+		Default: builder.ZlibVersion,
 	}
 	argsString["openrestyversion"] = OptionValue{
 		Desc:    "openresty version",
-		Default: builder.OPENRESTY_VERSION,
+		Default: builder.OpenRestyVersion,
 	}
 	argsString["tengineversion"] = OptionValue{
 		Desc:    "tengine version",
-		Default: builder.TENGINE_VERSION,
+		Default: builder.TengineVersion,
 	}
 	argsString["patch"] = OptionValue{
 		Desc:    "patch path for applying to nginx",
