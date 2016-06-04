@@ -134,24 +134,24 @@ func main() {
 	// Allow multiple flags for `--patch`
 	{
 		tmp := nginxBuildOptions.Values["patch"]
-		tmp_ := multiflagPatch.String()
-		tmp.Value = &tmp_
+		tmp2 := multiflagPatch.String()
+		tmp.Value = &tmp2
 		nginxBuildOptions.Values["patch"] = tmp
 	}
 
 	// Allow multiple flags for `--add-module`
 	{
 		tmp := argsString["add-module"]
-		tmp_ := multiflag.String()
-		tmp.Value = &tmp_
+		tmp2 := multiflag.String()
+		tmp.Value = &tmp2
 		argsString["add-module"] = tmp
 	}
 
 	// Allow multiple flags for `--add-dynamic-module`
 	{
 		tmp := argsString["add-dynamic-module"]
-		tmp_ := multiflagDynamic.String()
-		tmp.Value = &tmp_
+		tmp2 := multiflagDynamic.String()
+		tmp.Value = &tmp2
 		argsString["add-dynamic-module"] = tmp
 	}
 
