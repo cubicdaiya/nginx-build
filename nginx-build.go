@@ -31,6 +31,30 @@ func init() {
 	nginxBuildOptions = makeNginxBuildOptions()
 }
 
+// fake flag for --with-xxx=dynamic
+func overrideUnableParseFlags() {
+	for i, arg := range os.Args {
+		if strings.Contains(arg, "with-http_xslt_module=dynamic") {
+			os.Args[i] = "--with-http_xslt_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_image_filter_module=dynamic") {
+			os.Args[i] = "--with-http_image_filter_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_geoip_module=dynamic") {
+			os.Args[i] = "--with-http_geoip_module_dynamic"
+		}
+		if strings.Contains(arg, "with-http_perl_module=dynamic") {
+			os.Args[i] = "--with-http_perl_module_dynamic"
+		}
+		if strings.Contains(arg, "with-mail=dynamic") {
+			os.Args[i] = "--with-mail_dynamic"
+		}
+		if strings.Contains(arg, "with-stream=dynamic") {
+			os.Args[i] = "--with-stream_dynamic"
+		}
+	}
+}
+
 func main() {
 	var (
 		multiflagPatch StringFlag
@@ -54,27 +78,7 @@ func main() {
 		nginxBuildOptions.Numbers[k] = v
 	}
 
-	// fake flag for --with-xxx=dynamic
-	for i, arg := range os.Args {
-		if strings.Contains(arg, "with-http_xslt_module=dynamic") {
-			os.Args[i] = "--with-http_xslt_module_dynamic"
-		}
-		if strings.Contains(arg, "with-http_image_filter_module=dynamic") {
-			os.Args[i] = "--with-http_image_filter_module_dynamic"
-		}
-		if strings.Contains(arg, "with-http_geoip_module=dynamic") {
-			os.Args[i] = "--with-http_geoip_module_dynamic"
-		}
-		if strings.Contains(arg, "with-http_perl_module=dynamic") {
-			os.Args[i] = "--with-http_perl_module_dynamic"
-		}
-		if strings.Contains(arg, "with-mail=dynamic") {
-			os.Args[i] = "--with-mail_dynamic"
-		}
-		if strings.Contains(arg, "with-stream=dynamic") {
-			os.Args[i] = "--with-stream_dynamic"
-		}
-	}
+	overrideUnableParseFlags()
 
 	var (
 		configureOptions configure.Options
