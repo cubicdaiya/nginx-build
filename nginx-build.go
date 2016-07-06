@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	NginxBuildVersion = "0.9.5"
+	NginxBuildVersion = "0.9.6"
 )
 
 var (
