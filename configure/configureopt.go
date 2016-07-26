@@ -272,6 +272,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-stream_ssl_module",
 		Desc: "enable ngx_stream_ssl_module",
 	}
+	argsBool["without-stream_limit_conn_module"] = OptionBool{
+		Name: "--without-stream_limit_conn_module",
+		Desc: "disable ngx_stream_limit_conn_module",
+	}
 	argsBool["without-stream_access_module"] = OptionBool{
 		Name: "--without-stream_access_module",
 		Desc: "disable ngx_stream_access_module",
