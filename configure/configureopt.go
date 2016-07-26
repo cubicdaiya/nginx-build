@@ -280,6 +280,14 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--without-stream_access_module",
 		Desc: "disable ngx_stream_access_module",
 	}
+	argsBool["without-stream_map_module"] = OptionBool{
+		Name: "--without-stream_map_module",
+		Desc: "disable ngx_stream_map_module",
+	}
+	argsBool["without-stream_return_module"] = OptionBool{
+		Name: "--without-stream_return_module",
+		Desc: "disable ngx_stream_return_module",
+	}
 	argsBool["without-stream_upstream_hash_module"] = OptionBool{
 		Name: "--without-stream_upstream_hash_module",
 		Desc: "disable ngx_stream_upstream_hash_module",
