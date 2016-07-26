@@ -52,6 +52,9 @@ func overrideUnableParseFlags() {
 		if strings.Contains(arg, "with-stream=dynamic") {
 			os.Args[i] = "--with-stream_dynamic"
 		}
+		if strings.Contains(arg, "with-stream_geoip_module=dynamic") {
+			os.Args[i] = "--with-stream_geoip_module_dynamic"
+		}
 	}
 }
 

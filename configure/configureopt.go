@@ -272,6 +272,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-stream_ssl_module",
 		Desc: "enable ngx_stream_ssl_module",
 	}
+	argsBool["with-stream_geoip_module"] = OptionBool{
+		Name: "--with-stream_geoip_module",
+		Desc: "enable ngx_stream_geoip_module",
+	}
 	argsBool["without-stream_limit_conn_module"] = OptionBool{
 		Name: "--without-stream_limit_conn_module",
 		Desc: "disable ngx_stream_limit_conn_module",
@@ -280,9 +284,17 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--without-stream_access_module",
 		Desc: "disable ngx_stream_access_module",
 	}
+	argsBool["without-stream_geo_module"] = OptionBool{
+		Name: "--without-stream_geo_module",
+		Desc: "disable ngx_stream_geo_module",
+	}
 	argsBool["without-stream_map_module"] = OptionBool{
 		Name: "--without-stream_map_module",
 		Desc: "disable ngx_stream_map_module",
+	}
+	argsBool["without-stream_split_clients_module"] = OptionBool{
+		Name: "--without-stream_split_clients_module",
+		Desc: "disable ngx_stream_split_clients_module",
 	}
 	argsBool["without-stream_return_module"] = OptionBool{
 		Name: "--without-stream_return_module",
@@ -354,6 +366,10 @@ func MakeArgsBool() map[string]OptionBool {
 	argsBool["with-stream_dynamic"] = OptionBool{
 		Name: "--with-stream=dynamic",
 		Desc: "enable dynamic TCP proxy module. This option is dummy for faking flag package. Use --with-stream=dynamic.",
+	}
+	argsBool["with-stream_geoip_module_dynamic"] = OptionBool{
+		Name: "--with-stream_geoip_module=dynamic",
+		Desc: "enable dynamic ngx_stream_geoip_module. This option is dummy for faking flag package. Use --with-stream_geoip_module=dynamic.",
 	}
 
 	return argsBool
