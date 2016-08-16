@@ -2,7 +2,6 @@ package configure
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 
 	"github.com/cubicdaiya/nginx-build/builder"
@@ -16,9 +15,6 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 
 ./configure \
 `
-		if runtime.GOOS == "darwin" {
-			configure += "--with-cc-opt=\"-Wno-deprecated-declarations\" \\\n"
-		}
 	}
 
 	if openResty {
