@@ -3,7 +3,6 @@ package configure
 import (
 	"fmt"
 	"log"
-	"runtime"
 	"testing"
 
 	"github.com/cubicdaiya/nginx-build/builder"
@@ -40,15 +39,6 @@ func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../headers-more-nginx-module")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../ngx_devel_kit")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-dynamic-module=../ngx_small_light")
-}
-
-func (suite *ConfiguregenTestSuite) TestConfiguregenDefault() {
-	var configureOptions Options
-	configureScript := Generate("", []module3rd.Module3rd{}, []builder.StaticLibrary{}, configureOptions, "", false, 1)
-
-	if runtime.GOOS == "darwin" {
-		assert.Contains(suite.T(), configureScript, "--with-cc-opt=\"-Wno-deprecated-declarations\" \\")
-	}
 }
 
 func (suite *ConfiguregenTestSuite) TestConfiguregenWithStaticLibraries() {
