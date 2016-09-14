@@ -272,6 +272,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-stream_ssl_module",
 		Desc: "enable ngx_stream_ssl_module",
 	}
+	argsBool["with-stream_realip_module"] = OptionBool{
+		Name: "--with-stream_realip_module",
+		Desc: "enable ngx_stream_realip_module",
+	}
 	argsBool["with-stream_geoip_module"] = OptionBool{
 		Name: "--with-stream_geoip_module",
 		Desc: "enable ngx_stream_geoip_module",
