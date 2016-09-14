@@ -22,7 +22,7 @@ func versionsGen() []string {
 	// 0.x.x
 	versionsMinor0 := []int{45, 6, 61, 14, 38, 39, 69, 55, 7}
 	// 1.x.x
-	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 3, 12, 1, 15, 1, 3}
+	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 3, 12, 1, 15, 1, 4}
 
 	// 0.1.0 ~ 0.9.7
 	for i := 0; i < len(versionsMinor0); i++ {
