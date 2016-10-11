@@ -280,6 +280,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-stream_geoip_module",
 		Desc: "enable ngx_stream_geoip_module",
 	}
+	argsBool["with-stream_ssl_preread_module"] = OptionBool{
+		Name: "--with-stream_ssl_preread_module",
+		Desc: "enable ngx_stream_ssl_preread_module",
+	}
 	argsBool["without-stream_limit_conn_module"] = OptionBool{
 		Name: "--without-stream_limit_conn_module",
 		Desc: "disable ngx_stream_limit_conn_module",
@@ -323,6 +327,10 @@ func MakeArgsBool() map[string]OptionBool {
 	argsBool["with-cpp_test_module"] = OptionBool{
 		Name: "--with-cpp_test_module",
 		Desc: "enable ngx_cpp_test_module",
+	}
+	argsBool["with-compat"] = OptionBool{
+		Name: "--with-compat",
+		Desc: "dynamic modules compatibility",
 	}
 	argsBool["without-pcre"] = OptionBool{
 		Name: "--without-pcre",
