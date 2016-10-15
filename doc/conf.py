@@ -51,7 +51,7 @@ copyright = u'2014-2016 Tatsuhiko Kubo'
 # built documents.
 #
 # The short X.Y version.
-version = '0.9.8'
+version = '0.9.9'
 # The full version, including alpha/beta/rc tags.
 release = '0.9.8'
 
