@@ -1,4 +1,4 @@
-VERSION=0.9.9
+VERSION=0.9.10
 TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go openssl/*.go util/*.go
