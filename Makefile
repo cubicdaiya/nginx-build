@@ -2,7 +2,7 @@ VERSION=0.9.10
 TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go openssl/*.go util/*.go
-	GO15VENDOREXPERIMENT=1 go build -o nginx-build
+	GO15VENDOREXPERIMENT=1 go build -o $@
 
 build-cross:
 	GO15VENDOREXPERIMENT=1 GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o bin/linux/amd64/nginx-build
