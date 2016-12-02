@@ -19,7 +19,7 @@ var (
 	nginxVersionRe     *regexp.Regexp
 	pcreVersionRe      *regexp.Regexp
 	zlibVersionRe      *regexp.Regexp
-	openSSLVersionRe   *regexp.Regexp
+	opensslVersionRe   *regexp.Regexp
 	openrestyVersionRe *regexp.Regexp
 	tengineVersionRe   *regexp.Regexp
 )
@@ -28,7 +28,7 @@ func init() {
 	nginxVersionRe = regexp.MustCompile(`nginx version: nginx.(\d+\.\d+\.\d+)`)
 	pcreVersionRe = regexp.MustCompile(`--with-pcre=.+/pcre-(\d+\.\d+)`)
 	zlibVersionRe = regexp.MustCompile(`--with-zlib=.+/zlib-(\d+\.\d+\.\d+)`)
-	openSSLVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]+)`)
+	opensslVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]+)`)
 	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
 	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
 }
@@ -99,47 +99,28 @@ func (builder *Builder) InstalledVersion() (string, error) {
 	}
 
 	openRestyName := openresty.Name(builder.Version)
+	var versionRe *regexp.Regexp
 
 	switch builder.name() {
 	case "nginx":
-		m := nginxVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = nginxVersionRe
 	case openRestyName:
-		m := openrestyVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = openrestyVersionRe
 	case "zlib":
-		m := zlibVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = zlibVersionRe
 	case "pcre":
-		m := pcreVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = pcreVersionRe
 	case "openssl":
-		m := openSSLVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = opensslVersionRe
 	case "tengine":
-		m := tengineVersionRe.FindSubmatch(result)
-		if len(m) < 2 {
-			return "", nil
-		}
-		return string(m[1]), nil
+		versionRe = tengineVersionRe
 	}
 
-	return "", nil
+	m := versionRe.FindSubmatch(result)
+	if len(m) < 2 {
+		return "", nil
+	}
+	return string(m[1]), nil
 }
 
 func MakeBuilder(component int, version string) Builder {
