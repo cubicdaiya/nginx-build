@@ -73,6 +73,9 @@ func makeNginxBuildOptions() Options {
 	argsBool["configureonly"] = OptionBool{
 		Desc: "configure nginx only not building",
 	}
+	argsBool["idempotent"] = OptionBool{
+		Desc: "build nginx if already installed nginx version is different",
+	}
 	argsBool["help-all"] = OptionBool{
 		Desc: "print all flags",
 	}

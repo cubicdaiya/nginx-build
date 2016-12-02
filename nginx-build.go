@@ -125,6 +125,7 @@ func main() {
 	openResty := nginxBuildOptions.Bools["openresty"].Enabled
 	tengine := nginxBuildOptions.Bools["tengine"].Enabled
 	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
+	idempotent := nginxBuildOptions.Bools["idempotent"].Enabled
 	helpAll := nginxBuildOptions.Bools["help-all"].Enabled
 
 	version := nginxBuildOptions.Values["v"].Value
@@ -200,6 +201,30 @@ func main() {
 	pcreBuilder := builder.MakeBuilder(builder.ComponentPcre, *pcreVersion)
 	openSSLBuilder := builder.MakeBuilder(builder.ComponentOpenSSL, *openSSLVersion)
 	zlibBuilder := builder.MakeBuilder(builder.ComponentZlib, *zlibVersion)
+
+	if *idempotent {
+		builders := []builder.Builder{
+			nginxBuilder,
+			pcreBuilder,
+			openSSLBuilder,
+			zlibBuilder,
+		}
+		sameVersion := true
+		for _, b := range builders {
+			vi, err := b.InstalledVersion()
+			if err != nil {
+				log.Fatal(err)
+			}
+			if vi == b.Version {
+				continue
+			}
+			sameVersion = false
+		}
+		if sameVersion {
+			log.Println("Installed nginx is same.")
+			return
+		}
+	}
 
 	// change default umask
 	_ = syscall.Umask(0)

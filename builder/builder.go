@@ -2,8 +2,10 @@ package builder
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
+	"github.com/cubicdaiya/nginx-build/command"
 	"github.com/cubicdaiya/nginx-build/openresty"
 )
 
@@ -11,6 +13,24 @@ type Builder struct {
 	Version           string
 	DownloadURLPrefix string
 	Component         int
+}
+
+var (
+	nginxVersionRe     *regexp.Regexp
+	pcreVersionRe      *regexp.Regexp
+	zlibVersionRe      *regexp.Regexp
+	openSSLVersionRe   *regexp.Regexp
+	openrestyVersionRe *regexp.Regexp
+	tengineVersionRe   *regexp.Regexp
+)
+
+func init() {
+	nginxVersionRe = regexp.MustCompile(`nginx version: nginx.(\d+\.\d+\.\d+)`)
+	pcreVersionRe = regexp.MustCompile(`--with-pcre=.+/pcre-(\d+\.\d+)`)
+	zlibVersionRe = regexp.MustCompile(`--with-zlib=.+/zlib-(\d+\.\d+\.\d+)`)
+	openSSLVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]+)`)
+	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
+	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
 }
 
 func (builder *Builder) name() string {
@@ -64,6 +84,62 @@ func (builder *Builder) IsIncludeWithOption(nginxConfigure string) bool {
 func (builder *Builder) WarnMsgWithLibrary() string {
 	return fmt.Sprintf("[warn]Using '%s' is discouraged. Instead give '-%s' and '-%sversion' to 'nginx-build'",
 		builder.option(), builder.name(), builder.name())
+}
+
+func (builder *Builder) InstalledVersion() (string, error) {
+	args := []string{"/usr/local/sbin/nginx", "-V"}
+	cmd, err := command.Make(args)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+
+	openRestyName := openresty.Name(builder.Version)
+
+	switch builder.name() {
+	case "nginx":
+		m := nginxVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	case openRestyName:
+		m := openrestyVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	case "zlib":
+		m := zlibVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	case "pcre":
+		m := pcreVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	case "openssl":
+		m := openSSLVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	case "tengine":
+		m := tengineVersionRe.FindSubmatch(result)
+		if len(m) < 2 {
+			return "", nil
+		}
+		return string(m[1]), nil
+	}
+
+	return "", nil
 }
 
 func MakeBuilder(component int, version string) Builder {
