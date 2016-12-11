@@ -217,6 +217,7 @@ func main() {
 		}
 		if isSame {
 			log.Println("Installed nginx is same.")
+			return
 		}
 	}
 
