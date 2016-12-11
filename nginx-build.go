@@ -210,9 +210,13 @@ func main() {
 			zlibBuilder,
 		}
 
-		if builder.IsSameVersion(builders) {
-			log.Println("Installed nginx is same.")
+		isSame, err := builder.IsSameVersion(builders)
+		if err != nil {
+			log.Fatal(err)
 			return
+		}
+		if isSame {
+			log.Println("Installed nginx is same.")
 		}
 	}
 

@@ -31,7 +31,7 @@ func BuildNginx(jobs int) error {
 	return cmd.Run()
 }
 
-func IsSameVersion(builders []builder.Builder) (bool, error) {
+func IsSameVersion(builders []Builder) (bool, error) {
 	sameVersion := true
 	for _, b := range builders {
 		vi, err := b.InstalledVersion()
@@ -45,7 +45,7 @@ func IsSameVersion(builders []builder.Builder) (bool, error) {
 	}
 
 	if sameVersion {
-		return true
+		return true, nil
 	}
 
 	return false, nil
