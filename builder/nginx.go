@@ -38,8 +38,21 @@ func IsSameVersion(builders []Builder) (bool, error) {
 		if err != nil {
 			return false, err
 		}
-		if vi == b.Version {
-			continue
+		switch b.Component {
+		case ComponentPcre:
+			fallthrough
+		case ComponentOpenSSL:
+			fallthrough
+		case ComponentZlib:
+			if vi == "" && !b.Static {
+				continue
+			} else if vi == b.Version && b.Static {
+				continue
+			}
+		default:
+			if vi == b.Version {
+				continue
+			}
 		}
 		sameVersion = false
 	}

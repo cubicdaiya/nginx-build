@@ -192,15 +192,15 @@ func main() {
 		log.Fatal("select one between '-openresty' and '-tengine'.")
 	}
 	if *openResty {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion, nil)
 	} else if *tengine {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion, nil)
 	} else {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version, nil)
 	}
-	pcreBuilder := builder.MakeBuilder(builder.ComponentPcre, *pcreVersion)
-	openSSLBuilder := builder.MakeBuilder(builder.ComponentOpenSSL, *openSSLVersion)
-	zlibBuilder := builder.MakeBuilder(builder.ComponentZlib, *zlibVersion)
+	pcreBuilder := builder.MakeBuilder(builder.ComponentPcre, *pcreVersion, pcreStatic)
+	openSSLBuilder := builder.MakeBuilder(builder.ComponentOpenSSL, *openSSLVersion, openSSLStatic)
+	zlibBuilder := builder.MakeBuilder(builder.ComponentZlib, *zlibVersion, zlibStatic)
 
 	if *idempotent {
 		builders := []builder.Builder{

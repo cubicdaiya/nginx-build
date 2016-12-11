@@ -13,6 +13,8 @@ type Builder struct {
 	Version           string
 	DownloadURLPrefix string
 	Component         int
+	// for dependencies such as pcre and zlib and openssl
+	Static bool
 }
 
 var (
@@ -123,7 +125,7 @@ func (builder *Builder) InstalledVersion() (string, error) {
 	return string(m[1]), nil
 }
 
-func MakeBuilder(component int, version string) Builder {
+func MakeBuilder(component int, version string, static *bool) Builder {
 	var builder Builder
 	builder.Component = component
 	builder.Version = version
@@ -132,10 +134,13 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
 	case ComponentPcre:
 		builder.DownloadURLPrefix = PcreDownloadURLPrefix
+		builder.Static = *static
 	case ComponentOpenSSL:
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
+		builder.Static = *static
 	case ComponentZlib:
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
+		builder.Static = *static
 	case ComponentOpenResty:
 		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
 	case ComponentTengine:
