@@ -209,18 +209,8 @@ func main() {
 			openSSLBuilder,
 			zlibBuilder,
 		}
-		sameVersion := true
-		for _, b := range builders {
-			vi, err := b.InstalledVersion()
-			if err != nil {
-				log.Fatal(err)
-			}
-			if vi == b.Version {
-				continue
-			}
-			sameVersion = false
-		}
-		if sameVersion {
+
+		if builder.IsSameVersion(builders) {
 			log.Println("Installed nginx is same.")
 			return
 		}
