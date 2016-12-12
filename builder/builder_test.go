@@ -17,9 +17,9 @@ func (suite *BuilderTestSuite) SetupTest() {
 	suite.builders = make([]Builder, ComponentMax)
 
 	suite.builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion)
-	suite.builders[ComponentPcre] = MakeBuilder(ComponentPcre, PcreVersion)
-	suite.builders[ComponentOpenSSL] = MakeBuilder(ComponentOpenSSL, OpenSSLVersion)
-	suite.builders[ComponentZlib] = MakeBuilder(ComponentZlib, ZlibVersion)
+	suite.builders[ComponentPcre] = MakeLibraryBuilder(ComponentPcre, PcreVersion, false)
+	suite.builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, true)
+	suite.builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
 	suite.builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
 	suite.builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
 }
@@ -73,6 +73,12 @@ func (suite *BuilderTestSuite) TestLogPath() {
 	assert.Equal(suite.T(), suite.builders[ComponentZlib].LogPath(), fmt.Sprintf("zlib-%s.log", ZlibVersion))
 	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].LogPath(), fmt.Sprintf("openresty-%s.log", OpenRestyVersion))
 	assert.Equal(suite.T(), suite.builders[ComponentTengine].LogPath(), fmt.Sprintf("tengine-%s.log", TengineVersion))
+}
+
+func (suite *BuilderTestSuite) TestLibrary() {
+	assert.Equal(suite.T(), suite.builders[ComponentPcre].Static, false)
+	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].Static, true)
+	assert.Equal(suite.T(), suite.builders[ComponentZlib].Static, false)
 }
 
 func (suite *BuilderTestSuite) TestMakeStaticLibrary() {

@@ -30,3 +30,36 @@ func BuildNginx(jobs int) error {
 
 	return cmd.Run()
 }
+
+func IsSameVersion(builders []Builder) (bool, error) {
+	sameVersion := true
+	for _, b := range builders {
+		vi, err := b.InstalledVersion()
+		if err != nil {
+			return false, err
+		}
+		switch b.Component {
+		case ComponentPcre:
+			fallthrough
+		case ComponentOpenSSL:
+			fallthrough
+		case ComponentZlib:
+			if vi == "" && !b.Static {
+				continue
+			} else if vi == b.Version && b.Static {
+				continue
+			}
+		default:
+			if vi == b.Version {
+				continue
+			}
+		}
+		sameVersion = false
+	}
+
+	if sameVersion {
+		return true, nil
+	}
+
+	return false, nil
+}

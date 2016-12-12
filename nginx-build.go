@@ -125,6 +125,7 @@ func main() {
 	openResty := nginxBuildOptions.Bools["openresty"].Enabled
 	tengine := nginxBuildOptions.Bools["tengine"].Enabled
 	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
+	idempotent := nginxBuildOptions.Bools["idempotent"].Enabled
 	helpAll := nginxBuildOptions.Bools["help-all"].Enabled
 
 	version := nginxBuildOptions.Values["v"].Value
@@ -197,9 +198,28 @@ func main() {
 	} else {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
 	}
-	pcreBuilder := builder.MakeBuilder(builder.ComponentPcre, *pcreVersion)
-	openSSLBuilder := builder.MakeBuilder(builder.ComponentOpenSSL, *openSSLVersion)
-	zlibBuilder := builder.MakeBuilder(builder.ComponentZlib, *zlibVersion)
+	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *pcreStatic)
+	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
+	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
+
+	if *idempotent {
+		builders := []builder.Builder{
+			nginxBuilder,
+			pcreBuilder,
+			openSSLBuilder,
+			zlibBuilder,
+		}
+
+		isSame, err := builder.IsSameVersion(builders)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		if isSame {
+			log.Println("Installed nginx is same.")
+			return
+		}
+	}
 
 	// change default umask
 	_ = syscall.Umask(0)
