@@ -125,7 +125,7 @@ func (builder *Builder) InstalledVersion() (string, error) {
 	return string(m[1]), nil
 }
 
-func MakeBuilder(component int, version string, static *bool) Builder {
+func MakeBuilder(component int, version string) Builder {
 	var builder Builder
 	builder.Component = component
 	builder.Version = version
@@ -134,13 +134,10 @@ func MakeBuilder(component int, version string, static *bool) Builder {
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
 	case ComponentPcre:
 		builder.DownloadURLPrefix = PcreDownloadURLPrefix
-		builder.Static = *static
 	case ComponentOpenSSL:
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
-		builder.Static = *static
 	case ComponentZlib:
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
-		builder.Static = *static
 	case ComponentOpenResty:
 		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
 	case ComponentTengine:
@@ -148,5 +145,11 @@ func MakeBuilder(component int, version string, static *bool) Builder {
 	default:
 		panic("invalid component")
 	}
+	return builder
+}
+
+func MakeLibraryBuilder(component int, version string, static bool) Builder {
+	builder := MakeBuilder(component, version)
+	builder.Static = static
 	return builder
 }
