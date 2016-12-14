@@ -20,9 +20,32 @@ func versionsSubmajorGen(major, submajor, minor int) []string {
 func versionsGen() []string {
 	var versions []string
 	// 0.x.x
-	versionsMinor0 := []int{45, 6, 61, 14, 38, 39, 69, 55, 7}
+	versionsMinor0 := []int{
+		45, // 0.1.x
+		6,  // 0.2.x
+		61, // 0.3.x
+		14, // 0.4.x
+		38, // 0.5.x
+		39, // 0.6.x
+		69, // 0.7.x
+		55, // 0.8.x
+		7,  // 0.9.x
+	}
 	// 1.x.x
-	versionsMinor1 := []int{15, 19, 9, 16, 7, 13, 3, 12, 1, 15, 2, 7}
+	versionsMinor1 := []int{
+		15, // 1.0.x
+		19, // 1.1.x
+		9,  // 1.2.x
+		16, // 1.3.x
+		7,  // 1.4.x
+		13, // 1.5.x
+		3,  // 1.6.x
+		12, // 1.7.x
+		1,  // 1.8.x
+		15, // 1.9.x
+		2,  // 1.10.x
+		7,  // 1.11.x
+	}
 
 	// 0.1.0 ~ 0.9.7
 	for i := 0; i < len(versionsMinor0); i++ {
