@@ -173,7 +173,7 @@ func MakeArgsBool() map[string]OptionBool {
 		Desc: "disable ngx_http_referer_module",
 	}
 	argsBool["without-http_rewrite_module"] = OptionBool{
-		Name: "--with-http_rewrite_module",
+		Name: "--without-http_rewrite_module",
 		Desc: "disable ngx_http_rewrite_module",
 	}
 	argsBool["without-http_proxy_module"] = OptionBool{
