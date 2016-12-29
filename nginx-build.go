@@ -19,8 +19,8 @@ import (
 	"github.com/cubicdaiya/nginx-build/util"
 )
 
-const (
-	NginxBuildVersion = "0.9.12"
+var (
+	NginxBuildVersion string
 )
 
 var (
