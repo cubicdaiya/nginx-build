@@ -148,7 +148,7 @@ $ nginx-build -d work -zlib
 `-zlibversion` is an option to set a version of zlib.
 
 ```bash
-$ nginx-build -d work -zlib -zlibversion=1.2.8
+$ nginx-build -d work -zlib -zlibversion=1.2.9
 ```
 
 ### Embedding PCRE statically
