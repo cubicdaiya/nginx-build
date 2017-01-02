@@ -20,7 +20,7 @@ const (
 
 // zlib
 const (
-	ZlibVersion           = "1.2.8"
+	ZlibVersion           = "1.2.9"
 	ZlibDownloadURLPrefix = "http://zlib.net"
 )
 
