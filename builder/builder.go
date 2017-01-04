@@ -2,6 +2,7 @@ package builder
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 
@@ -89,7 +90,11 @@ func (builder *Builder) WarnMsgWithLibrary() string {
 }
 
 func (builder *Builder) InstalledVersion() (string, error) {
-	args := []string{"/usr/local/sbin/nginx", "-V"}
+	nginxBinPath := "/usr/local/sbin/nginx"
+	if os.Getenv("NGINX_BIN") != "" {
+		nginxBinPath = os.Getenv("NGINX_BIN")
+	}
+	args := []string{nginxBinPath, "-V"}
 	cmd, err := command.Make(args)
 	if err != nil {
 		return "", err
