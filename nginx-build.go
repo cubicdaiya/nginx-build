@@ -212,8 +212,7 @@ func main() {
 
 		isSame, err := builder.IsSameVersion(builders)
 		if err != nil {
-			log.Fatal(err)
-			return
+			log.Println(err)
 		}
 		if isSame {
 			log.Println("Installed nginx is same.")
