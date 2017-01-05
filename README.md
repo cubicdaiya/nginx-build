@@ -249,7 +249,7 @@ nginx-build \
 
 ## Idempotent build
 
-`nginx-build` supports an certain level of idempotent build of nginx.
+`nginx-build` supports a certain level of idempotent build of nginx.
 If you want to ensure a build of nginx idempotent and do not want to build nginx as same as already installed nginx,
 give `-idempotent` to `nginx-build`.
 
