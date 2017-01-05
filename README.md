@@ -247,6 +247,25 @@ nginx-build \
  --with-http_v2_module
 ```
 
+## Idempotent build
+
+`nginx-build` supports an certain level of idempotent build of nginx.
+If you want to ensure a build of nginx idempotent and do not want to build nginx as same as already installed nginx,
+give `-idempotent` to `nginx-build`.
+
+```bash
+$ nginx-build -d work -idempotent
+```
+
+`-idempotent` ensures an idempotent by checking the software versions below.
+
+* nginx
+* PCRE
+* zlib
+* OpenSSL
+
+On the other hand, `-idempotent` does not cover versions of 3rd party modules and dynamic linked libraries.
+
 ## Build OpenResty
 
 `nginx-build` supports to build [OpenResty](https://openresty.org/).
