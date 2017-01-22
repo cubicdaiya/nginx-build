@@ -8,7 +8,7 @@ const (
 
 // pcre
 const (
-	PcreVersion           = "8.39"
+	PcreVersion           = "8.40"
 	PcreDownloadURLPrefix = "http://ftp.csx.cam.ac.uk/pub/software/programming/pcre"
 )
 
