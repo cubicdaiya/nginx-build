@@ -284,7 +284,7 @@ func main() {
 		}
 	}
 
-	wg := new(sync.WaitGroup)
+	var wg sync.WaitGroup
 	if *pcreStatic {
 		wg.Add(1)
 		go func() {
