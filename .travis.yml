@@ -3,6 +3,7 @@ go:
   - 1.5.4
   - 1.6.4
   - 1.7.4
+  - 1.8rc1
 before_install:
   - go get github.com/Masterminds/glide
 script:
