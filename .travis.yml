@@ -11,4 +11,4 @@ script:
   - make bundle
   - make
   - make check
-  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl
+  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl -v 1.11.10
