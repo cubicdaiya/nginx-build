@@ -20,7 +20,7 @@ const (
 
 // zlib
 const (
-	ZlibVersion           = "1.2.10"
+	ZlibVersion           = "1.2.11"
 	ZlibDownloadURLPrefix = "http://zlib.net/fossils"
 )
 
