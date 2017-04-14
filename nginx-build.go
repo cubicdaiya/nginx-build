@@ -21,9 +21,6 @@ import (
 
 var (
 	NginxBuildVersion string
-)
-
-var (
 	nginxBuildOptions Options
 )
 
