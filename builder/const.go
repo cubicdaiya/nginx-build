@@ -3,7 +3,7 @@ package builder
 // nginx
 const (
 	NginxVersion           = "1.13.0"
-	NginxDownloadURLPrefix = "http://nginx.org/download"
+	NginxDownloadURLPrefix = "https://nginx.org/download"
 )
 
 // pcre
@@ -15,13 +15,13 @@ const (
 // openssl
 const (
 	OpenSSLVersion           = "1.0.2k"
-	OpenSSLDownloadURLPrefix = "http://www.openssl.org/source"
+	OpenSSLDownloadURLPrefix = "https://www.openssl.org/source"
 )
 
 // zlib
 const (
 	ZlibVersion           = "1.2.11"
-	ZlibDownloadURLPrefix = "http://zlib.net/fossils"
+	ZlibDownloadURLPrefix = "https://zlib.net/fossils"
 )
 
 // openResty
