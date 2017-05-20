@@ -185,11 +185,6 @@ $ nginx-build -d work -openssl -opensslversion=1.0.2f
 Prepare a ini-file below.
 
 ```ini
-[echo-nginx-module]
-form=git
-url=https://github.com/openresty/echo-nginx-module.git
-rev=v0.58
-
 [ngx_devel_kit]
 form=git
 url=https://github.com/simpl/ngx_devel_kit
@@ -228,7 +223,7 @@ shprovdir=..
 [ngx_small_light]
 form=git
 url=https://github.com/cubicdaiya/ngx_small_light
-rev=v0.6.15
+rev=v0.9.2
 dynamic=true
 shprov=./setup
 ```

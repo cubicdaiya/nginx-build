@@ -35,7 +35,7 @@ func (suite *ConfiguregenTestSuite) SetupTest() {
 func (suite *ConfiguregenTestSuite) TestConfiguregenModule3rd() {
 	configure_modules3rd := generateForModule3rd(suite.modules3rd)
 
-	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../echo-nginx-module")
+	//assert.Contains(suite.T(), configure_modules3rd, "-add-module=../echo-nginx-module")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../headers-more-nginx-module")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-module=../ngx_devel_kit")
 	assert.Contains(suite.T(), configure_modules3rd, "-add-dynamic-module=../ngx_small_light")
