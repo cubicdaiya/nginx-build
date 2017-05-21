@@ -115,6 +115,7 @@ func main() {
 	verbose := nginxBuildOptions.Bools["verbose"].Enabled
 	pcreStatic := nginxBuildOptions.Bools["pcre"].Enabled
 	openSSLStatic := nginxBuildOptions.Bools["openssl"].Enabled
+	libreSSLStatic := nginxBuildOptions.Bools["libressl"].Enabled
 	zlibStatic := nginxBuildOptions.Bools["zlib"].Enabled
 	clear := nginxBuildOptions.Bools["clear"].Enabled
 	versionPrint := nginxBuildOptions.Bools["version"].Enabled
@@ -131,6 +132,7 @@ func main() {
 	workParentDir := nginxBuildOptions.Values["d"].Value
 	pcreVersion := nginxBuildOptions.Values["pcreversion"].Value
 	openSSLVersion := nginxBuildOptions.Values["opensslversion"].Value
+	libreSSLVersion := nginxBuildOptions.Values["libresslversion"].Value
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
@@ -188,6 +190,9 @@ func main() {
 	if *openResty && *tengine {
 		log.Fatal("select one between '-openresty' and '-tengine'.")
 	}
+	if *openSSLStatic && *libreSSLStatic {
+		log.Fatal("select one between '-openssl' and '-libressl'.")
+	}
 	if *openResty {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
 	} else if *tengine {
@@ -197,6 +202,7 @@ func main() {
 	}
 	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *pcreStatic)
 	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
+	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *libreSSLStatic)
 	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
 
 	if *idempotent {
@@ -204,6 +210,7 @@ func main() {
 			nginxBuilder,
 			pcreBuilder,
 			openSSLBuilder,
+			libreSSLBuilder,
 			zlibBuilder,
 		}
 
@@ -298,6 +305,14 @@ func main() {
 		}()
 	}
 
+	if *libreSSLStatic {
+		wg.Add(1)
+		go func() {
+			downloadAndExtractParallel(&libreSSLBuilder)
+			wg.Done()
+		}()
+	}
+
 	if *zlibStatic {
 		wg.Add(1)
 		go func() {
@@ -346,6 +361,10 @@ func main() {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&openSSLBuilder))
 	}
 
+	if *libreSSLStatic {
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&libreSSLBuilder))
+	}
+
 	if *zlibStatic {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibBuilder))
 	}
@@ -358,7 +377,10 @@ func main() {
 
 	if *openSSLStatic && openSSLBuilder.IsIncludeWithOption(nginxConfigure) {
 		log.Println(openSSLBuilder.WarnMsgWithLibrary())
+	}
 
+	if *libreSSLStatic && libreSSLBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(libreSSLBuilder.WarnMsgWithLibrary())
 	}
 
 	if *zlibStatic && zlibBuilder.IsIncludeWithOption(nginxConfigure) {

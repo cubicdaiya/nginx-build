@@ -23,6 +23,7 @@ var (
 	pcreVersionRe      *regexp.Regexp
 	zlibVersionRe      *regexp.Regexp
 	opensslVersionRe   *regexp.Regexp
+	libresslVersionRe  *regexp.Regexp
 	openrestyVersionRe *regexp.Regexp
 	tengineVersionRe   *regexp.Regexp
 )
@@ -32,6 +33,7 @@ func init() {
 	pcreVersionRe = regexp.MustCompile(`--with-pcre=.+/pcre-(\d+\.\d+)`)
 	zlibVersionRe = regexp.MustCompile(`--with-zlib=.+/zlib-(\d+\.\d+\.\d+)`)
 	opensslVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]+)`)
+	libresslVersionRe = regexp.MustCompile(`--with-openssl=.+/libressl-(\d+\.\d+\.\d+)`)
 	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
 	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
 }
@@ -45,6 +47,8 @@ func (builder *Builder) name() string {
 		name = "pcre"
 	case ComponentOpenSSL:
 		name = "openssl"
+	case ComponentLibreSSL:
+		name = "libressl"
 	case ComponentZlib:
 		name = "zlib"
 	case ComponentOpenResty:
@@ -58,7 +62,14 @@ func (builder *Builder) name() string {
 }
 
 func (builder *Builder) option() string {
-	return fmt.Sprintf("--with-%s", builder.name())
+	name := builder.name()
+
+	// only libressl does not match option name
+	if name == "libressl" {
+		name = "openssl"
+	}
+
+	return fmt.Sprintf("--with-%s", name)
 }
 
 func (builder *Builder) DownloadURL() string {
@@ -119,6 +130,8 @@ func (builder *Builder) InstalledVersion() (string, error) {
 		versionRe = pcreVersionRe
 	case "openssl":
 		versionRe = opensslVersionRe
+	case "libressl":
+		versionRe = libresslVersionRe
 	case "tengine":
 		versionRe = tengineVersionRe
 	}
@@ -141,6 +154,8 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = PcreDownloadURLPrefix
 	case ComponentOpenSSL:
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
+	case ComponentLibreSSL:
+		builder.DownloadURLPrefix = LibreSSLDownloadURLPrefix
 	case ComponentZlib:
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
 	case ComponentOpenResty:

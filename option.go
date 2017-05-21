@@ -52,6 +52,9 @@ func makeNginxBuildOptions() Options {
 	argsBool["openssl"] = OptionBool{
 		Desc: "embedded OpenSSL staticlibrary",
 	}
+	argsBool["libressl"] = OptionBool{
+		Desc: "embedded LibreSSL staticlibrary",
+	}
 	argsBool["zlib"] = OptionBool{
 		Desc: "embedded zlib staticlibrary",
 	}
@@ -103,6 +106,10 @@ func makeNginxBuildOptions() Options {
 	argsString["opensslversion"] = OptionValue{
 		Desc:    "OpenSSL version",
 		Default: builder.OpenSSLVersion,
+	}
+	argsString["libresslversion"] = OptionValue{
+		Desc:    "LibreSSL version",
+		Default: builder.LibreSSLVersion,
 	}
 	argsString["zlibversion"] = OptionValue{
 		Desc:    "zlib version",
