@@ -179,6 +179,20 @@ $ nginx-build -d work -openssl
 $ nginx-build -d work -openssl -opensslversion=1.0.2f
 ```
 
+### Embedding LibreSSL statically
+
+Give `-libressl` to `nginx-build`.
+
+```bash
+$ nginx-build -d work -libressl
+```
+
+`-libresslversion` is an option to set a version of LibreSSL.
+
+```bash
+$ nginx-build -d work -libressl -libresslversion=2.5.4
+```
+
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
