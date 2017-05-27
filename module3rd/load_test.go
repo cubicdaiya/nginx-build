@@ -25,12 +25,12 @@ func (suite *Module3rdTestSuite) SetupTest() {
 func (suite *Module3rdTestSuite) TestModules3rd() {
 	for _, m := range suite.modules3rd {
 		switch m.Name {
-//		case "echo-nginx-module":
-//			assert.Equal(suite.T(), m.Name, "echo-nginx-module")
-//			assert.Equal(suite.T(), m.Form, "git")
-//			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/echo-nginx-module.git")
-//			assert.Equal(suite.T(), m.Rev, "v0.58")
-//			assert.Equal(suite.T(), m.Dynamic, false)
+		//		case "echo-nginx-module":
+		//			assert.Equal(suite.T(), m.Name, "echo-nginx-module")
+		//			assert.Equal(suite.T(), m.Form, "git")
+		//			assert.Equal(suite.T(), m.Url, "https://github.com/openresty/echo-nginx-module.git")
+		//			assert.Equal(suite.T(), m.Rev, "v0.58")
+		//			assert.Equal(suite.T(), m.Dynamic, false)
 		case "headers-more-nginx-module":
 			assert.Equal(suite.T(), m.Name, "headers-more-nginx-module")
 			assert.Equal(suite.T(), m.Form, "git")
