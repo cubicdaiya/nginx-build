@@ -43,6 +43,8 @@ func IsSameVersion(builders []Builder) (bool, error) {
 			fallthrough
 		case ComponentOpenSSL:
 			fallthrough
+		case ComponentLibreSSL:
+			fallthrough
 		case ComponentZlib:
 			if vi == "" && !b.Static {
 				continue

@@ -23,7 +23,7 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 
 	for _, d := range dependencies {
 		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
-		if d.Name == "openssl" {
+		if d.Name == "openssl" || d.Name == "libressl" {
 			openSSLStatic = true
 		}
 	}

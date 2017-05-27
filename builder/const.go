@@ -18,6 +18,12 @@ const (
 	OpenSSLDownloadURLPrefix = "https://www.openssl.org/source"
 )
 
+// libressl
+const (
+	LibreSSLVersion           = "2.5.4"
+	LibreSSLDownloadURLPrefix = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL"
+)
+
 // zlib
 const (
 	ZlibVersion           = "1.2.11"
@@ -43,6 +49,7 @@ const (
 	ComponentTengine
 	ComponentPcre
 	ComponentOpenSSL
+	ComponentLibreSSL
 	ComponentZlib
 	ComponentMax
 )
