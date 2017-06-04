@@ -67,6 +67,14 @@ OPTIONS
 
  specify OpenSSL version
 
+**\-libressl**
+
+ embedded LibreSSL statically
+
+**-libresslversion**
+
+ specify LibreSSL version
+
 **\-openresty**
 
  download openresty instead of nginx
