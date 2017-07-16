@@ -1,9 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/cubicdaiya/nginx-build/builder"
@@ -15,29 +16,25 @@ func extractArchive(path string) error {
 	return command.Run([]string{"tar", "zxvf", path})
 }
 
-func download(url string, logName string) error {
-	args := []string{"wget", url}
-	if command.VerboseEnabled {
-		return command.Run(args)
-	}
-
-	f, err := os.Create(logName)
-	if err != nil {
-		return command.Run(args)
-	}
-	defer f.Close()
-
-	cmd, err := command.Make(args)
+func downloadForBuilder(b *builder.Builder) error {
+	res, err := http.Get(b.DownloadURL())
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
-	writer := bufio.NewWriter(f)
-	defer writer.Flush()
+	f, err := os.Create(b.ArchivePath())
+	if err != nil {
+		return err
+	}
+	defer f.Close()
 
-	cmd.Stderr = writer
+	_, err = io.Copy(f, res.Body)
+	if err != nil && err != io.EOF {
+		return err
+	}
 
-	return cmd.Run()
+	return nil
 }
 
 func downloadAndExtract(b *builder.Builder) error {
@@ -46,7 +43,7 @@ func downloadAndExtract(b *builder.Builder) error {
 
 			log.Printf("Download %s.....", b.SourcePath())
 
-			err := download(b.DownloadURL(), b.LogPath())
+			err := downloadForBuilder(b)
 			if err != nil {
 				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
 			}
