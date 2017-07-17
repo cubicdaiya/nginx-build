@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/cubicdaiya/nginx-build/builder"
 	"github.com/cubicdaiya/nginx-build/command"
@@ -17,7 +18,11 @@ func extractArchive(path string) error {
 }
 
 func downloadForBuilder(b *builder.Builder) error {
-	res, err := http.Get(b.DownloadURL())
+	c := &http.Client{
+		Timeout: time.Duration(900) * time.Second, // the default timeout of wget
+	}
+
+	res, err := c.Get(b.DownloadURL())
 	if err != nil {
 		return err
 	}
