@@ -13,13 +13,15 @@ import (
 	"github.com/cubicdaiya/nginx-build/util"
 )
 
+const DefaultTimeout = time.Duration(900) * time.Second
+
 func extractArchive(path string) error {
 	return command.Run([]string{"tar", "zxvf", path})
 }
 
-func downloadForBuilder(b *builder.Builder) error {
+func download(b *builder.Builder) error {
 	c := &http.Client{
-		Timeout: time.Duration(900) * time.Second, // the default timeout of wget
+		Timeout: DefaultTimeout,
 	}
 
 	res, err := c.Get(b.DownloadURL())
@@ -48,7 +50,7 @@ func downloadAndExtract(b *builder.Builder) error {
 
 			log.Printf("Download %s.....", b.SourcePath())
 
-			err := downloadForBuilder(b)
+			err := download(b)
 			if err != nil {
 				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
 			}
