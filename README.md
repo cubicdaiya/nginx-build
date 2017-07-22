@@ -8,7 +8,6 @@
 
 ## Requirements
 
- * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
  * [git](https://git-scm.com/) and [hg](https://www.mercurial-scm.org/) for downloading 3rd party modules
  * [patch](http://savannah.gnu.org/projects/patch/) for applying patch to nginx
 
