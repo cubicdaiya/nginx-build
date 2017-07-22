@@ -193,6 +193,13 @@ $ nginx-build -d work -libressl
 $ nginx-build -d work -libressl -libresslversion=2.5.4
 ```
 
+Sometimes the following error occurs when downloading the source code. Downloading the source code has been successful, so you do not have to worry about it.
+
+```
+Unsolicited response received on idle HTTP channel starting with "HTTP/1.0 408 Request Timeout\r\nDate: Sat, 22 Jul 2017 06:55:35 GMT\r\nServer: OpenBSD httpd\r\nConnection: close\r\nContent-Type: text/html\r\nContent-Length: 439\r\n\r\n<!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n<title>408 Request Timeout</title>\n<style type=\"text/css\"><!--\nbody { background-color: white; color: black; font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif; }\nhr { border: 0; border-bottom: 1px dashed; }\n\n--></style>\n</head>\n<body>\n<h1>408 Request Timeout</h1>\n<hr>\n<address>OpenBSD httpd</address>\n</body>\n</html>\n"; err=<nil>
+```
+
+
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
