@@ -63,19 +63,15 @@ func versionsGen() []string {
 }
 
 func versionsGenOpenResty() []string {
-	var versions []string
-
-	versions = append(versions, fmt.Sprintf("openresty-%s", builder.OpenRestyVersion))
-
-	return versions
+	return []string{
+		fmt.Sprintf("openresty-%s", builder.OpenRestyVersion),
+	}
 }
 
 func versionsGenTengine() []string {
-	var versions []string
-
-	versions = append(versions, fmt.Sprintf("tengine-%s", builder.TengineVersion))
-
-	return versions
+	return []string{
+		fmt.Sprintf("tengine-%s", builder.TengineVersion),
+	}
 }
 
 func printNginxVersions() {

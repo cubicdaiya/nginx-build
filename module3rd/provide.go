@@ -13,8 +13,7 @@ func Provide(m *Module3rd) error {
 	if len(m.Rev) > 0 {
 		dir := util.SaveCurrentDir()
 		os.Chdir(m.Name)
-		err := switchRev(m.Form, m.Rev)
-		if err != nil {
+		if err := switchRev(m.Form, m.Rev); err != nil {
 			return fmt.Errorf("%s (%s checkout %s): %s", m.Name, m.Form, m.Rev, err.Error())
 		}
 		os.Chdir(dir)
@@ -27,8 +26,7 @@ func Provide(m *Module3rd) error {
 		} else {
 			os.Chdir(m.Name)
 		}
-		err := provideShell(m.Shprov)
-		if err != nil {
+		if err := provideShell(m.Shprov); err != nil {
 			return fmt.Errorf("%s's shprov(%s): %s", m.Name, m.Shprov, err.Error())
 		}
 		os.Chdir(dir)
