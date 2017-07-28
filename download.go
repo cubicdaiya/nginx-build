@@ -50,16 +50,14 @@ func downloadAndExtract(b *builder.Builder) error {
 
 			log.Printf("Download %s.....", b.SourcePath())
 
-			err := download(b)
-			if err != nil {
+			if err := download(b); err != nil {
 				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
 			}
 		}
 
 		log.Printf("Extract %s.....", b.ArchivePath())
 
-		err := extractArchive(b.ArchivePath())
-		if err != nil {
+		if err := extractArchive(b.ArchivePath()); err != nil {
 			return fmt.Errorf("Failed to extract %s. %s", b.ArchivePath(), err.Error())
 		}
 	} else {
@@ -69,8 +67,7 @@ func downloadAndExtract(b *builder.Builder) error {
 }
 
 func downloadAndExtractParallel(b *builder.Builder) {
-	err := downloadAndExtract(b)
-	if err != nil {
+	if err := downloadAndExtract(b); err != nil {
 		util.PrintFatalMsg(err, b.LogPath())
 	}
 }
