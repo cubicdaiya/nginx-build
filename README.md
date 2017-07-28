@@ -8,7 +8,6 @@
 
 ## Requirements
 
- * [wget](https://www.gnu.org/software/wget/) for downloading nginx and external libraries
  * [git](https://git-scm.com/) and [hg](https://www.mercurial-scm.org/) for downloading 3rd party modules
  * [patch](http://savannah.gnu.org/projects/patch/) for applying patch to nginx
 
@@ -192,6 +191,10 @@ $ nginx-build -d work -libressl
 ```bash
 $ nginx-build -d work -libressl -libresslversion=2.5.4
 ```
+
+Sometimes an error occurs when downloading the source code. Please refer to the following [PR](https://github.com/cubicdaiya/nginx-build/pull/25) for more information.
+Downloading the source code has been successful, so you do not have to worry about it.
+
 
 ### Embedding 3rd-party modules
 
