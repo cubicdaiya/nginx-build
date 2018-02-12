@@ -152,6 +152,10 @@ func MakeArgsBool() map[string]OptionBool {
 		Name: "--with-http_auth_basic_module",
 		Desc: "disable ngx_http_auth_basic_module",
 	}
+	argsBool["without-http_mirror_module"] = OptionBool{
+		Name: "--with-http_mirror_module",
+		Desc: "disable ngx_http_mirror_module",
+	}
 	argsBool["without-http_autoindex_module"] = OptionBool{
 		Name: "--with-http_autoindex_module",
 		Desc: "disable ngx_http_autoindex_module",
