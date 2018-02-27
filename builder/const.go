@@ -38,7 +38,7 @@ const (
 
 // tengine
 const (
-	TengineVersion           = "2.2.1"
+	TengineVersion           = "2.2.2"
 	TengineDownloadURLPrefix = "http://tengine.taobao.org/download"
 )
 
