@@ -9,11 +9,11 @@
 ## Requirements
 
  * [git](https://git-scm.com/) and [hg](https://www.mercurial-scm.org/) for downloading 3rd party modules
- * [patch](http://savannah.gnu.org/projects/patch/) for applying patch to nginx
+ * [patch](https://savannah.gnu.org/projects/patch/) for applying patch to nginx
 
 ## Build Support
 
- * [nginx](http://nginx.org/)
+ * [nginx](https://nginx.org/)
  * [OpenResty](https://openresty.org/)
  * [Tengine](http://tengine.taobao.org/)
 
@@ -26,7 +26,7 @@ go get -u github.com/cubicdaiya/nginx-build
 If you don't have go-runtime, you may download the binary from [here](https://github.com/cubicdaiya/nginx-build/releases).
 
 
-If you are Mac OS X user, you can use [Homebrew](http://brew.sh/).
+If you are Mac OS X user, you can use [Homebrew](https://brew.sh/).
 
 ```
 brew tap cubicdaiya/nginx-build
@@ -233,7 +233,7 @@ There is the example configuration below.
 ```ini
 [njs/nginx]
 form=hg
-url=http://hg.nginx.org/njs
+url=https://hg.nginx.org/njs
 shprov=./configure && make
 shprovdir=..
 
