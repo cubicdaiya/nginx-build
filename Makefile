@@ -1,7 +1,7 @@
 VERSION=0.11.3
 TARGETS_NOVENDOR=$(shell glide novendor)
 
-nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go openssl/*.go util/*.go
+nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go util/*.go
 	go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
 
 build-cross:
