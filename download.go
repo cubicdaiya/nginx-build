@@ -30,7 +30,8 @@ func download(b *builder.Builder) error {
 	}
 	defer res.Body.Close()
 
-	f, err := os.Create(b.ArchivePath())
+	tmpFileName := b.ArchivePath() + ".download"
+	f, err := os.Create(tmpFileName)
 	if err != nil {
 		return err
 	}
@@ -38,6 +39,11 @@ func download(b *builder.Builder) error {
 
 	_, err = io.Copy(f, res.Body)
 	if err != nil && err != io.EOF {
+		return err
+	}
+
+	err = os.Rename(tmpFileName, b.ArchivePath())
+	if err != nil {
 		return err
 	}
 
