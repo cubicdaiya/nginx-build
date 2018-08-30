@@ -23,7 +23,6 @@ func download(b *builder.Builder) error {
 	c := &http.Client{
 		Timeout: DefaultDownloadTimeout,
 	}
-
 	res, err := c.Get(b.DownloadURL())
 	if err != nil {
 		return err
@@ -37,13 +36,11 @@ func download(b *builder.Builder) error {
 	}
 	defer f.Close()
 
-	_, err = io.Copy(f, res.Body)
-	if err != nil && err != io.EOF {
+	if _, err := io.Copy(f, res.Body); err != nil && err != io.EOF {
 		return err
 	}
 
-	err = os.Rename(tmpFileName, b.ArchivePath())
-	if err != nil {
+	if err := os.Rename(tmpFileName, b.ArchivePath()); err != nil {
 		return err
 	}
 
