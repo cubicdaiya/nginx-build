@@ -1,5 +1,4 @@
 VERSION=0.11.4
-TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go util/*.go
 	GO111MODULE=on go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
@@ -17,10 +16,10 @@ build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
 check:
-	go test $(TARGETS_NOVENDOR)
+	go test ./...
 
 fmt:
-	@echo $(TARGETS_NOVENDOR) | xargs go fmt
+	go fmt
 
 install:
 	install nginx-build /usr/local/bin/nginx-build
