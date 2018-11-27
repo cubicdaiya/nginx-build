@@ -1,6 +1,0 @@
-package: github.com/cubicdaiya/nginx-build
-import:
-- package: github.com/go-ini/ini
-  version: v1.27.0
-- package: github.com/stretchr/testify
-  version: v1.1.4
