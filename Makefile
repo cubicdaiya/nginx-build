@@ -16,10 +16,10 @@ build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
 check:
-	go test ./...
+	GO111MODULE=on go test ./...
 
 fmt:
-	go fmt
+	go fmt ./...
 
 install:
 	install nginx-build /usr/local/bin/nginx-build
