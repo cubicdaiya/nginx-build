@@ -1,12 +1,11 @@
 VERSION=0.11.4
-TARGETS_NOVENDOR=$(shell glide novendor)
 
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go util/*.go
-	go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
+	GO111MODULE=on go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
 
 build-cross:
-	GOOS=linux GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/linux/amd64/nginx-build
-	GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/darwin/amd64/nginx-build
+	GO111MODULE=on GOOS=linux GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/linux/amd64/nginx-build
+	GO111MODULE=on GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	cd bin/linux/amd64/ && tar cvf nginx-build-linux-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-linux-amd64-${VERSION}.tar
@@ -16,14 +15,11 @@ dist: build-cross
 build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
-bundle:
-	glide install
-
 check:
-	go test $(TARGETS_NOVENDOR)
+	GO111MODULE=on go test ./...
 
 fmt:
-	@echo $(TARGETS_NOVENDOR) | xargs go fmt
+	go fmt ./...
 
 install:
 	install nginx-build /usr/local/bin/nginx-build
