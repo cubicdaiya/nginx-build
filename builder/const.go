@@ -20,7 +20,7 @@ const (
 
 // libressl
 const (
-	LibreSSLVersion           = "2.8.2"
+	LibreSSLVersion           = "2.8.3"
 	LibreSSLDownloadURLPrefix = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL"
 )
 
