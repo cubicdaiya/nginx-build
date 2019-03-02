@@ -14,7 +14,7 @@ const (
 
 // openssl
 const (
-	OpenSSLVersion           = "1.0.2q"
+	OpenSSLVersion           = "1.0.2r"
 	OpenSSLDownloadURLPrefix = "https://www.openssl.org/source"
 )
 
