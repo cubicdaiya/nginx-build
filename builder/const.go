@@ -39,7 +39,7 @@ const (
 // tengine
 const (
 	TengineVersion           = "2.2.2"
-	TengineDownloadURLPrefix = "http://tengine.taobao.org/download"
+	TengineDownloadURLPrefix = "https://tengine.taobao.org/download"
 )
 
 // component enumerations
