@@ -2,9 +2,9 @@ package openresty
 
 import (
 	"math"
+	"regexp"
 	"strconv"
 	"strings"
-	"regexp"
 )
 
 var (
