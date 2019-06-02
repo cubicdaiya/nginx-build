@@ -1,4 +1,4 @@
-VERSION=0.11.5
+VERSION=0.11.6
 
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go util/*.go
 	GO111MODULE=on go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
