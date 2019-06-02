@@ -15,6 +15,30 @@ func FileExists(path string) bool {
 	return true
 }
 
+func IsDirectory(path string) (bool, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+	return stat.IsDir(), nil
+}
+
+func ListDirectory(path string) ([]string, error) {
+	var fileNames []string
+
+	err := filepath.Walk(path, func (path string, info os.FileInfo, err error) error {
+		if ! info.IsDir() {
+			fileNames = append(fileNames, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return fileNames, nil
+}
+
 func SaveCurrentDir() string {
 	prevDir, _ := filepath.Abs(".")
 	return prevDir

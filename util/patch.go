@@ -65,11 +65,33 @@ func Patch(path, option, root string, reverse bool) {
 		pathes = append(pathes, path)
 	}
 
+	// replace directories with all files they contain (recursively)
+	var expanded_paths []string
 	for _, path := range pathes {
-
 		if !strings.HasPrefix(path, "/") {
 			path = fmt.Sprintf("%s/%s", root, path)
 		}
+
+		isDir, err := IsDirectory(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if isDir {
+			paths, err := ListDirectory(path)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if paths != nil {
+				expanded_paths = append(expanded_paths, paths...)
+			}
+		} else {
+			expanded_paths = append(expanded_paths, path)
+		}
+	}
+
+	pathes = expanded_paths
+
+	for _, path := range pathes {
 		if FileExists(path) {
 			if reverse {
 				log.Printf("Reverting patch: %s", path)
