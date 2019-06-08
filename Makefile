@@ -11,6 +11,13 @@ dist: build-cross
 	cd bin/linux/amd64/ && tar cvf nginx-build-linux-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-linux-amd64-${VERSION}.tar
 	cd bin/darwin/amd64/ && tar cvf nginx-build-darwin-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-darwin-amd64-${VERSION}.tar
 
+release:
+	GOOS=linux go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
+	tar cvzf release/nginx-build-linux-amd64.tar.gz nginx-build
+	GOOS=darwin go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
+	tar cvzf release/nginx-build-darwin-amd64.tar.gz nginx-build
+	rm nginx-build
+
 # ImageMagick and GD are required for ngx_small_light
 build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
