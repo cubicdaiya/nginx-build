@@ -11,10 +11,11 @@ dist: build-cross
 	cd bin/linux/amd64/ && tar cvf nginx-build-linux-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-linux-amd64-${VERSION}.tar
 	cd bin/darwin/amd64/ && tar cvf nginx-build-darwin-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-darwin-amd64-${VERSION}.tar
 
+.PHONY: release
 release:
-	GOOS=linux go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
+	GO111MODULE=on GOOS=linux go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
 	tar cvzf release/nginx-build-linux-amd64.tar.gz nginx-build
-	GOOS=darwin go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
+	GO111MODULE=on GOOS=darwin go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o nginx-build
 	tar cvzf release/nginx-build-darwin-amd64.tar.gz nginx-build
 	rm nginx-build
 
