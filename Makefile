@@ -1,11 +1,13 @@
 VERSION=0.11.6
 
+export GO111MODULE=on
+
 nginx-build: *.go builder/*.go command/*.go configure/*.go module3rd/*.go openresty/*.go util/*.go
-	GO111MODULE=on go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
+	go build -ldflags '-X main.NginxBuildVersion=${VERSION}' -o $@
 
 build-cross:
-	GO111MODULE=on GOOS=linux GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/linux/amd64/nginx-build
-	GO111MODULE=on GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/darwin/amd64/nginx-build
+	GOOS=linux GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/linux/amd64/nginx-build
+	GOOS=darwin GOARCH=amd64 go build -ldflags '-s -w -X main.NginxBuildVersion=${VERSION}' -o bin/darwin/amd64/nginx-build
 
 dist: build-cross
 	cd bin/linux/amd64/ && tar cvf nginx-build-linux-amd64-${VERSION}.tar nginx-build && zopfli nginx-build-linux-amd64-${VERSION}.tar
@@ -16,7 +18,7 @@ build-example: nginx-build
 	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
 
 check:
-	GO111MODULE=on go test ./...
+	go test ./...
 
 fmt:
 	go fmt ./...
