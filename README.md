@@ -189,11 +189,11 @@ $ nginx-build -d work -libressl
 `-libresslversion` is an option to set a version of LibreSSL.
 
 ```bash
-$ nginx-build -d work -libressl -libresslversion=2.5.4
+$ nginx-build -d work -libressl -libresslversion=2.9.2
 ```
 
 Sometimes an error occurs when downloading the source code. Please refer to the following [PR](https://github.com/cubicdaiya/nginx-build/pull/25) for more information.
-Downloading the source code has been successful, so you do not have to worry about it.
+Downloading the source code has been successful, so you do not have to worry about it. And the build with libressl fails on MacOSX.
 
 
 ### Embedding 3rd-party modules
