@@ -26,8 +26,8 @@ func IsDirectory(path string) (bool, error) {
 func ListDirectory(path string) ([]string, error) {
 	var fileNames []string
 
-	err := filepath.Walk(path, func (path string, info os.FileInfo, err error) error {
-		if ! info.IsDir() {
+	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
 			fileNames = append(fileNames, path)
 		}
 		return nil
