@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	versionPattern = regexp.MustCompile(`([0-9]+)(\.[0-9]+)?(\.[0-9]+)?(\.[0-9]+)?`)
+	versionPattern = regexp.MustCompile(`([0-9]+\.?){1,4}`)
 }
 
 func Name(version string) string {
