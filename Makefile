@@ -1,4 +1,4 @@
-VERSION=0.11.9
+VERSION=0.11.10
 
 export GO111MODULE=on
 
