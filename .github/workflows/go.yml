@@ -18,3 +18,9 @@ jobs:
 
     - name: Test
       run: make check
+
+    - name: Run
+      run: |
+        sudo apt-get install -y libgd-dev
+        make
+        ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl
