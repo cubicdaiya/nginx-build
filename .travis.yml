@@ -1,8 +1,0 @@
-language: go
-go:
-  - tip
-script:
-  - sudo apt-get install -y libgd2-xpm-dev
-  - make
-  - make check
-  - ./nginx-build -c ./config/configure.example -m ./config/modules.cfg.example -d work -clear -pcre -zlib -openssl
