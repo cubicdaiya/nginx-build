@@ -438,7 +438,7 @@ func MakeArgsString() map[string]OptionValue {
 		Name: "--builddir",
 		Desc: "set build directory",
 	}
-	argsString["with-perl_modules_path="] = OptionValue{
+	argsString["with-perl_modules_path"] = OptionValue{
 		Name: "--with-perl_modules_path",
 		Desc: "set Perl modules path",
 	}
