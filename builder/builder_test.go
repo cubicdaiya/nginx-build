@@ -3,115 +3,343 @@ package builder
 import (
 	"fmt"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 )
 
-type BuilderTestSuite struct {
-	suite.Suite
-	builders []Builder
+func setupBuilders(t *testing.T) []Builder {
+	builders := make([]Builder, ComponentMax)
+	builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion)
+	builders[ComponentPcre] = MakeLibraryBuilder(ComponentPcre, PcreVersion, false)
+	builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, true)
+	builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, true)
+	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
+	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
+	builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
+	return builders
 }
 
-func (suite *BuilderTestSuite) SetupTest() {
-	suite.builders = make([]Builder, ComponentMax)
+func TestName(t *testing.T) {
+	builders := setupBuilders(t)
 
-	suite.builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion)
-	suite.builders[ComponentPcre] = MakeLibraryBuilder(ComponentPcre, PcreVersion, false)
-	suite.builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, true)
-	suite.builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, true)
-	suite.builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
-	suite.builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
-	suite.builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentNginx].name(),
+			want: "nginx",
+		},
+		{
+			got:  builders[ComponentPcre].name(),
+			want: "pcre",
+		},
+		{
+			got:  builders[ComponentOpenSSL].name(),
+			want: "openssl",
+		},
+		{
+			got:  builders[ComponentLibreSSL].name(),
+			want: "libressl",
+		},
+		{
+			got:  builders[ComponentZlib].name(),
+			want: "zlib",
+		},
+		{
+			got:  builders[ComponentOpenResty].name(),
+			want: "openresty",
+		},
+		{
+			got:  builders[ComponentTengine].name(),
+			want: "tengine",
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestName() {
-	assert.Equal(suite.T(), suite.builders[ComponentNginx].name(), "nginx")
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].name(), "pcre")
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].name(), "openssl")
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].name(), "libressl")
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].name(), "zlib")
-	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].name(), "openresty")
-	assert.Equal(suite.T(), suite.builders[ComponentTengine].name(), "tengine")
+func TestOption(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentPcre].option(),
+			want: "--with-pcre",
+		},
+		{
+			got:  builders[ComponentOpenSSL].option(),
+			want: "--with-openssl",
+		},
+		{
+			got:  builders[ComponentLibreSSL].option(),
+			want: "--with-openssl",
+		},
+		{
+			got:  builders[ComponentZlib].option(),
+			want: "--with-zlib",
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestOption() {
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].option(), "--with-pcre")
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].option(), "--with-openssl")
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].option(), "--with-openssl")
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].option(), "--with-zlib")
+func TestDownloadURL(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentNginx].DownloadURL(),
+			want: fmt.Sprintf("%s/nginx-%s.tar.gz", NginxDownloadURLPrefix, NginxVersion),
+		},
+		{
+			got:  builders[ComponentPcre].DownloadURL(),
+			want: fmt.Sprintf("%s/pcre-%s.tar.gz", PcreDownloadURLPrefix, PcreVersion),
+		},
+		{
+			got:  builders[ComponentOpenSSL].DownloadURL(),
+			want: fmt.Sprintf("%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, OpenSSLVersion),
+		},
+		{
+			got:  builders[ComponentLibreSSL].DownloadURL(),
+			want: fmt.Sprintf("%s/libressl-%s.tar.gz", LibreSSLDownloadURLPrefix, LibreSSLVersion),
+		},
+		{
+			got:  builders[ComponentZlib].DownloadURL(),
+			want: fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, ZlibVersion),
+		},
+		{
+			got:  builders[ComponentOpenResty].DownloadURL(),
+			want: fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, OpenRestyVersion),
+		},
+		{
+			got:  builders[ComponentTengine].DownloadURL(),
+			want: fmt.Sprintf("%s/tengine-%s.tar.gz", TengineDownloadURLPrefix, TengineVersion),
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestDownloadURL() {
-	assert.Equal(suite.T(), suite.builders[ComponentNginx].DownloadURL(), fmt.Sprintf("%s/nginx-%s.tar.gz", NginxDownloadURLPrefix, NginxVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].DownloadURL(), fmt.Sprintf("%s/pcre-%s.tar.gz", PcreDownloadURLPrefix, PcreVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].DownloadURL(), fmt.Sprintf("%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, OpenSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].DownloadURL(), fmt.Sprintf("%s/libressl-%s.tar.gz", LibreSSLDownloadURLPrefix, LibreSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].DownloadURL(), fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, ZlibVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].DownloadURL(), fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, OpenRestyVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentTengine].DownloadURL(), fmt.Sprintf("%s/tengine-%s.tar.gz", TengineDownloadURLPrefix, TengineVersion))
+func TestSourcePath(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentNginx].SourcePath(),
+			want: fmt.Sprintf("nginx-%s", NginxVersion),
+		},
+		{
+			got:  builders[ComponentPcre].SourcePath(),
+			want: fmt.Sprintf("pcre-%s", PcreVersion),
+		},
+		{
+			got:  builders[ComponentOpenSSL].SourcePath(),
+			want: fmt.Sprintf("openssl-%s", OpenSSLVersion),
+		},
+		{
+			got:  builders[ComponentLibreSSL].SourcePath(),
+			want: fmt.Sprintf("libressl-%s", LibreSSLVersion),
+		},
+		{
+			got:  builders[ComponentZlib].SourcePath(),
+			want: fmt.Sprintf("zlib-%s", ZlibVersion),
+		},
+		{
+			got:  builders[ComponentOpenResty].SourcePath(),
+			want: fmt.Sprintf("openresty-%s", OpenRestyVersion),
+		},
+		{
+			got:  builders[ComponentTengine].SourcePath(),
+			want: fmt.Sprintf("tengine-%s", TengineVersion),
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestSourcePath() {
-	assert.Equal(suite.T(), suite.builders[ComponentNginx].SourcePath(), fmt.Sprintf("nginx-%s", NginxVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].SourcePath(), fmt.Sprintf("pcre-%s", PcreVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].SourcePath(), fmt.Sprintf("openssl-%s", OpenSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].SourcePath(), fmt.Sprintf("libressl-%s", LibreSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].SourcePath(), fmt.Sprintf("zlib-%s", ZlibVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].SourcePath(), fmt.Sprintf("openresty-%s", OpenRestyVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentTengine].SourcePath(), fmt.Sprintf("tengine-%s", TengineVersion))
+func TestArchivePath(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentNginx].ArchivePath(),
+			want: fmt.Sprintf("nginx-%s.tar.gz", NginxVersion),
+		},
+		{
+			got:  builders[ComponentPcre].ArchivePath(),
+			want: fmt.Sprintf("pcre-%s.tar.gz", PcreVersion),
+		},
+		{
+			got:  builders[ComponentOpenSSL].ArchivePath(),
+			want: fmt.Sprintf("openssl-%s.tar.gz", OpenSSLVersion),
+		},
+		{
+			got:  builders[ComponentLibreSSL].ArchivePath(),
+			want: fmt.Sprintf("libressl-%s.tar.gz", LibreSSLVersion),
+		},
+		{
+			got:  builders[ComponentZlib].ArchivePath(),
+			want: fmt.Sprintf("zlib-%s.tar.gz", ZlibVersion),
+		},
+		{
+			got:  builders[ComponentOpenResty].ArchivePath(),
+			want: fmt.Sprintf("openresty-%s.tar.gz", OpenRestyVersion),
+		},
+		{
+			got:  builders[ComponentTengine].ArchivePath(),
+			want: fmt.Sprintf("tengine-%s.tar.gz", TengineVersion),
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestArchivePath() {
-	assert.Equal(suite.T(), suite.builders[ComponentNginx].ArchivePath(), fmt.Sprintf("nginx-%s.tar.gz", NginxVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].ArchivePath(), fmt.Sprintf("pcre-%s.tar.gz", PcreVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].ArchivePath(), fmt.Sprintf("openssl-%s.tar.gz", OpenSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].ArchivePath(), fmt.Sprintf("libressl-%s.tar.gz", LibreSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].ArchivePath(), fmt.Sprintf("zlib-%s.tar.gz", ZlibVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].ArchivePath(), fmt.Sprintf("openresty-%s.tar.gz", OpenRestyVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentTengine].ArchivePath(), fmt.Sprintf("tengine-%s.tar.gz", TengineVersion))
+func TestLogPath(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  string
+		want string
+	}{
+		{
+			got:  builders[ComponentNginx].LogPath(),
+			want: fmt.Sprintf("nginx-%s.log", NginxVersion),
+		},
+		{
+			got:  builders[ComponentPcre].LogPath(),
+			want: fmt.Sprintf("pcre-%s.log", PcreVersion),
+		},
+		{
+			got:  builders[ComponentOpenSSL].LogPath(),
+			want: fmt.Sprintf("openssl-%s.log", OpenSSLVersion),
+		},
+		{
+			got:  builders[ComponentLibreSSL].LogPath(),
+			want: fmt.Sprintf("libressl-%s.log", LibreSSLVersion),
+		},
+		{
+			got:  builders[ComponentZlib].LogPath(),
+			want: fmt.Sprintf("zlib-%s.log", ZlibVersion),
+		},
+		{
+			got:  builders[ComponentOpenResty].LogPath(),
+			want: fmt.Sprintf("openresty-%s.log", OpenRestyVersion),
+		},
+		{
+			got:  builders[ComponentTengine].LogPath(),
+			want: fmt.Sprintf("tengine-%s.log", TengineVersion),
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestLogPath() {
-	assert.Equal(suite.T(), suite.builders[ComponentNginx].LogPath(), fmt.Sprintf("nginx-%s.log", NginxVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].LogPath(), fmt.Sprintf("pcre-%s.log", PcreVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].LogPath(), fmt.Sprintf("openssl-%s.log", OpenSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].LogPath(), fmt.Sprintf("libressl-%s.log", LibreSSLVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].LogPath(), fmt.Sprintf("zlib-%s.log", ZlibVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentOpenResty].LogPath(), fmt.Sprintf("openresty-%s.log", OpenRestyVersion))
-	assert.Equal(suite.T(), suite.builders[ComponentTengine].LogPath(), fmt.Sprintf("tengine-%s.log", TengineVersion))
+func TestLibrary(t *testing.T) {
+	builders := setupBuilders(t)
+
+	tests := []struct {
+		got  bool
+		want bool
+	}{
+		{
+			got:  builders[ComponentPcre].Static,
+			want: false,
+		},
+		{
+			got:  builders[ComponentOpenSSL].Static,
+			want: true,
+		},
+		{
+			got:  builders[ComponentLibreSSL].Static,
+			want: true,
+		},
+		{
+			got:  builders[ComponentZlib].Static,
+			want: false,
+		},
+	}
+
+	for _, test := range tests {
+		if test.got != test.want {
+			t.Fatalf("got: %v, want: %v", test.got, test.want)
+		}
+	}
 }
 
-func (suite *BuilderTestSuite) TestLibrary() {
-	assert.Equal(suite.T(), suite.builders[ComponentPcre].Static, false)
-	assert.Equal(suite.T(), suite.builders[ComponentOpenSSL].Static, true)
-	assert.Equal(suite.T(), suite.builders[ComponentLibreSSL].Static, true)
-	assert.Equal(suite.T(), suite.builders[ComponentZlib].Static, false)
-}
+func TestMakeStaticLibrary(t *testing.T) {
+	builders := setupBuilders(t)
 
-func (suite *BuilderTestSuite) TestMakeStaticLibrary() {
-	pcre := MakeStaticLibrary(&suite.builders[ComponentPcre])
-	openssl := MakeStaticLibrary(&suite.builders[ComponentOpenSSL])
-	libressl := MakeStaticLibrary(&suite.builders[ComponentLibreSSL])
-	zlib := MakeStaticLibrary(&suite.builders[ComponentZlib])
+	tests := []struct {
+		builder       Builder
+		staticLibrary StaticLibrary
+		version       string
+	}{
+		{
+			builder:       builders[ComponentPcre],
+			staticLibrary: MakeStaticLibrary(&builders[ComponentPcre]),
+			version:       PcreVersion,
+		},
+		{
+			builder:       builders[ComponentOpenSSL],
+			staticLibrary: MakeStaticLibrary(&builders[ComponentOpenSSL]),
+			version:       OpenSSLVersion,
+		},
+		{
+			builder:       builders[ComponentLibreSSL],
+			staticLibrary: MakeStaticLibrary(&builders[ComponentLibreSSL]),
+			version:       LibreSSLVersion,
+		},
+		{
+			builder:       builders[ComponentZlib],
+			staticLibrary: MakeStaticLibrary(&builders[ComponentZlib]),
+			version:       ZlibVersion,
+		},
+	}
 
-	assert.Equal(suite.T(), pcre.Name, suite.builders[ComponentPcre].name())
-	assert.Equal(suite.T(), pcre.Version, PcreVersion)
-	assert.Equal(suite.T(), pcre.Option, suite.builders[ComponentPcre].option())
-
-	assert.Equal(suite.T(), openssl.Name, suite.builders[ComponentOpenSSL].name())
-	assert.Equal(suite.T(), openssl.Version, OpenSSLVersion)
-	assert.Equal(suite.T(), openssl.Option, suite.builders[ComponentOpenSSL].option())
-
-	assert.Equal(suite.T(), libressl.Name, suite.builders[ComponentLibreSSL].name())
-	assert.Equal(suite.T(), libressl.Version, LibreSSLVersion)
-	assert.Equal(suite.T(), libressl.Option, suite.builders[ComponentLibreSSL].option())
-
-	assert.Equal(suite.T(), zlib.Name, suite.builders[ComponentZlib].name())
-	assert.Equal(suite.T(), zlib.Version, ZlibVersion)
-	assert.Equal(suite.T(), zlib.Option, suite.builders[ComponentZlib].option())
-}
-
-func TestBuilderTestSuite(t *testing.T) {
-	suite.Run(t, new(BuilderTestSuite))
+	for _, test := range tests {
+		if test.builder.name() != test.staticLibrary.Name {
+			t.Fatalf("not equal name() between builder(%v) and static library(%v)", test.builder.name(), test.staticLibrary.Name)
+		}
+		if test.builder.option() != test.staticLibrary.Option {
+			t.Fatalf("not equal option() between builder(%v) and static library(%v)", test.builder.option(), test.staticLibrary.Option)
+		}
+		if test.builder.Version != test.version {
+			t.Fatalf("not equal version between builder's and default's")
+		}
+	}
 }
