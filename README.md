@@ -21,16 +21,6 @@
 go install github.com/cubicdaiya/nginx-build@latest
 ```
 
-If you don't have go-runtime, you may download the binary from [here](https://github.com/cubicdaiya/nginx-build/releases).
-
-
-If you are Mac OS X user, you can use [Homebrew](https://brew.sh/).
-
-```
-brew tap cubicdaiya/nginx-build
-brew install nginx-build
-```
-
 ## Quick Start
 
 ```console
