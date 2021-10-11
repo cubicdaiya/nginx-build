@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-go get -u github.com/cubicdaiya/nginx-build
+go install github.com/cubicdaiya/nginx-build@latest
 ```
 
 If you don't have go-runtime, you may download the binary from [here](https://github.com/cubicdaiya/nginx-build/releases).
