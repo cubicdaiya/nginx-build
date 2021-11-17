@@ -15,25 +15,11 @@ func TestModules3rd(t *testing.T) {
 	for _, m := range modules3rd {
 		var want Module3rd
 		switch m.Name {
-		case "headers-more-nginx-module":
-			want.Name = "headers-more-nginx-module"
+		case "ngx_http_hello_world":
+			want.Name = "ngx_http_hello_world"
 			want.Form = "git"
-			want.Url = "https://github.com/openresty/headers-more-nginx-module.git"
-			want.Rev = "v0.32"
+			want.Url = "https://github.com/cubicdaiya/ngx_http_hello_world"
 			want.Dynamic = false
-		case "ngx_devel_kit":
-			want.Name = "ngx_devel_kit"
-			want.Form = "git"
-			want.Url = "https://github.com/simpl/ngx_devel_kit"
-			want.Rev = "v0.3.0"
-			want.Dynamic = false
-		case "ngx_small_light":
-			want.Name = "ngx_small_light"
-			want.Form = "git"
-			want.Url = "https://github.com/cubicdaiya/ngx_small_light"
-			want.Rev = "v0.9.2"
-			want.Shprov = "./setup --with-gd"
-			want.Dynamic = true
 		default:
 			t.Fatalf("unexpected module: %v", m)
 		}

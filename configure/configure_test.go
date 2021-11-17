@@ -32,9 +32,7 @@ func TestConfiguregenModule3rd(t *testing.T) {
 	configureModules3rd := generateForModule3rd(modules3rd)
 
 	wantedOptions := []string{
-		"-add-module=../headers-more-nginx-module",
-		"-add-module=../ngx_devel_kit",
-		"-add-dynamic-module=../ngx_small_light",
+		"-add-module=../ngx_http_hello_world",
 	}
 
 	for _, want := range wantedOptions {
