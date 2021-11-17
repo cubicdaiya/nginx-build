@@ -1,5 +1,0 @@
-[ngx_small_light]
-form=git
-url=https://github.com/cubicdaiya/ngx_small_light
-rev=v0.9.2
-shprov=./setup --with-gd

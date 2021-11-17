@@ -24,26 +24,7 @@ go install github.com/cubicdaiya/nginx-build@latest
 ## Quick Start
 
 ```console
-$ nginx-build -d work
-nginx-build: 0.9.1
-Compiler: gc go1.6.1
-2016/04/21 09:40:12 Download nginx-1.9.15.....
-2016/04/21 09:40:19 Extract nginx-1.9.15.tar.gz.....
-2016/04/21 09:40:19 Generate configure script for nginx-1.9.15.....
-2016/04/21 09:40:19 Configure nginx-1.9.15.....
-2016/04/21 09:40:22 Build nginx-1.9.15.....
-2016/04/21 09:40:25 Complete building nginx!
-
-nginx version: nginx/1.9.15
-built by gcc 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.1)
-configure arguments:
-
-2016/04/21 09:40:25 Enter the following command for install nginx.
-
-   $ cd work/nginx/1.9.15/nginx-1.9.15
-   $ sudo make install
-
-$
+nginx-build -d work
 ```
 
 ## Custom Configuration
@@ -134,10 +115,6 @@ $ nginx-build -d work -zlib
 
 `-zlibversion` is an option to set a version of zlib.
 
-```bash
-$ nginx-build -d work -zlib -zlibversion=1.2.9
-```
-
 ### Embedding PCRE statically
 
 Give `-pcre` to `nginx-build`.
@@ -147,10 +124,6 @@ $ nginx-build -d work -pcre
 ```
 
 `-pcreversion` is an option to set a version of PCRE.
-
-```bash
-$ nginx-build -d work -pcre -pcreversion=8.38
-```
 
 ### Embedding OpenSSL statically
 
@@ -162,10 +135,6 @@ $ nginx-build -d work -openssl
 
 `-opensslversion` is an option to set a version of OpenSSL.
 
-```bash
-$ nginx-build -d work -openssl -opensslversion=1.0.2f
-```
-
 ### Embedding LibreSSL statically
 
 Give `-libressl` to `nginx-build`.
@@ -176,22 +145,15 @@ $ nginx-build -d work -libressl
 
 `-libresslversion` is an option to set a version of LibreSSL.
 
-```bash
-$ nginx-build -d work -libressl -libresslversion=2.9.2
-```
-
-Known issue, the build with libressl fails on MacOSX.
-
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
 Prepare a ini-file below.
 
 ```ini
-[ngx_devel_kit]
+[ngx_http_hello_world]
 form=git
-url=https://github.com/simpl/ngx_devel_kit
-rev=v0.2.19
+url=https://github.com/cubicdaiya/ngx_http_hello_world
 ```
 
 Give this file to `nginx-build` with `-m`.
@@ -205,9 +167,9 @@ $ nginx-build -d work -m modules.cfg.example
 Give `dynamic=true`.
 
 ```ini
-[ngx_dynamic_upstream]
+[ngx_http_hello_world]
 form=git
-url=https://github.com/cubicdaiya/ngx_dynamic_upstream.git
+url=https://github.com/cubicdaiya/ngx_http_hello_world
 dynamic=true
 ```
 
@@ -222,13 +184,6 @@ form=hg
 url=https://hg.nginx.org/njs
 shprov=./configure && make
 shprovdir=..
-
-[ngx_small_light]
-form=git
-url=https://github.com/cubicdaiya/ngx_small_light
-rev=v0.9.2
-dynamic=true
-shprov=./setup
 ```
 
 ## Applying patch before building nginx
@@ -238,11 +193,8 @@ shprov=./setup
 ```console
 nginx-build \
  -d work \
- -patch nginx__http2_spdy.patch \
- -patch-opt "-p1" \
- -v 1.9.7 \
- --with-http_spdy_module \
- --with-http_v2_module
+ -patch something.patch \
+ -patch-opt "-p1"
 ```
 
 ## Idempotent build
