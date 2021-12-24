@@ -151,7 +151,11 @@ func MakeBuilder(component int, version string) Builder {
 	case ComponentNginx:
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
 	case ComponentPcre:
-		builder.DownloadURLPrefix = PcreDownloadURLPrefix
+		if "" != os.Getenv("NGINX_BUILD_PCRE_DL_URL_PREFIX") {
+			builder.DownloadURLPrefix = os.Getenv("NGINX_BUILD_PCRE_DL_URL_PREFIX")
+		} else {
+			builder.DownloadURLPrefix = PcreDownloadURLPrefix
+		}
 	case ComponentOpenSSL:
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
 	case ComponentLibreSSL:

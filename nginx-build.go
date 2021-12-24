@@ -138,8 +138,8 @@ func main() {
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
 	// note: https://github.com/cubicdaiya/nginx-build/issues/72
-	if *pcreStatic {
-		log.Fatal("-pcre option is not avaivable now")
+	if *pcreStatic && "" == os.Getenv("NGINX_BUILD_PCRE_DL_URL_PREFIX") {
+		log.Fatal("-pcre option is currently not available. If you want to use it, please set NGINX_BUILD_PCRE_DL_URL_PREFIX")
 	}
 
 	// Allow multiple flags for `--patch`
