@@ -2,9 +2,6 @@ module github.com/cubicdaiya/nginx-build
 
 go 1.17
 
-require github.com/go-ini/ini v1.63.0
+require github.com/go-ini/ini v1.66.2
 
-require (
-	github.com/smartystreets/goconvey v1.6.4 // indirect
-	gopkg.in/ini.v1 v1.63.0 // indirect
-)
+require github.com/stretchr/testify v1.7.0 // indirect
