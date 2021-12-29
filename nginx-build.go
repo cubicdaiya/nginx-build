@@ -137,11 +137,6 @@ func main() {
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
-	// note: https://github.com/cubicdaiya/nginx-build/issues/72
-	if *pcreStatic {
-		log.Fatal("-pcre option is not avaivable now")
-	}
-
 	// Allow multiple flags for `--patch`
 	{
 		tmp := nginxBuildOptions.Values["patch"]

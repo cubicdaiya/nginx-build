@@ -55,7 +55,7 @@ func TestConfiguregenWithStaticLibraries(t *testing.T) {
 
 	wantedOptions := []string{
 		"--with-http_ssl_module",
-		fmt.Sprintf("--with-pcre=../pcre-%s \\\n", builder.PcreVersion),
+		fmt.Sprintf("--with-pcre=../pcre2-%s \\\n", builder.PcreVersion),
 		fmt.Sprintf("--with-openssl=../openssl-%s \\\n", builder.OpenSSLVersion),
 		fmt.Sprintf("--with-zlib=../zlib-%s \\\n", builder.ZlibVersion),
 	}
