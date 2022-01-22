@@ -44,7 +44,7 @@ func (builder *Builder) name() string {
 	case ComponentNginx:
 		name = "nginx"
 	case ComponentPcre:
-		name = "pcre"
+		name = "pcre2"
 	case ComponentOpenSSL:
 		name = "openssl"
 	case ComponentLibreSSL:
@@ -64,9 +64,14 @@ func (builder *Builder) name() string {
 func (builder *Builder) option() string {
 	name := builder.name()
 
-	// only libressl does not match option name
+	// libressl does not match option name
 	if name == "libressl" {
 		name = "openssl"
+	}
+
+	// pcre2 does not match option name
+	if name == "pcre2" {
+		name = "pcre"
 	}
 
 	return fmt.Sprintf("--with-%s", name)
@@ -126,7 +131,7 @@ func (builder *Builder) InstalledVersion() (string, error) {
 		versionRe = openrestyVersionRe
 	case "zlib":
 		versionRe = zlibVersionRe
-	case "pcre":
+	case "pcre2":
 		versionRe = pcreVersionRe
 	case "openssl":
 		versionRe = opensslVersionRe
@@ -151,7 +156,7 @@ func MakeBuilder(component int, version string) Builder {
 	case ComponentNginx:
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
 	case ComponentPcre:
-		builder.DownloadURLPrefix = PcreDownloadURLPrefix
+		builder.DownloadURLPrefix = fmt.Sprintf("%s/pcre2-%s", PcreDownloadURLPrefix, version)
 	case ComponentOpenSSL:
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
 	case ComponentLibreSSL:

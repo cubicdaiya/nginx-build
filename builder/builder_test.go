@@ -30,7 +30,7 @@ func TestName(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentPcre].name(),
-			want: "pcre",
+			want: "pcre2",
 		},
 		{
 			got:  builders[ComponentOpenSSL].name(),
@@ -106,7 +106,7 @@ func TestDownloadURL(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentPcre].DownloadURL(),
-			want: fmt.Sprintf("%s/pcre-%s.tar.gz", PcreDownloadURLPrefix, PcreVersion),
+			want: fmt.Sprintf("%s/pcre2-%s/pcre2-%s.tar.gz", PcreDownloadURLPrefix, PcreVersion, PcreVersion),
 		},
 		{
 			got:  builders[ComponentOpenSSL].DownloadURL(),
@@ -150,7 +150,7 @@ func TestSourcePath(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentPcre].SourcePath(),
-			want: fmt.Sprintf("pcre-%s", PcreVersion),
+			want: fmt.Sprintf("pcre2-%s", PcreVersion),
 		},
 		{
 			got:  builders[ComponentOpenSSL].SourcePath(),
@@ -194,7 +194,7 @@ func TestArchivePath(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentPcre].ArchivePath(),
-			want: fmt.Sprintf("pcre-%s.tar.gz", PcreVersion),
+			want: fmt.Sprintf("pcre2-%s.tar.gz", PcreVersion),
 		},
 		{
 			got:  builders[ComponentOpenSSL].ArchivePath(),
@@ -238,7 +238,7 @@ func TestLogPath(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentPcre].LogPath(),
-			want: fmt.Sprintf("pcre-%s.log", PcreVersion),
+			want: fmt.Sprintf("pcre2-%s.log", PcreVersion),
 		},
 		{
 			got:  builders[ComponentOpenSSL].LogPath(),
