@@ -26,8 +26,8 @@ const (
 
 // zlib
 const (
-	ZlibVersion           = "1.2.11"
-	ZlibDownloadURLPrefix = "https://zlib.net/fossils"
+	ZlibVersion           = "1.2.12"
+	ZlibDownloadURLPrefix = "https://zlib.net"
 )
 
 // openResty
