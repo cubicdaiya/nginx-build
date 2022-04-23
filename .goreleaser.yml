@@ -1,0 +1,21 @@
+project_name: nginx-build
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./nginx-build.go
+    binary: nginx-build
+    ldflags:
+      - -s -w
+      - -X main.NginxBuildVersion={{.Version}}
+    env:
+      - CGO_ENABLED=0
+    goarch:
+      - amd64
+      - arm64
+archives:
+  - name_template: '{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-{{ .Version }}'
+release:
+  prerelease: auto
