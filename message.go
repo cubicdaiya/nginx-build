@@ -7,14 +7,30 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"runtime/debug"
 )
+
+var (
+	NginxBuildVersion string
+)
+
+func nginxBuildVersion() string {
+	if NginxBuildVersion != "" {
+		return NginxBuildVersion
+	}
+	info, ok := debug.ReadBuildInfo()
+	if !ok {
+		return "(devel)"
+	}
+	return info.Main.Version
+}
 
 func printNginxBuildVersion() {
 	fmt.Printf(`nginx-build %s
 Compiler: %s %s
 Copyright (C) 2014-2021 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 `,
-		NginxBuildVersion,
+		nginxBuildVersion(),
 		runtime.Compiler,
 		runtime.Version())
 
@@ -31,7 +47,7 @@ func printFirstMsg() {
 	fmt.Printf(`nginx-build: %s
 Compiler: %s %s
 `,
-		NginxBuildVersion,
+		nginxBuildVersion(),
 		runtime.Compiler,
 		runtime.Version())
 }
