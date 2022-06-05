@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -387,7 +386,7 @@ func main() {
 
 	configureScript := configure.Generate(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir, *openResty, *jobs)
 
-	err = ioutil.WriteFile("./nginx-configure", []byte(configureScript), 0655)
+	err = os.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
