@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -47,7 +46,7 @@ func SaveCurrentDir() string {
 func FileGetContents(path string) (string, error) {
 	conf := ""
 	if len(path) > 0 {
-		confb, err := ioutil.ReadFile(path)
+		confb, err := os.ReadFile(path)
 		if err != nil {
 			return "", fmt.Errorf("confPath(%s) does not exist.", path)
 		}
