@@ -176,7 +176,7 @@ Give `dynamic=true`.
     "name": "ngx_http_hello_world",
     "form": "git",
     "url": "https://github.com/cubicdaiya/ngx_http_hello_world",
-	"dynamic": true
+    "dynamic": true
   }
 ]
 ```
