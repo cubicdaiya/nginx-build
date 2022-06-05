@@ -2,8 +2,7 @@ project_name: nginx-build
 env:
   - GO111MODULE=on
 builds:
-  - main: ./nginx-build.go
-    binary: nginx-build
+  - binary: nginx-build
     ldflags:
       - -s -w
       - -X main.NginxBuildVersion={{.Version}}
