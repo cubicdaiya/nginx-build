@@ -130,7 +130,7 @@ $ nginx-build -d work -m modules.json.example
 
 #### Embedding 3rd-party module dynamically
 
-Give `dynamic=true`.
+Give `true` to `dynamic`.
 
 ```ini
 [
