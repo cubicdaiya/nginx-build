@@ -114,15 +114,19 @@ $ nginx-build -d work -libressl
 Prepare a ini-file below.
 
 ```ini
-[ngx_http_hello_world]
-form=git
-url=https://github.com/cubicdaiya/ngx_http_hello_world
+[
+  {
+    "name": "ngx_http_hello_world",
+    "form": "git",
+    "url": "https://github.com/cubicdaiya/ngx_http_hello_world"
+  }
+]
 ```
 
 Give this file to `nginx-build` with `-m`.
 
 ```bash
-$ nginx-build -d work -m modules.cfg.example
+$ nginx-build -d work -m modules.json.example
 ```
 
 #### Embedding 3rd-party module dynamically
@@ -130,10 +134,14 @@ $ nginx-build -d work -m modules.cfg.example
 Give `dynamic=true`.
 
 ```ini
-[ngx_http_hello_world]
-form=git
-url=https://github.com/cubicdaiya/ngx_http_hello_world
-dynamic=true
+[
+  {
+    "name": "ngx_http_hello_world",
+    "form": "git",
+    "url": "https://github.com/cubicdaiya/ngx_http_hello_world",
+    "dynamic": true
+  }
+]
 ```
 
 #### Provision for 3rd-party module
@@ -142,11 +150,15 @@ There are some 3rd-party modules expected provision. `nginx-build` provides the 
 There is the example configuration below.
 
 ```ini
-[njs/nginx]
-form=hg
-url=https://hg.nginx.org/njs
-shprov=./configure && make
-shprovdir=..
+[
+  {
+    "name": "njs/nginx",
+    "form": "hg",
+    "url": "https://hg.nginx.org/njs",
+    "shprov": "./configure && make",
+    "shprovdir": ".."
+  }
+]
 ```
 
 ## Applying patch before building nginx

@@ -1,10 +1,11 @@
 package module3rd
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/cubicdaiya/nginx-build/util"
-	"github.com/go-ini/ini"
 )
 
 func Load(path string) ([]Module3rd, error) {
@@ -13,41 +14,18 @@ func Load(path string) ([]Module3rd, error) {
 		if !util.FileExists(path) {
 			return modules, fmt.Errorf("modulesConfPath(%s) does not exist.", path)
 		}
-		modulesConf, err := ini.Load(path)
+		data, err := os.ReadFile(path)
 		if err != nil {
 			return modules, err
 		}
-		modules = loadModules(modulesConf)
+		if err := json.Unmarshal(data, &modules); err != nil {
+			return modules, err
+		}
+		for i, _ := range modules {
+			if modules[i].Form == "" {
+				modules[i].Form = "git"
+			}
+		}
 	}
 	return modules, nil
-}
-
-func loadModule(s *ini.Section) Module3rd {
-	var (
-		module Module3rd
-	)
-
-	module.Name = s.Name()
-	module.Form = s.Key("form").String()
-	if module.Form == "" {
-		module.Form = "git"
-	}
-	module.Url = s.Key("url").String()
-	module.Rev = s.Key("rev").String()
-	module.Shprov = s.Key("shprov").String()
-	module.ShprovDir = s.Key("shprovdir").String()
-	module.Dynamic = s.Key("dynamic").MustBool()
-
-	return module
-}
-
-func loadModules(f *ini.File) []Module3rd {
-	var modules []Module3rd
-	for _, s := range f.Sections() {
-		if s.Name() == "DEFAULT" {
-			continue
-		}
-		modules = append(modules, loadModule(s))
-	}
-	return modules
 }

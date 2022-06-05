@@ -18,7 +18,7 @@ func setupBuilders(t *testing.T) []builder.Builder {
 }
 
 func setupModules3rd(t *testing.T) []module3rd.Module3rd {
-	modules3rdConf := "../config/modules.cfg.example"
+	modules3rdConf := "../config/modules.json.example"
 	modules3rd, err := module3rd.Load(modules3rdConf)
 	if err != nil {
 		t.Fatalf("Failed to load %s\n", modules3rdConf)
