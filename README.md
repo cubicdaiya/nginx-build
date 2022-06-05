@@ -51,21 +51,20 @@ $ nginx-build -d work -c configure.example
 
 #### About `--add-module` and `--add-dynamic-module`
 
-`nginx-build` allows to use multiple `--add-module` and `--add-dynamic-module`.
+`nginx-build` allows to use `--add-module`.
 
 ```bash
 $ nginx-build \
 -d work \
---add-module=/path/to/ngx_dynamic_upstream \
---add-dynamic-module=/path/to/ngx_small_light
+--add-module=/path/to/ngx_http_hello_world
 ```
 
-On the other hand, `nginx-build` allows to embed multiple 3rd party modules with the single `--add-module` and `--add-dynamic-module` like the following, too.
+Also, `nginx-build` allows to use `--add-dynamic-module`.
 
 ```bash
 $ nginx-build \
 -d work \
---add-module=/path/to/ngx_small_light,/path/to/ngx_dynamic_upstream
+--add-dynamic-module=/path/to/ngx_http_hello_world
 ```
 
 ### Embedding zlib statically
