@@ -203,7 +203,6 @@ If you don't install PCRE and OpenSSL on your system, it is required to add the 
 
 And there is the limitation for the support of OpenResty.
 `nginx-build` does not allow to use OpenResty's unique configure options directly.
-But you can use the common options of nginx and OpenResty directly.
 If you want to use OpenResty's unique configure option, [Configuration for building nginx](#configuration-for-building-nginx) is helpful.
 
 ## Build Tengine
@@ -218,4 +217,4 @@ If you don't install OpenSSL on your system, it is required to add the option `-
 
 There is the limitation for the support of [Tengine](https://tengine.taobao.org/).
 `nginx-build` does not allow to use Tengine's unique configure options directly.
-But you can use the common options of nginx and Tengine directly.
+If you want to use Tengine's unique configure option, [Configuration for building nginx](#configuration-for-building-nginx) is helpful.
