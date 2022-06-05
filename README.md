@@ -111,7 +111,7 @@ $ nginx-build -d work -libressl
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
-Prepare a ini-file below.
+Prepare a json file below.
 
 ```ini
 [
