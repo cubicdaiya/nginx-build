@@ -49,31 +49,6 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -d work -c configure.example
 ```
 
-### Direct configuration for building nginx
-
-In the `v0.4.0` or later, `nginx-build` allows to use nginx's configure options directly.
-
-```bash
-$ nginx-build -d work \
---sbin-path=/usr/sbin/nginx \
---conf-path=/etc/nginx/nginx.conf \
---error-log-path=/var/log/nginx/error.log \
---pid-path=/var/run/nginx.pid \
---lock-path=/var/lock/nginx.lock \
---http-log-path=/var/log/nginx/access.log \
---http-client-body-temp-path=/var/lib/nginx/body \
---http-proxy-temp-path=/var/lib/nginx/proxy \
---with-http_stub_status_module \
---http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
---with-debug \
---with-http_gzip_static_module \
---with-http_v2_module \
---with-http_ssl_module \
---with-pcre-jit \
-```
-
-But there are limitations. See [here](https://github.com/cubicdaiya/nginx-build#limitations) about details.
-
 #### About `--add-module` and `--add-dynamic-module`
 
 `nginx-build` allows to use multiple `--add-module` and `--add-dynamic-module`.
@@ -92,18 +67,6 @@ $ nginx-build \
 -d work \
 --add-module=/path/to/ngx_small_light,/path/to/ngx_dynamic_upstream
 ```
-
-#### Limitations
-
-There are the limitations for the direct configuration below.
-
- * `--with-pcre`(force PCRE library usage) is not allowed
-  * `--with-pcre=DIR`(set path to PCRE library sources) is allowed
- * `--with-libatomic`(force libatomic_ops library usage) is not allowed
-  * `--with-libatomic=DIR`(set path to libatomic_ops library sources) is allowed
-
-The limitations above are attributed by the flag package of Go. (multiple and different types from each other are not allowed)
-By the way, the options above are allowed in [a prepared configure script](https://github.com/cubicdaiya/nginx-build#configuration-for-building-nginx), of course.
 
 ### Embedding zlib statically
 
