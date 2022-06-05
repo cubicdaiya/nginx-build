@@ -3,7 +3,7 @@ package module3rd
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/cubicdaiya/nginx-build/util"
 )
@@ -14,7 +14,7 @@ func Load(path string) ([]Module3rd, error) {
 		if !util.FileExists(path) {
 			return modules, fmt.Errorf("modulesConfPath(%s) does not exist.", path)
 		}
-		data, err := ioutil.ReadFile(path)
+		data, err := os.ReadFile(path)
 		if err != nil {
 			return modules, err
 		}
