@@ -19,7 +19,7 @@ func Load(path string) ([]Module3rd, error) {
 			return modules, err
 		}
 		if err := json.Unmarshal(data, &modules); err != nil {
-			return modules, err
+			return modules, fmt.Errorf("modulesConfPath(%s) is invalid JSON.", path)
 		}
 		for i, _ := range modules {
 			if modules[i].Form == "" {
