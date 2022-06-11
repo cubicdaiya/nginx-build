@@ -94,7 +94,4 @@ func usage() {
 
 		fmt.Fprintf(os.Stdout, "%s\n", s)
 	})
-	fmt.Fprintf(os.Stdout, `
-And nginx-build accepts nginx-self options directly.
-`)
 }
