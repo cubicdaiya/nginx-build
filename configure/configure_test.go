@@ -11,9 +11,9 @@ import (
 
 func setupBuilders(t *testing.T) []builder.Builder {
 	builders := make([]builder.Builder, builder.ComponentMax)
-	builders[builder.ComponentPcre] = builder.MakeBuilder(builder.ComponentPcre, builder.PcreVersion)
-	builders[builder.ComponentOpenSSL] = builder.MakeBuilder(builder.ComponentOpenSSL, builder.OpenSSLVersion)
-	builders[builder.ComponentZlib] = builder.MakeBuilder(builder.ComponentZlib, builder.ZlibVersion)
+	builders[builder.ComponentPcre] = builder.MakeBuilder(builder.ComponentPcre, builder.PcreVersion, builder.DefaultDownloadTimeout)
+	builders[builder.ComponentOpenSSL] = builder.MakeBuilder(builder.ComponentOpenSSL, builder.OpenSSLVersion, builder.DefaultDownloadTimeout)
+	builders[builder.ComponentZlib] = builder.MakeBuilder(builder.ComponentZlib, builder.ZlibVersion, builder.DefaultDownloadTimeout)
 	return builders
 }
 

@@ -75,6 +75,11 @@ func main() {
 		nginxBuildOptions.Numbers[k] = v
 	}
 
+	for k, v := range nginxBuildOptions.Times {
+		v.Value = flag.Duration(k, v.Default, v.Desc)
+		nginxBuildOptions.Times[k] = v
+	}
+
 	overrideUnableParseFlags()
 
 	var (
@@ -135,6 +140,8 @@ func main() {
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
+	dltimeout := nginxBuildOptions.Times["dltimeout"].Value
+
 	// Allow multiple flags for `--patch`
 	{
 		tmp := nginxBuildOptions.Values["patch"]
@@ -191,16 +198,16 @@ func main() {
 		log.Fatal("select one between '-openssl' and '-libressl'.")
 	}
 	if *openResty {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion, *dltimeout)
 	} else if *tengine {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion, *dltimeout)
 	} else {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
+		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version, *dltimeout)
 	}
-	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *pcreStatic)
-	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
-	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *libreSSLStatic)
-	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
+	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *dltimeout, *pcreStatic)
+	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *dltimeout, *openSSLStatic)
+	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *dltimeout, *libreSSLStatic)
+	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *dltimeout, *zlibStatic)
 
 	if *idempotent {
 		builders := []builder.Builder{

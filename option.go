@@ -3,6 +3,7 @@ package main
 import (
 	"runtime"
 	"strconv"
+	"time"
 
 	"github.com/cubicdaiya/nginx-build/builder"
 )
@@ -11,6 +12,7 @@ type Options struct {
 	Values  map[string]OptionValue
 	Bools   map[string]OptionBool
 	Numbers map[string]OptionNumber
+	Times   map[string]OptionTime
 }
 
 type OptionValue struct {
@@ -32,11 +34,18 @@ type OptionNumber struct {
 	Default int
 }
 
+type OptionTime struct {
+	Desc    string
+	Value   *time.Duration
+	Default time.Duration
+}
+
 func makeNginxBuildOptions() Options {
 	var nginxBuildOptions Options
 	argsNumber := make(map[string]OptionNumber)
 	argsBool := make(map[string]OptionBool)
 	argsString := make(map[string]OptionValue)
+	argsTime := make(map[string]OptionTime)
 
 	argsNumber["j"] = OptionNumber{
 		Desc:    "jobs to build nginx",
@@ -132,9 +141,15 @@ func makeNginxBuildOptions() Options {
 		Default: "",
 	}
 
+	argsTime["dltimeout"] = OptionTime{
+		Desc:    "timeout for download",
+		Default: builder.DefaultDownloadTimeout,
+	}
+
 	nginxBuildOptions.Bools = argsBool
 	nginxBuildOptions.Values = argsString
 	nginxBuildOptions.Numbers = argsNumber
+	nginxBuildOptions.Times = argsTime
 
 	return nginxBuildOptions
 }
@@ -149,6 +164,9 @@ func isNginxBuildOption(k string) bool {
 	if _, ok := nginxBuildOptions.Numbers[k]; ok {
 		return true
 	}
+	if _, ok := nginxBuildOptions.Times[k]; ok {
+		return true
+	}
 	return false
 }
 
@@ -158,6 +176,9 @@ func defaultStringValue(k string) string {
 	}
 	if _, ok := nginxBuildOptions.Numbers[k]; ok {
 		return strconv.Itoa(nginxBuildOptions.Numbers[k].Default)
+	}
+	if _, ok := nginxBuildOptions.Times[k]; ok {
+		return nginxBuildOptions.Times[k].Default.String()
 	}
 	return ""
 }
