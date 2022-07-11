@@ -6,12 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
-        go-version: 1.17
+        go-version: 1.18.x
 
     - name: Build
       run: make
@@ -21,6 +21,5 @@ jobs:
 
     - name: Run
       run: |
-        sudo apt-get install -y libgd-dev
         make
         ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -zlib -openssl
