@@ -22,4 +22,4 @@ jobs:
     - name: Run
       run: |
         make
-        ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -zlib -openssl
+        ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -openssl
