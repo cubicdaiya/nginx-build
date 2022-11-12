@@ -119,6 +119,7 @@ func main() {
 	versionsPrint := nginxBuildOptions.Bools["versions"].Enabled
 	openResty := nginxBuildOptions.Bools["openresty"].Enabled
 	tengine := nginxBuildOptions.Bools["tengine"].Enabled
+	nginxQuic := nginxBuildOptions.Bools["nginx-quic"].Enabled
 	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
 	idempotent := nginxBuildOptions.Bools["idempotent"].Enabled
 	helpAll := nginxBuildOptions.Bools["help-all"].Enabled
@@ -133,6 +134,7 @@ func main() {
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
+	nginxQuicVersion := nginxBuildOptions.Values["nginxquicversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
 	// Allow multiple flags for `--patch`
@@ -194,6 +196,8 @@ func main() {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
 	} else if *tengine {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion)
+	} else if *nginxQuic {
+		nginxBuilder = builder.MakeBuilder(builder.ComponentNginxQuic, *nginxQuicVersion)
 	} else {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
 	}

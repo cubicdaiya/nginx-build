@@ -26,6 +26,7 @@ var (
 	libresslVersionRe  *regexp.Regexp
 	openrestyVersionRe *regexp.Regexp
 	tengineVersionRe   *regexp.Regexp
+	nginxQuicVersionRe *regexp.Regexp
 )
 
 func init() {
@@ -36,6 +37,7 @@ func init() {
 	libresslVersionRe = regexp.MustCompile(`--with-openssl=.+/libressl-(\d+\.\d+\.\d+)`)
 	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
 	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
+	nginxQuicVersionRe = regexp.MustCompile(`nginx version: nginx.(\d+\.\d+\.\d+)`)
 }
 
 func (builder *Builder) name() string {
@@ -55,6 +57,8 @@ func (builder *Builder) name() string {
 		name = openresty.Name(builder.Version)
 	case ComponentTengine:
 		name = "tengine"
+	case ComponentNginxQuic:
+		name = "nginx"
 	default:
 		panic("invalid component")
 	}
@@ -78,10 +82,16 @@ func (builder *Builder) option() string {
 }
 
 func (builder *Builder) DownloadURL() string {
+	if builder.Component == ComponentNginxQuic {
+		return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, "tip.tar.gz")
+	}
 	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.ArchivePath())
 }
 
 func (builder *Builder) SourcePath() string {
+	if builder.Component == ComponentNginxQuic {
+		return "nginx-quic-6cf8ed15fd00"
+	}
 	return fmt.Sprintf("%s-%s", builder.name(), builder.Version)
 }
 
@@ -139,6 +149,8 @@ func (builder *Builder) InstalledVersion() (string, error) {
 		versionRe = libresslVersionRe
 	case "tengine":
 		versionRe = tengineVersionRe
+	case "nginx-quic":
+		versionRe = nginxQuicVersionRe
 	}
 
 	m := versionRe.FindSubmatch(result)
@@ -167,6 +179,8 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
 	case ComponentTengine:
 		builder.DownloadURLPrefix = TengineDownloadURLPrefix
+	case ComponentNginxQuic:
+		builder.DownloadURLPrefix = NginxQuicDownloadURLPrefix
 	default:
 		panic("invalid component")
 	}

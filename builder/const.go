@@ -42,11 +42,17 @@ const (
 	TengineDownloadURLPrefix = "https://tengine.taobao.org/download"
 )
 
+const (
+	NginxQuicVersion           = ""
+	NginxQuicDownloadURLPrefix = "https://hg.nginx.org/nginx-quic/archive"
+)
+
 // component enumerations
 const (
 	ComponentNginx = iota
 	ComponentOpenResty
 	ComponentTengine
+	ComponentNginxQuic
 	ComponentPcre
 	ComponentOpenSSL
 	ComponentLibreSSL

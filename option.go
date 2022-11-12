@@ -73,6 +73,9 @@ func makeNginxBuildOptions() Options {
 	argsBool["tengine"] = OptionBool{
 		Desc: "download tengine instead of nginx",
 	}
+	argsBool["nginx-quic"] = OptionBool{
+		Desc: "download nginx-quic instead of nginx",
+	}
 	argsBool["configureonly"] = OptionBool{
 		Desc: "configure nginx only not building",
 	}
@@ -122,6 +125,10 @@ func makeNginxBuildOptions() Options {
 	argsString["tengineversion"] = OptionValue{
 		Desc:    "tengine version",
 		Default: builder.TengineVersion,
+	}
+	argsString["nginxquicversion"] = OptionValue{
+		Desc:    "nginx-quic version",
+		Default: builder.NginxQuicVersion,
 	}
 	argsString["patch"] = OptionValue{
 		Desc:    "patch path for applying to nginx",
