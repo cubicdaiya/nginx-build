@@ -24,6 +24,12 @@ const (
 	LibreSSLDownloadURLPrefix = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL"
 )
 
+// openssl
+const (
+	OpenSSLQuicVersion           = "3.0.7"
+	OpenSSLQuicDownloadURLPrefix = "https://github.com/quictls/openssl/archive/refs/tags"
+)
+
 // zlib
 const (
 	ZlibVersion           = "1.2.13"
@@ -56,6 +62,7 @@ const (
 	ComponentPcre
 	ComponentOpenSSL
 	ComponentLibreSSL
+	ComponentOpenSSLQuic
 	ComponentZlib
 	ComponentMax
 )

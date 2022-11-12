@@ -22,8 +22,12 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 	}
 
 	for _, d := range dependencies {
-		configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
-		if d.Name == "openssl" || d.Name == "libressl" {
+		if d.Name == "openssl-quic" {
+			configure += fmt.Sprintf("%s=../openssl-openssl-%s-quic1 \\\n", d.Option, d.Version)
+		} else {
+			configure += fmt.Sprintf("%s=../%s-%s \\\n", d.Option, d.Name, d.Version)
+		}
+		if d.Name == "openssl" || d.Name == "libressl" || d.Name == "openssl-quic" {
 			openSSLStatic = true
 		}
 	}

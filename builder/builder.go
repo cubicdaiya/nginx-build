@@ -19,14 +19,15 @@ type Builder struct {
 }
 
 var (
-	nginxVersionRe     *regexp.Regexp
-	pcreVersionRe      *regexp.Regexp
-	zlibVersionRe      *regexp.Regexp
-	opensslVersionRe   *regexp.Regexp
-	libresslVersionRe  *regexp.Regexp
-	openrestyVersionRe *regexp.Regexp
-	tengineVersionRe   *regexp.Regexp
-	nginxQuicVersionRe *regexp.Regexp
+	nginxVersionRe       *regexp.Regexp
+	pcreVersionRe        *regexp.Regexp
+	zlibVersionRe        *regexp.Regexp
+	opensslVersionRe     *regexp.Regexp
+	libresslVersionRe    *regexp.Regexp
+	opensslQuicVersionRe *regexp.Regexp
+	openrestyVersionRe   *regexp.Regexp
+	tengineVersionRe     *regexp.Regexp
+	nginxQuicVersionRe   *regexp.Regexp
 )
 
 func init() {
@@ -35,6 +36,7 @@ func init() {
 	zlibVersionRe = regexp.MustCompile(`--with-zlib=.+/zlib-(\d+\.\d+\.\d+)`)
 	opensslVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]*)`)
 	libresslVersionRe = regexp.MustCompile(`--with-openssl=.+/libressl-(\d+\.\d+\.\d+)`)
+	opensslQuicVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-openssl-\d+\.\d+\.\d+-quic1`)
 	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
 	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
 	nginxQuicVersionRe = regexp.MustCompile(`nginx version: nginx.(\d+\.\d+\.\d+)`)
@@ -51,6 +53,8 @@ func (builder *Builder) name() string {
 		name = "openssl"
 	case ComponentLibreSSL:
 		name = "libressl"
+	case ComponentOpenSSLQuic:
+		name = "openssl"
 	case ComponentZlib:
 		name = "zlib"
 	case ComponentOpenResty:
@@ -68,8 +72,8 @@ func (builder *Builder) name() string {
 func (builder *Builder) option() string {
 	name := builder.name()
 
-	// libressl does not match option name
-	if name == "libressl" {
+	// libressl and openssl-quic does not match option name
+	if name == "libressl" || name == "openssl-quic" {
 		name = "openssl"
 	}
 
@@ -85,12 +89,18 @@ func (builder *Builder) DownloadURL() string {
 	if builder.Component == ComponentNginxQuic {
 		return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, "tip.tar.gz")
 	}
+	if builder.Component == ComponentOpenSSLQuic {
+		return fmt.Sprintf("%s/openssl-%s+quic1.tar.gz", builder.DownloadURLPrefix, builder.Version)
+	}
 	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.ArchivePath())
 }
 
 func (builder *Builder) SourcePath() string {
 	if builder.Component == ComponentNginxQuic {
 		return "nginx-quic-6cf8ed15fd00"
+	}
+	if builder.Component == ComponentOpenSSLQuic {
+		return fmt.Sprintf("openssl-openssl-%s+quic1", builder.Version)
 	}
 	return fmt.Sprintf("%s-%s", builder.name(), builder.Version)
 }
@@ -147,6 +157,8 @@ func (builder *Builder) InstalledVersion() (string, error) {
 		versionRe = opensslVersionRe
 	case "libressl":
 		versionRe = libresslVersionRe
+	case "openssl-quic":
+		versionRe = opensslQuicVersionRe
 	case "tengine":
 		versionRe = tengineVersionRe
 	case "nginx-quic":
@@ -173,6 +185,8 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
 	case ComponentLibreSSL:
 		builder.DownloadURLPrefix = LibreSSLDownloadURLPrefix
+	case ComponentOpenSSLQuic:
+		builder.DownloadURLPrefix = OpenSSLQuicDownloadURLPrefix
 	case ComponentZlib:
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
 	case ComponentOpenResty:

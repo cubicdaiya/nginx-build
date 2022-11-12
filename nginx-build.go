@@ -113,6 +113,7 @@ func main() {
 	pcreStatic := nginxBuildOptions.Bools["pcre"].Enabled
 	openSSLStatic := nginxBuildOptions.Bools["openssl"].Enabled
 	libreSSLStatic := nginxBuildOptions.Bools["libressl"].Enabled
+	openSSLQuicStatic := nginxBuildOptions.Bools["opensslquic"].Enabled
 	zlibStatic := nginxBuildOptions.Bools["zlib"].Enabled
 	clear := nginxBuildOptions.Bools["clear"].Enabled
 	versionPrint := nginxBuildOptions.Bools["version"].Enabled
@@ -131,6 +132,7 @@ func main() {
 	pcreVersion := nginxBuildOptions.Values["pcreversion"].Value
 	openSSLVersion := nginxBuildOptions.Values["opensslversion"].Value
 	libreSSLVersion := nginxBuildOptions.Values["libresslversion"].Value
+	openSSLQuicVersion := nginxBuildOptions.Values["opensslquicversion"].Value
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
@@ -204,6 +206,7 @@ func main() {
 	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *pcreStatic)
 	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
 	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *libreSSLStatic)
+	openSSLQuicBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSLQuic, *openSSLQuicVersion, *openSSLQuicStatic)
 	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
 
 	if *idempotent {
@@ -212,6 +215,7 @@ func main() {
 			pcreBuilder,
 			openSSLBuilder,
 			libreSSLBuilder,
+			openSSLQuicBuilder,
 			zlibBuilder,
 		}
 
@@ -314,6 +318,14 @@ func main() {
 		}()
 	}
 
+	if *openSSLQuicStatic {
+		wg.Add(1)
+		go func() {
+			downloadAndExtractParallel(&openSSLQuicBuilder)
+			wg.Done()
+		}()
+	}
+
 	if *zlibStatic {
 		wg.Add(1)
 		go func() {
@@ -366,6 +378,10 @@ func main() {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&libreSSLBuilder))
 	}
 
+	if *openSSLQuicStatic {
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&openSSLQuicBuilder))
+	}
+
 	if *zlibStatic {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibBuilder))
 	}
@@ -382,6 +398,10 @@ func main() {
 
 	if *libreSSLStatic && libreSSLBuilder.IsIncludeWithOption(nginxConfigure) {
 		log.Println(libreSSLBuilder.WarnMsgWithLibrary())
+	}
+
+	if *openSSLQuicStatic && openSSLQuicBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(openSSLQuicBuilder.WarnMsgWithLibrary())
 	}
 
 	if *zlibStatic && zlibBuilder.IsIncludeWithOption(nginxConfigure) {
