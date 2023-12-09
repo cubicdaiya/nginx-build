@@ -20,12 +20,14 @@ const (
 
 // libressl
 const (
+	// datasource=github-tags depName=libressl/portable
 	LibreSSLVersion           = "3.6.1"
 	LibreSSLDownloadURLPrefix = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL"
 )
 
 // zlib
 const (
+	// datasource=github-tags depName=madler/zlib
 	ZlibVersion           = "1.3"
 	ZlibDownloadURLPrefix = "https://zlib.net"
 )
