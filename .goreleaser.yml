@@ -5,7 +5,7 @@ builds:
   - binary: nginx-build
     ldflags:
       - -s -w
-      - -X main.NginxBuildVersion={{.Version}}
+      - -X main.NginxBuildVersion=v{{.Version}}
     env:
       - CGO_ENABLED=0
     goarch:
