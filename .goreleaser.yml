@@ -8,6 +8,9 @@ builds:
       - -X main.NginxBuildVersion=v{{.Version}}
     env:
       - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
     goarch:
       - amd64
       - arm64
