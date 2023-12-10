@@ -18,6 +18,17 @@
       "fileMatch": [
         "builder/const.go"
       ],
+      "extractVersionTemplate": "^release-(?<version>[0-9]*.[0-9]*[02468].[0-9]*)$",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "nginx/nginx",
+      "matchStrings": [
+        "NginxVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
+      ]
+    },
+    {
+      "fileMatch": [
+        "builder/const.go"
+      ],
       "extractVersionTemplate": "^pcre2-(?<version>.*)$",
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "PCRE2Project/pcre2",

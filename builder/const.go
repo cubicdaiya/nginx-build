@@ -2,7 +2,6 @@ package builder
 
 // nginx
 const (
-	// datasource=docker depName=nginx
 	NginxVersion           = "1.22.1"
 	NginxDownloadURLPrefix = "https://nginx.org/download"
 )
