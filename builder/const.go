@@ -2,6 +2,7 @@ package builder
 
 // nginx
 const (
+	// datasource=docker depName=nginx
 	NginxVersion           = "1.22.1"
 	NginxDownloadURLPrefix = "https://nginx.org/download"
 )
@@ -14,7 +15,7 @@ const (
 
 // openssl
 const (
-	OpenSSLVersion           = "1.1.1t"
+	OpenSSLVersion           = "3.1.0"
 	OpenSSLDownloadURLPrefix = "https://www.openssl.org/source"
 )
 
