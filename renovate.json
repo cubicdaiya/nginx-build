@@ -24,6 +24,17 @@
       "matchStrings": [
         "PcreVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
       ]
+    },
+    {
+      "fileMatch": [
+        "builder/const.go"
+      ],
+      "extractVersionTemplate": "^openssl-(?<version>.*)$",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "openssl/openssl",
+      "matchStrings": [
+        "OpenSSLVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
+      ]
     }
   ],
   "postUpdateOptions": [
