@@ -46,6 +46,28 @@
       "matchStrings": [
         "OpenSSLVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
       ]
+    },
+    {
+      "fileMatch": [
+        "builder/const.go"
+      ],
+      "extractVersionTemplate": "^v(?<version>[0-9.]*)$",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "openresty/openresty",
+      "matchStrings": [
+        "OpenRestyVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchPackageNames": [
+        "openresty/openresty"
+      ],
+      "versioning": "regex:^(?<major>[0-9]+)\\.(?<minor>[0-9]+)\\.(?<patch>[0-9]+)(\\.(?<build>[0-9]*))?$"
     }
   ],
   "postUpdateOptions": [
