@@ -34,7 +34,7 @@ const (
 
 // openResty
 const (
-	OpenRestyVersion           = "1.21.4.3"
+	OpenRestyVersion           = "1.25.3.1"
 	OpenRestyDownloadURLPrefix = "https://openresty.org/download"
 )
 
