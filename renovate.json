@@ -29,6 +29,17 @@
       "fileMatch": [
         "builder/const.go"
       ],
+      "extractVersionTemplate": "^v(?<version>.*)$",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "madler/zlib",
+      "matchStrings": [
+        "ZlibVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
+      ]
+    },
+    {
+      "fileMatch": [
+        "builder/const.go"
+      ],
       "extractVersionTemplate": "^pcre2-(?<version>.*)$",
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "PCRE2Project/pcre2",
