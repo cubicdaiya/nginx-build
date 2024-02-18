@@ -2,24 +2,23 @@ name: Go
 
 on: [push]
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: 1.21.x
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21.x
 
-    - name: Build
-      run: make
+      - name: Build
+        run: make
 
-    - name: Test
-      run: make check
+      - name: Test
+        run: make check
 
-    - name: Run
-      run: |
-        make
-        ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -openssl
+      - name: Run
+        run: |
+          make
+          ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -openssl
