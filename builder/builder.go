@@ -5,15 +5,19 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/cubicdaiya/nginx-build/command"
 	"github.com/cubicdaiya/nginx-build/openresty"
 )
 
+const DefaultDownloadTimeout = time.Duration(900) * time.Second
+
 type Builder struct {
 	Version           string
 	DownloadURLPrefix string
 	Component         int
+	DownloadTimeout   time.Duration
 	// for dependencies such as pcre and zlib and openssl
 	Static bool
 }
@@ -148,10 +152,11 @@ func (builder *Builder) InstalledVersion() (string, error) {
 	return string(m[1]), nil
 }
 
-func MakeBuilder(component int, version string) Builder {
+func MakeBuilder(component int, version string, timeout time.Duration) Builder {
 	var builder Builder
 	builder.Component = component
 	builder.Version = version
+	builder.DownloadTimeout = timeout
 	switch component {
 	case ComponentNginx:
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
@@ -173,8 +178,8 @@ func MakeBuilder(component int, version string) Builder {
 	return builder
 }
 
-func MakeLibraryBuilder(component int, version string, static bool) Builder {
-	builder := MakeBuilder(component, version)
+func MakeLibraryBuilder(component int, version string, timeout time.Duration, static bool) Builder {
+	builder := MakeBuilder(component, version, timeout)
 	builder.Static = static
 	return builder
 }

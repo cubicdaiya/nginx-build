@@ -3,17 +3,18 @@ package builder
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func setupBuilders(t *testing.T) []Builder {
 	builders := make([]Builder, ComponentMax)
-	builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion)
-	builders[ComponentPcre] = MakeLibraryBuilder(ComponentPcre, PcreVersion, false)
-	builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, true)
-	builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, true)
-	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
-	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
-	builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
+	builders[ComponentNginx] = MakeBuilder(ComponentNginx, NginxVersion, DefaultDownloadTimeout)
+	builders[ComponentPcre] = MakeLibraryBuilder(ComponentPcre, PcreVersion, DefaultDownloadTimeout, false)
+	builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, DefaultDownloadTimeout, true)
+	builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, DefaultDownloadTimeout, true)
+	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, DefaultDownloadTimeout, false)
+	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion, DefaultDownloadTimeout)
+	builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion, DefaultDownloadTimeout)
 	return builders
 }
 
@@ -308,26 +309,31 @@ func TestMakeStaticLibrary(t *testing.T) {
 		builder       Builder
 		staticLibrary StaticLibrary
 		version       string
+		timeout       time.Duration
 	}{
 		{
 			builder:       builders[ComponentPcre],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentPcre]),
 			version:       PcreVersion,
+			timeout:       DefaultDownloadTimeout,
 		},
 		{
 			builder:       builders[ComponentOpenSSL],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentOpenSSL]),
 			version:       OpenSSLVersion,
+			timeout:       DefaultDownloadTimeout,
 		},
 		{
 			builder:       builders[ComponentLibreSSL],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentLibreSSL]),
 			version:       LibreSSLVersion,
+			timeout:       DefaultDownloadTimeout,
 		},
 		{
 			builder:       builders[ComponentZlib],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentZlib]),
 			version:       ZlibVersion,
+			timeout:       DefaultDownloadTimeout,
 		},
 	}
 
@@ -340,6 +346,9 @@ func TestMakeStaticLibrary(t *testing.T) {
 		}
 		if test.builder.Version != test.version {
 			t.Fatalf("not equal version between builder's and default's")
+		}
+		if test.builder.DownloadTimeout != test.timeout {
+			t.Fatalf("not equal download timeout between builder's and default's")
 		}
 	}
 }
