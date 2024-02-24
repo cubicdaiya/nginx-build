@@ -29,6 +29,17 @@
       "fileMatch": [
         "builder/const.go"
       ],
+      "extractVersionTemplate": "^release-(?<version>[0-9]*.[0-9]*.[0-9]*)$",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "freenginx-mirror/nginx",
+      "matchStrings": [
+        "FreenginxVersion\\s+=\\s\"(?<currentValue>[0-9.]*)\""
+      ]
+    },
+    {
+      "fileMatch": [
+        "builder/const.go"
+      ],
       "extractVersionTemplate": "^v(?<version>.*)$",
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "madler/zlib",
