@@ -25,7 +25,7 @@ var (
 	opensslVersionRe   *regexp.Regexp
 	libresslVersionRe  *regexp.Regexp
 	openrestyVersionRe *regexp.Regexp
-	tengineVersionRe   *regexp.Regexp
+	freenginxVersionRe *regexp.Regexp
 )
 
 func init() {
@@ -35,7 +35,7 @@ func init() {
 	opensslVersionRe = regexp.MustCompile(`--with-openssl=.+/openssl-(\d+\.\d+\.\d+[a-z]*)`)
 	libresslVersionRe = regexp.MustCompile(`--with-openssl=.+/libressl-(\d+\.\d+\.\d+)`)
 	openrestyVersionRe = regexp.MustCompile(`nginx version: openresty/(\d+\.\d+\.\d+\.\d+)`)
-	tengineVersionRe = regexp.MustCompile(`Tengine version: Tengine/(\d+\.\d+\.\d+)`)
+	freenginxVersionRe = regexp.MustCompile(`freenginx version: freenginx/(\d+\.\d+\.\d+)`)
 }
 
 func (builder *Builder) name() string {
@@ -53,8 +53,8 @@ func (builder *Builder) name() string {
 		name = "zlib"
 	case ComponentOpenResty:
 		name = openresty.Name(builder.Version)
-	case ComponentTengine:
-		name = "tengine"
+	case ComponentFreenginx:
+		name = "freenginx"
 	default:
 		panic("invalid component")
 	}
@@ -137,8 +137,8 @@ func (builder *Builder) InstalledVersion() (string, error) {
 		versionRe = opensslVersionRe
 	case "libressl":
 		versionRe = libresslVersionRe
-	case "tengine":
-		versionRe = tengineVersionRe
+	case "freenginx":
+		versionRe = freenginxVersionRe
 	}
 
 	m := versionRe.FindSubmatch(result)
@@ -165,8 +165,8 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
 	case ComponentOpenResty:
 		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
-	case ComponentTengine:
-		builder.DownloadURLPrefix = TengineDownloadURLPrefix
+	case ComponentFreenginx:
+		builder.DownloadURLPrefix = FreenginxDownloadURLPrefix
 	default:
 		panic("invalid component")
 	}
