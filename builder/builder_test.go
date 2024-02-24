@@ -13,7 +13,7 @@ func setupBuilders(t *testing.T) []Builder {
 	builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, true)
 	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
 	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
-	builders[ComponentTengine] = MakeBuilder(ComponentTengine, TengineVersion)
+	builders[ComponentFreenginx] = MakeBuilder(ComponentFreenginx, FreenginxVersion)
 	return builders
 }
 
@@ -49,8 +49,8 @@ func TestName(t *testing.T) {
 			want: "openresty",
 		},
 		{
-			got:  builders[ComponentTengine].name(),
-			want: "tengine",
+			got:  builders[ComponentFreenginx].name(),
+			want: "freenginx",
 		},
 	}
 
@@ -125,8 +125,8 @@ func TestDownloadURL(t *testing.T) {
 			want: fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, OpenRestyVersion),
 		},
 		{
-			got:  builders[ComponentTengine].DownloadURL(),
-			want: fmt.Sprintf("%s/tengine-%s.tar.gz", TengineDownloadURLPrefix, TengineVersion),
+			got:  builders[ComponentFreenginx].DownloadURL(),
+			want: fmt.Sprintf("%s/freenginx-%s.tar.gz", FreenginxDownloadURLPrefix, FreenginxVersion),
 		},
 	}
 
@@ -169,8 +169,8 @@ func TestSourcePath(t *testing.T) {
 			want: fmt.Sprintf("openresty-%s", OpenRestyVersion),
 		},
 		{
-			got:  builders[ComponentTengine].SourcePath(),
-			want: fmt.Sprintf("tengine-%s", TengineVersion),
+			got:  builders[ComponentFreenginx].SourcePath(),
+			want: fmt.Sprintf("freenginx-%s", FreenginxVersion),
 		},
 	}
 
@@ -213,8 +213,8 @@ func TestArchivePath(t *testing.T) {
 			want: fmt.Sprintf("openresty-%s.tar.gz", OpenRestyVersion),
 		},
 		{
-			got:  builders[ComponentTengine].ArchivePath(),
-			want: fmt.Sprintf("tengine-%s.tar.gz", TengineVersion),
+			got:  builders[ComponentFreenginx].ArchivePath(),
+			want: fmt.Sprintf("freenginx-%s.tar.gz", FreenginxVersion),
 		},
 	}
 
@@ -257,8 +257,8 @@ func TestLogPath(t *testing.T) {
 			want: fmt.Sprintf("openresty-%s.log", OpenRestyVersion),
 		},
 		{
-			got:  builders[ComponentTengine].LogPath(),
-			want: fmt.Sprintf("tengine-%s.log", TengineVersion),
+			got:  builders[ComponentFreenginx].LogPath(),
+			want: fmt.Sprintf("freenginx-%s.log", FreenginxVersion),
 		},
 	}
 

@@ -19,9 +19,9 @@ func versionsGenOpenResty() []string {
 	}
 }
 
-func versionsGenTengine() []string {
+func versionsGenFreenginx() []string {
 	return []string{
-		fmt.Sprintf("tengine-%s", builder.TengineVersion),
+		fmt.Sprintf("freenginx-%s", builder.FreenginxVersion),
 	}
 }
 
@@ -29,7 +29,7 @@ func printNginxVersions() {
 	var versions []string
 	versions = append(versions, versionsGenNginx()...)
 	versions = append(versions, versionsGenOpenResty()...)
-	versions = append(versions, versionsGenTengine()...)
+	versions = append(versions, versionsGenFreenginx()...)
 	for _, v := range versions {
 		fmt.Println(v)
 	}

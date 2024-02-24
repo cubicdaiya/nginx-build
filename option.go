@@ -70,8 +70,8 @@ func makeNginxBuildOptions() Options {
 	argsBool["openresty"] = OptionBool{
 		Desc: "download openresty instead of nginx",
 	}
-	argsBool["tengine"] = OptionBool{
-		Desc: "download tengine instead of nginx",
+	argsBool["freenginx"] = OptionBool{
+		Desc: "download freenginx instead of nginx",
 	}
 	argsBool["configureonly"] = OptionBool{
 		Desc: "configure nginx only not building",
@@ -119,9 +119,9 @@ func makeNginxBuildOptions() Options {
 		Desc:    "openresty version",
 		Default: builder.OpenRestyVersion,
 	}
-	argsString["tengineversion"] = OptionValue{
-		Desc:    "tengine version",
-		Default: builder.TengineVersion,
+	argsString["freenginxversion"] = OptionValue{
+		Desc:    "freenginx version",
+		Default: builder.FreenginxVersion,
 	}
 	argsString["patch"] = OptionValue{
 		Desc:    "patch path for applying to nginx",

@@ -118,7 +118,7 @@ func main() {
 	versionPrint := nginxBuildOptions.Bools["version"].Enabled
 	versionsPrint := nginxBuildOptions.Bools["versions"].Enabled
 	openResty := nginxBuildOptions.Bools["openresty"].Enabled
-	tengine := nginxBuildOptions.Bools["tengine"].Enabled
+	freenginx := nginxBuildOptions.Bools["freenginx"].Enabled
 	configureOnly := nginxBuildOptions.Bools["configureonly"].Enabled
 	idempotent := nginxBuildOptions.Bools["idempotent"].Enabled
 	helpAll := nginxBuildOptions.Bools["help-all"].Enabled
@@ -132,7 +132,7 @@ func main() {
 	libreSSLVersion := nginxBuildOptions.Values["libresslversion"].Value
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
-	tengineVersion := nginxBuildOptions.Values["tengineversion"].Value
+	freenginxVersion := nginxBuildOptions.Values["freenginxversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
 
 	// Allow multiple flags for `--patch`
@@ -184,16 +184,16 @@ func main() {
 	command.VerboseEnabled = *verbose
 
 	var nginxBuilder builder.Builder
-	if *openResty && *tengine {
-		log.Fatal("select one between '-openresty' and '-tengine'.")
+	if *openResty && *freenginx {
+		log.Fatal("select one between '-openresty' and '-freenginx'.")
 	}
 	if *openSSLStatic && *libreSSLStatic {
 		log.Fatal("select one between '-openssl' and '-libressl'.")
 	}
 	if *openResty {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
-	} else if *tengine {
-		nginxBuilder = builder.MakeBuilder(builder.ComponentTengine, *tengineVersion)
+	} else if *freenginx {
+		nginxBuilder = builder.MakeBuilder(builder.ComponentFreenginx, *freenginxVersion)
 	} else {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentNginx, *version)
 	}
@@ -251,8 +251,8 @@ func main() {
 	var workDir string
 	if *openResty {
 		workDir = *workParentDir + "/openresty/" + *openRestyVersion
-	} else if *tengine {
-		workDir = *workParentDir + "/tengine/" + *tengineVersion
+	} else if *freenginx {
+		workDir = *workParentDir + "/freenginx/" + *freenginxVersion
 	} else {
 		workDir = *workParentDir + "/nginx/" + *version
 	}

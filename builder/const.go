@@ -37,17 +37,17 @@ const (
 	OpenRestyDownloadURLPrefix = "https://openresty.org/download"
 )
 
-// tengine
+// freenginx
 const (
-	TengineVersion           = "2.3.3"
-	TengineDownloadURLPrefix = "https://tengine.taobao.org/download"
+	FreenginxVersion           = "1.25.4"
+	FreenginxDownloadURLPrefix = "https://freenginx.org/download"
 )
 
 // component enumerations
 const (
 	ComponentNginx = iota
 	ComponentOpenResty
-	ComponentTengine
+	ComponentFreenginx
 	ComponentPcre
 	ComponentOpenSSL
 	ComponentLibreSSL

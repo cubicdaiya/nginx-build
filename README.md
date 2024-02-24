@@ -13,7 +13,7 @@
 
  * [nginx](https://nginx.org/)
  * [OpenResty](https://openresty.org/)
- * [Tengine](https://tengine.taobao.org/)
+ * [freenginx](https://freenginx.org/)
 
 ## Installation
 
@@ -205,16 +205,12 @@ And there is the limitation for the support of OpenResty.
 `nginx-build` does not allow to use OpenResty's unique configure options directly.
 If you want to use OpenResty's unique configure option, [Configuration for building nginx](#configuration-for-building-nginx) is helpful.
 
-## Build Tengine
+## Build freenginx
 
-`nginx-build` supports to build [Tengine](https://tengine.taobao.org/).
+`nginx-build` supports to build [freenginx](https://freenginx.org/).
 
 ```bash
-$ nginx-build -d work -tengine -openssl
+$ nginx-build -d work -freenginx -openssl
 ```
 
 If you don't install OpenSSL on your system, it is required to add the option `-openssl`.
-
-There is the limitation for the support of [Tengine](https://tengine.taobao.org/).
-`nginx-build` does not allow to use Tengine's unique configure options directly.
-If you want to use Tengine's unique configure option, [Configuration for building nginx](#configuration-for-building-nginx) is helpful.
