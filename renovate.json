@@ -6,6 +6,26 @@
   "regexManagers": [
     {
       "fileMatch": [
+        ".github/workflows/security.yml"
+      ],
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "golang",
+      "matchStrings": [
+        "go-version-input: (?<currentValue>[0-9]*.[0-9]*.[0-9]*)"
+      ]
+    },
+    {
+      "fileMatch": [
+        ".github/workflows/release.yml"
+      ],
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "golang",
+      "matchStrings": [
+        "go-version: (?<currentValue>[0-9]*.[0-9]*.[0-9]*)"
+      ]
+    },
+    {
+      "fileMatch": [
         "builder/const.go"
       ],
       "extractVersionTemplate": "^v(?<version>.*)$",
