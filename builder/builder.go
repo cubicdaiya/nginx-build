@@ -158,7 +158,7 @@ func MakeBuilder(component int, version string) Builder {
 	case ComponentPcre:
 		builder.DownloadURLPrefix = fmt.Sprintf("%s/pcre2-%s", PcreDownloadURLPrefix, version)
 	case ComponentOpenSSL:
-		builder.DownloadURLPrefix = OpenSSLDownloadURLPrefix
+		builder.DownloadURLPrefix = fmt.Sprintf("%s/openssl-%s", OpenSSLDownloadURLPrefix, version)
 	case ComponentLibreSSL:
 		builder.DownloadURLPrefix = LibreSSLDownloadURLPrefix
 	case ComponentZlib:
