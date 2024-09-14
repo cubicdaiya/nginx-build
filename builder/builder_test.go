@@ -110,7 +110,7 @@ func TestDownloadURL(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentOpenSSL].DownloadURL(),
-			want: fmt.Sprintf("%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, OpenSSLVersion),
+			want: fmt.Sprintf("%s/openssl-%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, OpenSSLVersion, OpenSSLVersion),
 		},
 		{
 			got:  builders[ComponentLibreSSL].DownloadURL(),
