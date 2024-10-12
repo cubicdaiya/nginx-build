@@ -24,3 +24,4 @@ jobs:
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -openssl
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -libressl
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -freenginx -pcre -zlib -openssl
+          ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -openresty -pcre -zlib -openssl
