@@ -1,27 +1,69 @@
 name: Go
 
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.23.x
-
       - name: Build
         run: make
-
       - name: Test
         run: make check
 
-      - name: Run
+  run-nginx-openssl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+      - name: Run Nginx with OpenSSL
         run: |
           make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -openssl
+
+  run-nginx-libressl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+      - name: Run Nginx with LibreSSL
+        run: |
+          make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib -libressl
+
+  run-freenginx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+      - name: Run Nginx with FreeNginx
+        run: |
+          make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -freenginx -pcre -zlib -openssl
+
+  run-openresty:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.x
+      - name: Run Nginx with OpenResty
+        run: |
+          make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -openresty -pcre -zlib -openssl
