@@ -78,7 +78,24 @@ func (builder *Builder) option() string {
 }
 
 func (builder *Builder) DownloadURL() string {
-	return fmt.Sprintf("%s/%s", builder.DownloadURLPrefix, builder.ArchivePath())
+	switch builder.Component {
+	case ComponentNginx:
+		return fmt.Sprintf("%s/nginx-%s.tar.gz", NginxDownloadURLPrefix, builder.Version)
+	case ComponentPcre:
+		return fmt.Sprintf("%s/pcre2-%s/pcre2-%s.tar.gz", PcreDownloadURLPrefix, builder.Version, builder.Version)
+	case ComponentOpenSSL:
+		return fmt.Sprintf("%s/openssl-%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, builder.Version, builder.Version)
+	case ComponentLibreSSL:
+		return fmt.Sprintf("%s/libressl-%s.tar.gz", LibreSSLDownloadURLPrefix, builder.Version)
+	case ComponentZlib:
+		return fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, builder.Version)
+	case ComponentOpenResty:
+		return fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, builder.Version)
+	case ComponentFreenginx:
+		return fmt.Sprintf("%s/freenginx-%s.tar.gz", FreenginxDownloadURLPrefix, builder.Version)
+	default:
+		panic("invalid component")
+	}
 }
 
 func (builder *Builder) SourcePath() string {
