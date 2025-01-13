@@ -58,6 +58,9 @@ func makeNginxBuildOptions() Options {
 	argsBool["zlib"] = OptionBool{
 		Desc: "embedded zlib staticlibrary",
 	}
+	argsBool["zlib-ng"] = OptionBool{
+		Desc: "embedded zlib-ng staticlibrary",
+	}
 	argsBool["clear"] = OptionBool{
 		Desc: "remove entries in working directory",
 	}
@@ -114,6 +117,10 @@ func makeNginxBuildOptions() Options {
 	argsString["zlibversion"] = OptionValue{
 		Desc:    "zlib version",
 		Default: builder.ZlibVersion,
+	}
+	argsString["zlibngversion"] = OptionValue{
+		Desc:    "zlib-ng version",
+		Default: builder.ZlibNGVersion,
 	}
 	argsString["openrestyversion"] = OptionValue{
 		Desc:    "openresty version",

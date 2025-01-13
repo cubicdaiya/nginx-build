@@ -12,6 +12,7 @@ func setupBuilders(t *testing.T) []Builder {
 	builders[ComponentOpenSSL] = MakeLibraryBuilder(ComponentOpenSSL, OpenSSLVersion, true)
 	builders[ComponentLibreSSL] = MakeLibraryBuilder(ComponentLibreSSL, LibreSSLVersion, true)
 	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
+	builders[ComponentZlibNG] = MakeLibraryBuilder(ComponentZlibNG, ZlibNGVersion, false)
 	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
 	builders[ComponentFreenginx] = MakeBuilder(ComponentFreenginx, FreenginxVersion)
 	// Add custom SSL builder
@@ -51,6 +52,10 @@ func TestName(t *testing.T) {
 		{
 			got:  builders[ComponentZlib].name(),
 			want: "zlib",
+		},
+		{
+			got:  builders[ComponentZlibNG].name(),
+			want: "zlib-ng",
 		},
 		{
 			got:  builders[ComponentOpenResty].name(),
