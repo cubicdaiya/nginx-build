@@ -5,3 +5,4 @@ vendor
 doc/_build/doctrees/
 *.tar
 *.tar.gz
+work/
