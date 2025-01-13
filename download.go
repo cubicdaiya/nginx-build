@@ -29,6 +29,10 @@ func download(b *builder.Builder) error {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to download %s. %s", b.DownloadURL(), res.Status)
+	}
+
 	tmpFileName := b.ArchivePath() + ".download"
 	f, err := os.Create(tmpFileName)
 	if err != nil {
