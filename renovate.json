@@ -71,7 +71,7 @@
       "fileMatch": [
         "builder/const.go"
       ],
-      "extractVersionTemplate": "^pcre2-(?<version>.*)$",
+      "extractVersionTemplate": "^pcre2-(?<version>[0-9]*\\.[0-9]*)$",
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "PCRE2Project/pcre2",
       "matchStrings": [
