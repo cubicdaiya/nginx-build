@@ -49,24 +49,6 @@ Give this file to `nginx-build` with `-c`.
 $ nginx-build -d work -c configure.example
 ```
 
-#### About `--add-module` and `--add-dynamic-module`
-
-`nginx-build` allows to use `--add-module`.
-
-```bash
-$ nginx-build \
--d work \
---add-module=/path/to/ngx_http_hello_world
-```
-
-Also, `nginx-build` allows to use `--add-dynamic-module`.
-
-```bash
-$ nginx-build \
--d work \
---add-dynamic-module=/path/to/ngx_http_hello_world
-```
-
 ### Embedding zlib statically
 
 Give `-zlib` to `nginx-build`.
