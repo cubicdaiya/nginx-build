@@ -26,6 +26,9 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 		if d.Name == "openssl" || d.Name == "libressl" {
 			openSSLStatic = true
 		}
+		if d.Name == "zlib-ng" {
+			configure += fmt.Sprintf("--with-zlib=../%s-%s \\\n", d.Name, d.Version)
+		}
 	}
 
 	if openSSLStatic && !strings.Contains(configure, "--with-http_ssl_module") {
