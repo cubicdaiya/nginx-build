@@ -10,7 +10,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.24.x
       - name: Build
         run: make
       - name: Test
@@ -23,7 +23,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.24.x
       - name: Run Nginx with OpenSSL
         run: |
           make
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.24.x
       - name: Run Nginx with LibreSSL
         run: |
           make
@@ -49,7 +49,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.24.x
       - name: Run Nginx with FreeNginx
         run: |
           make
@@ -62,7 +62,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.24.x
       - name: Run Nginx with OpenResty
         run: |
           make
