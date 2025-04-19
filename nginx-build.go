@@ -114,6 +114,7 @@ func main() {
 	openSSLStatic := nginxBuildOptions.Bools["openssl"].Enabled
 	libreSSLStatic := nginxBuildOptions.Bools["libressl"].Enabled
 	zlibStatic := nginxBuildOptions.Bools["zlib"].Enabled
+	zlibNGStatic := nginxBuildOptions.Bools["zlib-ng"].Enabled
 	clear := nginxBuildOptions.Bools["clear"].Enabled
 	versionPrint := nginxBuildOptions.Bools["version"].Enabled
 	versionsPrint := nginxBuildOptions.Bools["versions"].Enabled
@@ -131,6 +132,7 @@ func main() {
 	openSSLVersion := nginxBuildOptions.Values["opensslversion"].Value
 	libreSSLVersion := nginxBuildOptions.Values["libresslversion"].Value
 	zlibVersion := nginxBuildOptions.Values["zlibversion"].Value
+	zlibNGVersion := nginxBuildOptions.Values["zlibngversion"].Value
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	freenginxVersion := nginxBuildOptions.Values["freenginxversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
@@ -201,6 +203,7 @@ func main() {
 	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
 	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *libreSSLStatic)
 	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
+	zlibNGBuilder := builder.MakeLibraryBuilder(builder.ComponentZlibNG, *zlibNGVersion, *zlibNGStatic)
 
 	if *idempotent {
 		builders := []builder.Builder{
@@ -318,6 +321,14 @@ func main() {
 		}()
 	}
 
+	if *zlibNGStatic {
+		wg.Add(1)
+		go func() {
+			downloadAndExtractParallel(&zlibNGBuilder)
+			wg.Done()
+		}()
+	}
+
 	wg.Add(1)
 	go func() {
 		downloadAndExtractParallel(&nginxBuilder)
@@ -364,6 +375,10 @@ func main() {
 
 	if *zlibStatic {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibBuilder))
+	}
+
+	if *zlibNGStatic {
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibNGBuilder))
 	}
 
 	log.Printf("Generate configure script for %s.....", nginxBuilder.SourcePath())
