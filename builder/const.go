@@ -38,7 +38,7 @@ const (
 
 // freenginx
 const (
-	FreenginxVersion           = "1.26.0"
+	FreenginxVersion           = "1.28.0"
 	FreenginxDownloadURLPrefix = "https://freenginx.org/download"
 )
 
