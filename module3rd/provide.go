@@ -3,6 +3,7 @@ package module3rd
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/cubicdaiya/nginx-build/command"
@@ -36,20 +37,15 @@ func Provide(m *Module3rd) error {
 }
 
 func provideShell(sh string) error {
-	if len(sh) == 0 {
+	if strings.TrimSpace(sh) == "" {
 		return nil
 	}
-
-	cmds := strings.Split(strings.Trim(sh, " "), "&&")
-
-	for _, cmd := range cmds {
-		args := strings.Split(strings.Trim(cmd, " "), " ")
-		if err := command.Run(args); err != nil {
-			return err
-		}
+	if command.VerboseEnabled {
+		return command.Run([]string{"sh", "-c", sh})
 	}
 
-	return nil
+	cmd := exec.Command("sh", "-c", sh)
+	return cmd.Run()
 }
 
 func switchRev(form, rev string) error {
