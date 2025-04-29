@@ -40,7 +40,28 @@ func download(m Module3rd, logName string) error {
 
 	switch form {
 	case "git":
-		fallthrough
+		args := []string{form, "clone", "--recursive", url}
+		if command.VerboseEnabled {
+			return command.Run(args)
+		}
+
+		f, err := os.Create(logName)
+		if err != nil {
+			return command.Run(args)
+		}
+		defer f.Close()
+
+		cmd, err := command.Make(args)
+		if err != nil {
+			return err
+		}
+
+		writer := bufio.NewWriter(f)
+		defer writer.Flush()
+
+		cmd.Stderr = writer
+
+		return cmd.Run()
 	case "hg":
 		args := []string{form, "clone", url}
 		if command.VerboseEnabled {

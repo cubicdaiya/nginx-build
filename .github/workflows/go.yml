@@ -67,3 +67,16 @@ jobs:
         run: |
           make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -openresty -pcre -zlib -openssl
+
+  run-nginx-brotli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.2
+      - name: Run Nginx with Brotli
+        run: |
+          make
+          ./nginx-build -c ./config/configure.example -m ./config/modules.json.brotli -d work -clear -pcre -zlib -openssl
