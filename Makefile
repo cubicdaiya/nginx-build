@@ -14,3 +14,4 @@ fmt:
 
 clean:
 	rm -rf nginx-build
+	rm -rf tests/test1.tar.gz tests/test1_result/*
