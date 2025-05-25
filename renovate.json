@@ -1,12 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": [
-        ".github/workflows/security.yml"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.github/workflows/security.yml/"
       ],
       "datasourceTemplate": "golang-version",
       "depNameTemplate": "golang",
@@ -15,8 +16,9 @@
       ]
     },
     {
-      "fileMatch": [
-        ".github/workflows/release.yml"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.github/workflows/release.yml/"
       ],
       "datasourceTemplate": "golang-version",
       "depNameTemplate": "golang",
@@ -25,8 +27,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^v(?<version>.*)$",
       "matchStrings": [
@@ -35,8 +38,9 @@
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^release-(?<version>[0-9]*.[0-9]*[02468].[0-9]*)$",
       "datasourceTemplate": "github-tags",
@@ -46,8 +50,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^release-(?<version>[0-9]*.[0-9]*[02468].[0-9]*)$",
       "datasourceTemplate": "github-tags",
@@ -57,8 +62,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^v(?<version>.*)$",
       "datasourceTemplate": "github-tags",
@@ -68,8 +74,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^pcre2-(?<version>[0-9]*\\.[0-9]*)$",
       "datasourceTemplate": "github-tags",
@@ -79,8 +86,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^v(?<version>[0-9]*.[0-9]*.[0-9]*)$",
       "datasourceTemplate": "github-tags",
@@ -90,8 +98,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^openssl-(?<version>.*)$",
       "datasourceTemplate": "github-tags",
@@ -101,8 +110,9 @@
       ]
     },
     {
-      "fileMatch": [
-        "builder/const.go"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/builder/const.go/"
       ],
       "extractVersionTemplate": "^v(?<version>[0-9.]*)$",
       "datasourceTemplate": "github-tags",
