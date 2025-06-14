@@ -13,6 +13,7 @@ func Load(path string) ([]Module3rd, error) {
 		if err != nil {
 			return modules, err
 		}
+		defer f.Close()
 		if err := json.NewDecoder(f).Decode(&modules); err != nil {
 			return modules, fmt.Errorf("modulesConfPath(%s) is invalid JSON.", path)
 		}
