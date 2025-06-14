@@ -347,7 +347,9 @@ func main() {
 	}
 
 	// cd workDir/nginx-${version}
-	os.Chdir(nginxBuilder.SourcePath())
+	if err := os.Chdir(nginxBuilder.SourcePath()); err != nil {
+		log.Fatalf("failed to change directory: %v", err)
+	}
 
 	var dependencies []builder.StaticLibrary
 	if *pcreStatic {
