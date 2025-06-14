@@ -271,7 +271,10 @@ func main() {
 		}
 	}
 
-	rootDir := util.SaveCurrentDir()
+	rootDir, err := util.SaveCurrentDir()
+	if err != nil {
+		log.Fatalf("Failed to get current directory: %v", err)
+	}
 	err = os.Chdir(workDir)
 	if err != nil {
 		log.Fatal(err)
@@ -393,7 +396,9 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
-	util.Patch(*patchPath, *patchOption, rootDir, false)
+	if err := util.Patch(*patchPath, *patchOption, rootDir, false); err != nil {
+		log.Fatalf("Failed to apply patch: %v", err)
+	}
 
 	// reverts source code with patch -R when the build was interrupted.
 	if *patchPath != "" {
@@ -401,7 +406,9 @@ func main() {
 		signal.Notify(sigChannel, os.Interrupt)
 		go func() {
 			<-sigChannel
-			util.Patch(*patchPath, *patchOption, rootDir, true)
+			if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+				log.Printf("Failed to revert patch: %v", err)
+			}
 		}()
 	}
 
@@ -410,12 +417,16 @@ func main() {
 	err = configure.Run()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
-		util.Patch(*patchPath, *patchOption, rootDir, true)
+		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+			log.Printf("Failed to revert patch: %v", err)
+		}
 		util.PrintFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
-		util.Patch(*patchPath, *patchOption, rootDir, true)
+		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+			log.Printf("Failed to revert patch: %v", err)
+		}
 		printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
 		return
 	}
@@ -436,7 +447,9 @@ func main() {
 	err = builder.BuildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
-		util.Patch(*patchPath, *patchOption, rootDir, true)
+		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+			log.Printf("Failed to revert patch: %v", err)
+		}
 		util.PrintFatalMsg(err, "nginx-build.log")
 	}
 

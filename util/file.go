@@ -38,9 +38,12 @@ func ListDirectory(path string) ([]string, error) {
 	return fileNames, nil
 }
 
-func SaveCurrentDir() string {
-	prevDir, _ := filepath.Abs(".")
-	return prevDir
+func SaveCurrentDir() (string, error) {
+	prevDir, err := filepath.Abs(".")
+	if err != nil {
+		return "", fmt.Errorf("failed to get absolute path for current directory: %w", err)
+	}
+	return prevDir, nil
 }
 
 func FileGetContents(path string) (string, error) {
