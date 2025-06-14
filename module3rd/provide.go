@@ -12,7 +12,10 @@ import (
 
 func Provide(m *Module3rd) error {
 	if len(m.Rev) > 0 {
-		dir := util.SaveCurrentDir()
+		dir, err := util.SaveCurrentDir()
+		if err != nil {
+			return fmt.Errorf("failed to save current directory for module %s: %w", m.Name, err)
+		}
 		if err := os.Chdir(m.Name); err != nil {
 			return fmt.Errorf("chdir to %s failed: %w", m.Name, err)
 		}
@@ -25,7 +28,10 @@ func Provide(m *Module3rd) error {
 	}
 
 	if len(m.Shprov) > 0 {
-		dir := util.SaveCurrentDir()
+		dir, err := util.SaveCurrentDir()
+		if err != nil {
+			return fmt.Errorf("failed to save current directory for module %s shprov: %w", m.Name, err)
+		}
 		if len(m.ShprovDir) > 0 {
 			if err := os.Chdir(m.Name + "/" + m.ShprovDir); err != nil {
 				return fmt.Errorf("chdir to %s/%s failed: %w", m.Name, m.ShprovDir, err)
