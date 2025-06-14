@@ -13,24 +13,34 @@ import (
 func Provide(m *Module3rd) error {
 	if len(m.Rev) > 0 {
 		dir := util.SaveCurrentDir()
-		os.Chdir(m.Name)
+		if err := os.Chdir(m.Name); err != nil {
+			return fmt.Errorf("chdir to %s failed: %w", m.Name, err)
+		}
 		if err := switchRev(m.Form, m.Rev); err != nil {
 			return fmt.Errorf("%s (%s checkout %s): %s", m.Name, m.Form, m.Rev, err.Error())
 		}
-		os.Chdir(dir)
+		if err := os.Chdir(dir); err != nil {
+			return fmt.Errorf("return to dir %s failed: %w", dir, err)
+		}
 	}
 
 	if len(m.Shprov) > 0 {
 		dir := util.SaveCurrentDir()
 		if len(m.ShprovDir) > 0 {
-			os.Chdir(m.Name + "/" + m.ShprovDir)
+			if err := os.Chdir(m.Name + "/" + m.ShprovDir); err != nil {
+				return fmt.Errorf("chdir to %s/%s failed: %w", m.Name, m.ShprovDir, err)
+			}
 		} else {
-			os.Chdir(m.Name)
+			if err := os.Chdir(m.Name); err != nil {
+				return fmt.Errorf("chdir to %s failed: %w", m.Name, err)
+			}
 		}
 		if err := provideShell(m.Shprov); err != nil {
 			return fmt.Errorf("%s's shprov(%s): %s", m.Name, m.Shprov, err.Error())
 		}
-		os.Chdir(dir)
+		if err := os.Chdir(dir); err != nil {
+			return fmt.Errorf("return to dir %s failed: %w", dir, err)
+		}
 	}
 
 	return nil

@@ -2,6 +2,8 @@ package configure
 
 import (
 	"bufio"
+	"fmt"
+	"log"
 	"os"
 
 	"github.com/cubicdaiya/nginx-build/command"
@@ -15,6 +17,7 @@ func Run() error {
 
 	f, err := os.Create("nginx-configure.log")
 	if err != nil {
+		log.Printf("[warn] could not create nginx-configure.log: %v", err)
 		return command.Run(args)
 	}
 	defer f.Close()
@@ -28,5 +31,9 @@ func Run() error {
 	cmd.Stdout = writer
 	defer writer.Flush()
 
-	return cmd.Run()
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("configure failed: %w", err)
+	}
+
+	return nil
 }

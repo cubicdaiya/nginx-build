@@ -2,6 +2,8 @@ package builder
 
 import (
 	"bufio"
+	"fmt"
+	"log"
 	"os"
 	"strconv"
 
@@ -16,6 +18,7 @@ func BuildNginx(jobs int) error {
 
 	f, err := os.Create("nginx-build.log")
 	if err != nil {
+		log.Printf("[warn] could not create nginx-build.log: %v", err)
 		return command.Run(args)
 	}
 	defer f.Close()
@@ -28,7 +31,11 @@ func BuildNginx(jobs int) error {
 	cmd.Stderr = writer
 	defer writer.Flush()
 
-	return cmd.Run()
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("make failed: %w", err)
+	}
+
+	return nil
 }
 
 func IsSameVersion(builders []Builder) (bool, error) {
