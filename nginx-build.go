@@ -277,7 +277,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// remove nginx source code applyed patch
+	// remove nginx source code applied patch
 	if *patchPath != "" && util.FileExists(nginxBuilder.SourcePath()) {
 		err := os.RemoveAll(nginxBuilder.SourcePath())
 		if err != nil {
