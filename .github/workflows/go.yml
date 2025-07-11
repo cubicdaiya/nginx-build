@@ -11,7 +11,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Build
         run: make
       - name: Test
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Run Nginx with OpenSSL
         run: |
           make
@@ -37,7 +37,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Run Nginx with LibreSSL
         run: |
           make
@@ -50,7 +50,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Run Nginx with FreeNginx
         run: |
           make
@@ -63,7 +63,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Run Nginx with OpenResty
         run: |
           make
@@ -76,7 +76,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.4
+          go-version: 1.24.5
       - name: Run Nginx with Brotli
         run: |
           make
