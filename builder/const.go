@@ -50,6 +50,7 @@ const (
 	ComponentPcre
 	ComponentOpenSSL
 	ComponentLibreSSL
+	ComponentCustomSSL
 	ComponentZlib
 	ComponentMax
 )

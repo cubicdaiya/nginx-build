@@ -134,6 +134,9 @@ func main() {
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	freenginxVersion := nginxBuildOptions.Values["freenginxversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
+	customSSLURL := nginxBuildOptions.Values["customssl"].Value
+	customSSLName := nginxBuildOptions.Values["customsslname"].Value
+	customSSLTag := nginxBuildOptions.Values["customssltag"].Value
 
 	// Allow multiple flags for `--patch`
 	{
@@ -187,8 +190,19 @@ func main() {
 	if *openResty && *freenginx {
 		log.Fatal("select one between '-openresty' and '-freenginx'.")
 	}
-	if *openSSLStatic && *libreSSLStatic {
-		log.Fatal("select one between '-openssl' and '-libressl'.")
+	// Check for conflicting SSL library options
+	sslCount := 0
+	if *openSSLStatic {
+		sslCount++
+	}
+	if *libreSSLStatic {
+		sslCount++
+	}
+	if *customSSLURL != "" {
+		sslCount++
+	}
+	if sslCount > 1 {
+		log.Fatal("select only one SSL library: '-openssl', '-libressl', or '-customssl'.")
 	}
 	if *openResty {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
@@ -200,6 +214,20 @@ func main() {
 	pcreBuilder := builder.MakeLibraryBuilder(builder.ComponentPcre, *pcreVersion, *pcreStatic)
 	openSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentOpenSSL, *openSSLVersion, *openSSLStatic)
 	libreSSLBuilder := builder.MakeLibraryBuilder(builder.ComponentLibreSSL, *libreSSLVersion, *libreSSLStatic)
+
+	// Create custom SSL builder if URL is provided
+	var customSSLBuilder builder.Builder
+	if *customSSLURL != "" {
+		customSSLBuilder = builder.Builder{
+			Component:  builder.ComponentCustomSSL,
+			Version:    "custom",
+			Static:     true,
+			CustomURL:  *customSSLURL,
+			CustomName: *customSSLName,
+			CustomTag:  *customSSLTag,
+		}
+	}
+
 	zlibBuilder := builder.MakeLibraryBuilder(builder.ComponentZlib, *zlibVersion, *zlibStatic)
 
 	if *idempotent {
@@ -209,6 +237,9 @@ func main() {
 			openSSLBuilder,
 			libreSSLBuilder,
 			zlibBuilder,
+		}
+		if *customSSLURL != "" {
+			builders = append(builders, customSSLBuilder)
 		}
 
 		isSame, err := builder.IsSameVersion(builders)
@@ -313,6 +344,14 @@ func main() {
 		}()
 	}
 
+	if *customSSLURL != "" {
+		wg.Add(1)
+		go func() {
+			downloadAndExtractParallel(&customSSLBuilder)
+			wg.Done()
+		}()
+	}
+
 	if *zlibStatic {
 		wg.Add(1)
 		go func() {
@@ -367,6 +406,10 @@ func main() {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&libreSSLBuilder))
 	}
 
+	if *customSSLURL != "" {
+		dependencies = append(dependencies, builder.MakeStaticLibrary(&customSSLBuilder))
+	}
+
 	if *zlibStatic {
 		dependencies = append(dependencies, builder.MakeStaticLibrary(&zlibBuilder))
 	}
@@ -383,6 +426,10 @@ func main() {
 
 	if *libreSSLStatic && libreSSLBuilder.IsIncludeWithOption(nginxConfigure) {
 		log.Println(libreSSLBuilder.WarnMsgWithLibrary())
+	}
+
+	if *customSSLURL != "" && customSSLBuilder.IsIncludeWithOption(nginxConfigure) {
+		log.Println(customSSLBuilder.WarnMsgWithLibrary())
 	}
 
 	if *zlibStatic && zlibBuilder.IsIncludeWithOption(nginxConfigure) {

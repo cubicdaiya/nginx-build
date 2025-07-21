@@ -81,3 +81,44 @@ jobs:
         run: |
           make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.brotli -d work -clear -pcre -zlib -openssl
+
+  run-nginx-boringssl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.5
+      - name: Install BoringSSL dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libunwind-dev
+      - name: Run Nginx with BoringSSL
+        run: |
+          make
+          ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib \
+            -customssl https://boringssl.googlesource.com/boringssl \
+            -customsslname boringssl
+
+  run-nginx-oqs-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.5
+      - name: Run Nginx with oqs-provider
+        run: |
+          make
+          ./nginx-build \
+            -c ./config/configure.example \
+            -m ./config/modules.json.example \
+            -d work \
+            -clear \
+            -pcre \
+            -zlib \
+            -customssl https://github.com/open-quantum-safe/oqs-provider.git \
+            -customsslname oqs-provider \
+            -customssltag 0.9.0

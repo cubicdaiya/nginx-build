@@ -14,6 +14,14 @@ func setupBuilders(t *testing.T) []Builder {
 	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
 	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
 	builders[ComponentFreenginx] = MakeBuilder(ComponentFreenginx, FreenginxVersion)
+	// Add custom SSL builder
+	builders[ComponentCustomSSL] = Builder{
+		Component:  ComponentCustomSSL,
+		Version:    "custom",
+		Static:     true,
+		CustomURL:  "https://example.com/customssl.tar.gz",
+		CustomName: "mycustomssl",
+	}
 	return builders
 }
 
@@ -51,6 +59,10 @@ func TestName(t *testing.T) {
 		{
 			got:  builders[ComponentFreenginx].name(),
 			want: "freenginx",
+		},
+		{
+			got:  builders[ComponentCustomSSL].name(),
+			want: "mycustomssl",
 		},
 	}
 
@@ -128,6 +140,10 @@ func TestDownloadURL(t *testing.T) {
 			got:  builders[ComponentFreenginx].DownloadURL(),
 			want: fmt.Sprintf("%s/freenginx-%s.tar.gz", FreenginxDownloadURLPrefix, FreenginxVersion),
 		},
+		{
+			got:  builders[ComponentCustomSSL].DownloadURL(),
+			want: "https://example.com/customssl.tar.gz",
+		},
 	}
 
 	for _, test := range tests {
@@ -171,6 +187,10 @@ func TestSourcePath(t *testing.T) {
 		{
 			got:  builders[ComponentFreenginx].SourcePath(),
 			want: fmt.Sprintf("freenginx-%s", FreenginxVersion),
+		},
+		{
+			got:  builders[ComponentCustomSSL].SourcePath(),
+			want: "mycustomssl-custom",
 		},
 	}
 
@@ -341,5 +361,76 @@ func TestMakeStaticLibrary(t *testing.T) {
 		if test.builder.Version != test.version {
 			t.Fatalf("not equal version between builder's and default's")
 		}
+	}
+}
+
+func TestCustomSSLBuilder(t *testing.T) {
+	tests := []struct {
+		name       string
+		builder    Builder
+		wantName   string
+		wantOption string
+		wantURL    string
+	}{
+		{
+			name: "custom SSL with default name",
+			builder: Builder{
+				Component:  ComponentCustomSSL,
+				Version:    "custom",
+				Static:     true,
+				CustomURL:  "https://example.com/ssl.tar.gz",
+				CustomName: "",
+			},
+			wantName:   "customssl",
+			wantOption: "--with-openssl",
+			wantURL:    "https://example.com/ssl.tar.gz",
+		},
+		{
+			name: "custom SSL with BoringSSL URL",
+			builder: Builder{
+				Component:  ComponentCustomSSL,
+				Version:    "custom",
+				Static:     true,
+				CustomURL:  "https://boringssl.googlesource.com/boringssl",
+				CustomName: "boringssl",
+			},
+			wantName:   "boringssl",
+			wantOption: "--with-openssl",
+			wantURL:    "https://boringssl.googlesource.com/boringssl",
+		},
+		{
+			name: "custom SSL with git tag",
+			builder: Builder{
+				Component:  ComponentCustomSSL,
+				Version:    "custom",
+				Static:     true,
+				CustomURL:  "https://github.com/example/ssl.git",
+				CustomName: "taggedssl",
+				CustomTag:  "v1.0.0",
+			},
+			wantName:   "taggedssl",
+			wantOption: "--with-openssl",
+			wantURL:    "https://github.com/example/ssl.git",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := test.builder.name(); got != test.wantName {
+				t.Errorf("name() = %v, want %v", got, test.wantName)
+			}
+			if got := test.builder.option(); got != test.wantOption {
+				t.Errorf("option() = %v, want %v", got, test.wantOption)
+			}
+			if got := test.builder.DownloadURL(); got != test.wantURL {
+				t.Errorf("DownloadURL() = %v, want %v", got, test.wantURL)
+			}
+			// Test SourcePath and ArchivePath
+			sourcePath := test.builder.SourcePath()
+			expectedSourcePath := test.builder.name() + "-" + test.builder.Version
+			if sourcePath != expectedSourcePath {
+				t.Errorf("SourcePath() = %v, want %v", sourcePath, expectedSourcePath)
+			}
+		})
 	}
 }

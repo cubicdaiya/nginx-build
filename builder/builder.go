@@ -16,6 +16,10 @@ type Builder struct {
 	Component         int
 	// for dependencies such as pcre and zlib and openssl
 	Static bool
+	// for custom SSL library
+	CustomURL  string
+	CustomName string
+	CustomTag  string
 }
 
 var (
@@ -49,6 +53,12 @@ func (builder *Builder) name() string {
 		name = "openssl"
 	case ComponentLibreSSL:
 		name = "libressl"
+	case ComponentCustomSSL:
+		if builder.CustomName != "" {
+			name = builder.CustomName
+		} else {
+			name = "customssl"
+		}
 	case ComponentZlib:
 		name = "zlib"
 	case ComponentOpenResty:
@@ -66,6 +76,11 @@ func (builder *Builder) option() string {
 
 	// libressl does not match option name
 	if name == "libressl" {
+		name = "openssl"
+	}
+
+	// custom ssl defaults to openssl option
+	if builder.Component == ComponentCustomSSL {
 		name = "openssl"
 	}
 
@@ -87,6 +102,8 @@ func (builder *Builder) DownloadURL() string {
 		return fmt.Sprintf("%s/openssl-%s/openssl-%s.tar.gz", OpenSSLDownloadURLPrefix, builder.Version, builder.Version)
 	case ComponentLibreSSL:
 		return fmt.Sprintf("%s/libressl-%s.tar.gz", LibreSSLDownloadURLPrefix, builder.Version)
+	case ComponentCustomSSL:
+		return builder.CustomURL
 	case ComponentZlib:
 		return fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, builder.Version)
 	case ComponentOpenResty:
