@@ -131,6 +131,18 @@ func makeNginxBuildOptions() Options {
 		Desc:    "option for patch",
 		Default: "",
 	}
+	argsString["customssl"] = OptionValue{
+		Desc:    "download URL for custom SSL library",
+		Default: "",
+	}
+	argsString["customsslname"] = OptionValue{
+		Desc:    "name for custom SSL library",
+		Default: "",
+	}
+	argsString["customssltag"] = OptionValue{
+		Desc:    "git tag/branch for custom SSL library",
+		Default: "",
+	}
 
 	nginxBuildOptions.Bools = argsBool
 	nginxBuildOptions.Values = argsString

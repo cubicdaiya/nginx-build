@@ -89,6 +89,73 @@ $ nginx-build -d work -libressl
 
 `-libresslversion` is an option to set a version of LibreSSL.
 
+### Using Custom SSL Libraries (e.g., BoringSSL)
+
+`nginx-build` supports using arbitrary SSL libraries through custom SSL options. This is useful for libraries like BoringSSL that are not available as standard options.
+
+#### Basic Usage
+
+To use a custom SSL library, provide the download URL with `-customssl`. The URL can be either a tarball or a Git repository:
+
+```bash
+# Using BoringSSL from Git repository
+$ nginx-build -d work -customssl https://boringssl.googlesource.com/boringssl -customsslname boringssl
+
+# Using a tarball URL
+$ nginx-build -d work -customssl https://example.com/customssl-1.0.0.tar.gz -customsslname customssl
+```
+
+#### Using a Specific Git Tag or Branch
+
+For Git repositories, you can specify a tag or branch with `-customssltag`:
+
+```bash
+# Use BoringSSL with chromium-stable branch
+$ nginx-build -d work \
+  -customssl https://boringssl.googlesource.com/boringssl \
+  -customsslname boringssl \
+  -customssltag chromium-stable
+
+# Use OpenSSL from Git with specific tag
+$ nginx-build -d work \
+  -customssl https://github.com/openssl/openssl.git \
+  -customsslname openssl-git \
+  -customssltag openssl-3.5.1
+
+# Use oqs-provider (OpenSSL provider) with tag 0.9.0
+$ nginx-build -d work \
+  -customssl https://github.com/open-quantum-safe/oqs-provider.git \
+  -customsslname oqs-provider \
+  -customssltag 0.9.0
+```
+
+#### Using a Tarball URL
+
+You can also use tarball URLs for custom SSL libraries:
+
+```bash
+# Using a custom OpenSSL build from a tarball
+$ nginx-build -d work \
+  -customssl https://example.com/myssl-1.0.0.tar.gz \
+  -customsslname myssl
+```
+
+#### Available Options
+
+- `-customssl`: URL of the custom SSL library (supports both Git repositories and tarballs)
+- `-customsslname`: Name for the custom SSL library (used in directory names)
+- `-customssltag`: Git tag or branch to checkout (only for Git repositories)
+
+#### Supported Git Repository Formats
+
+The following Git repository URL formats are automatically detected:
+- URLs ending with `.git`
+- URLs using `git://` protocol
+- GitHub repository URLs (e.g., `https://github.com/user/repo`)
+- Google Source URLs (e.g., `https://boringssl.googlesource.com/boringssl`)
+
+Note: URLs containing `/releases/download/` or `/archive/` are treated as tarball downloads, not Git repositories.
+
 ### Embedding 3rd-party modules
 
 `nginx-build` provides a mechanism for embedding 3rd-party modules.
