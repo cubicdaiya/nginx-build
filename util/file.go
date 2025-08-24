@@ -1,7 +1,9 @@
 package util
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -22,12 +24,20 @@ func IsDirectory(path string) (bool, error) {
 	return stat.IsDir(), nil
 }
 
-func ListDirectory(path string) ([]string, error) {
-	var fileNames []string
+func ListDirectory(root string) ([]string, error) {
+	var files []string
+	var walkErr error
 
-	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			fileNames = append(fileNames, path)
+	err := filepath.WalkDir(root, func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
+			if errors.Is(err, fs.ErrPermission) && d != nil && d.IsDir() {
+				return fs.SkipDir
+			}
+			walkErr = errors.Join(walkErr, fmt.Errorf("%s: %w", p, err))
+			return nil
+		}
+		if d != nil && !d.IsDir() {
+			files = append(files, p)
 		}
 		return nil
 	})
@@ -35,7 +45,7 @@ func ListDirectory(path string) ([]string, error) {
 		return nil, err
 	}
 
-	return fileNames, nil
+	return files, walkErr
 }
 
 func SaveCurrentDir() (string, error) {
