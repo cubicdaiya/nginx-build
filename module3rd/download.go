@@ -29,14 +29,14 @@ func DownloadAndExtractParallel(m Module3rd) {
 		if err != nil {
 			util.PrintFatalMsg(err, logName)
 		}
-	} else if !util.FileExists(m.Url) {
-		log.Fatalf("no such directory:%s", m.Url)
+	} else if !util.FileExists(m.URL) {
+		log.Fatalf("no such directory:%s", m.URL)
 	}
 }
 
 func download(m Module3rd, logName string) error {
 	form := m.Form
-	url := m.Url
+	url := m.URL
 
 	switch form {
 	case "git":

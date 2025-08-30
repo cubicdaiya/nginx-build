@@ -32,8 +32,8 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 		configure += "--with-http_ssl_module \\\n"
 	}
 
-	configure_modules3rd := generateForModule3rd(modules3rd)
-	configure += configure_modules3rd
+	configureModules3rd := generateForModule3rd(modules3rd)
+	configure += configureModules3rd
 
 	for _, option := range options.Values {
 		if *option.Value != "" {
@@ -68,7 +68,7 @@ func generateForModule3rd(modules3rd []module3rd.Module3rd) string {
 			opt = "--add-dynamic-module"
 		}
 		if m.Form == "local" {
-			result += fmt.Sprintf("%s=%s \\\n", opt, m.Url)
+			result += fmt.Sprintf("%s=%s \\\n", opt, m.URL)
 		} else {
 			result += fmt.Sprintf("%s=../%s \\\n", opt, m.Name)
 		}

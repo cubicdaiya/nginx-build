@@ -10,10 +10,7 @@ import (
 
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func IsDirectory(path string) (bool, error) {
@@ -61,7 +58,7 @@ func FileGetContents(path string) (string, error) {
 	if len(path) > 0 {
 		confb, err := os.ReadFile(path)
 		if err != nil {
-			return "", fmt.Errorf("confPath(%s) does not exist.", path)
+			return "", fmt.Errorf("confPath(%s) does not exist", path)
 		}
 		conf = string(confb)
 	}

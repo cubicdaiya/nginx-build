@@ -128,10 +128,7 @@ func (builder *Builder) LogPath() string {
 }
 
 func (builder *Builder) IsIncludeWithOption(nginxConfigure string) bool {
-	if strings.Contains(nginxConfigure, builder.option()+"=") {
-		return true
-	}
-	return false
+	return strings.Contains(nginxConfigure, builder.option()+"=")
 }
 
 func (builder *Builder) WarnMsgWithLibrary() string {
