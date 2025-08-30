@@ -46,7 +46,7 @@ func download(b *builder.Builder) error {
 		// Clone from git
 		log.Printf("Clone %s.....", b.SourcePath())
 		if err := command.Run([]string{"git", "clone", url, b.SourcePath()}); err != nil {
-			return fmt.Errorf("Failed to clone from %s. %s", url, err.Error())
+			return fmt.Errorf("failed to clone from %s: %w", url, err)
 		}
 
 		// Checkout specific tag/branch if specified
@@ -54,14 +54,14 @@ func download(b *builder.Builder) error {
 			log.Printf("Checkout %s.....", b.CustomTag)
 			originalDir, _ := os.Getwd()
 			if err := os.Chdir(b.SourcePath()); err != nil {
-				return fmt.Errorf("Failed to change directory to %s. %s", b.SourcePath(), err.Error())
+				return fmt.Errorf("failed to change directory to %s: %w", b.SourcePath(), err)
 			}
 			if err := command.Run([]string{"git", "checkout", b.CustomTag}); err != nil {
 				os.Chdir(originalDir)
-				return fmt.Errorf("Failed to checkout %s. %s", b.CustomTag, err.Error())
+				return fmt.Errorf("failed to checkout %s: %w", b.CustomTag, err)
 			}
 			if err := os.Chdir(originalDir); err != nil {
-				return fmt.Errorf("Failed to change back to original directory. %s", err.Error())
+				return fmt.Errorf("failed to change back to original directory: %w", err)
 			}
 		}
 
@@ -105,13 +105,13 @@ func downloadAndExtract(b *builder.Builder) error {
 		if b.Component == builder.ComponentCustomSSL && isGitURL(b.DownloadURL()) {
 			// Git clone handled in download()
 			if err := download(b); err != nil {
-				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
+				return fmt.Errorf("failed to download %s: %w", b.SourcePath(), err)
 			}
 		} else if !util.FileExists(b.ArchivePath()) {
 			log.Printf("Download %s.....", b.SourcePath())
 
 			if err := download(b); err != nil {
-				return fmt.Errorf("Failed to download %s. %s", b.SourcePath(), err.Error())
+				return fmt.Errorf("failed to download %s: %w", b.SourcePath(), err)
 			}
 		}
 
@@ -120,7 +120,7 @@ func downloadAndExtract(b *builder.Builder) error {
 			log.Printf("Extract %s.....", b.ArchivePath())
 
 			if err := extractArchive(b.ArchivePath()); err != nil {
-				return fmt.Errorf("Failed to extract %s. %s", b.ArchivePath(), err.Error())
+				return fmt.Errorf("failed to extract %s: %w", b.ArchivePath(), err)
 			}
 		}
 	} else {

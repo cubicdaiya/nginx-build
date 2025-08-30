@@ -20,7 +20,7 @@ func Provide(m *Module3rd) error {
 			return fmt.Errorf("chdir to %s failed: %w", m.Name, err)
 		}
 		if err := switchRev(m.Form, m.Rev); err != nil {
-			return fmt.Errorf("%s (%s checkout %s): %s", m.Name, m.Form, m.Rev, err.Error())
+			return fmt.Errorf("%s (%s checkout %s): %w", m.Name, m.Form, m.Rev, err)
 		}
 		if err := os.Chdir(dir); err != nil {
 			return fmt.Errorf("return to dir %s failed: %w", dir, err)
@@ -42,7 +42,7 @@ func Provide(m *Module3rd) error {
 			}
 		}
 		if err := provideShell(m.Shprov); err != nil {
-			return fmt.Errorf("%s's shprov(%s): %s", m.Name, m.Shprov, err.Error())
+			return fmt.Errorf("%s's shprov(%s): %w", m.Name, m.Shprov, err)
 		}
 		if err := os.Chdir(dir); err != nil {
 			return fmt.Errorf("return to dir %s failed: %w", dir, err)

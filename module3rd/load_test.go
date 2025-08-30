@@ -18,7 +18,7 @@ func TestModules3rd(t *testing.T) {
 		case "ngx_http_hello_world":
 			want.Name = "ngx_http_hello_world"
 			want.Form = "git"
-			want.Url = "https://github.com/cubicdaiya/ngx_http_hello_world"
+			want.URL = "https://github.com/cubicdaiya/ngx_http_hello_world"
 			want.Dynamic = false
 		default:
 			t.Fatalf("unexpected module: %v", m)
@@ -44,7 +44,7 @@ func TestModules3rdWithNJS(t *testing.T) {
 		case "njs/nginx":
 			want.Name = "njs/nginx"
 			want.Form = "hg"
-			want.Url = "https://hg.nginx.org/njs"
+			want.URL = "https://hg.nginx.org/njs"
 			want.Dynamic = false
 			want.Shprov = "./configure && make"
 			want.ShprovDir = ".."

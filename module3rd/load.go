@@ -15,9 +15,9 @@ func Load(path string) ([]Module3rd, error) {
 		}
 		defer f.Close()
 		if err := json.NewDecoder(f).Decode(&modules); err != nil {
-			return modules, fmt.Errorf("modulesConfPath(%s) is invalid JSON.", path)
+			return modules, fmt.Errorf("modulesConfPath(%s) is invalid JSON", path)
 		}
-		for i, _ := range modules {
+		for i := range modules {
 			if modules[i].Form == "" {
 				modules[i].Form = "git"
 			}
