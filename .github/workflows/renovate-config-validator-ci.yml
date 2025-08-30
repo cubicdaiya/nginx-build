@@ -7,6 +7,9 @@ on:
       - "renovate.json"
       - ".github/workflows/renovate-config-validator-ci.yml"
 
+permissions:
+  contents: read
+
 jobs:
   renovate-config-validator:
     timeout-minutes: 10
