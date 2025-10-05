@@ -3,3 +3,4 @@
 ./configure \
 --sbin-path=/usr/sbin/nginx \
 --conf-path=/etc/nginx/nginx.conf \
+# comment out
