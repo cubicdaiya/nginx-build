@@ -14,8 +14,34 @@ name: "CodeQL"
 on:
   push:
     branches: ["master"]
+    paths:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      - Makefile
+      - builder/**
+      - command/**
+      - config/**
+      - configure/**
+      - module3rd/**
+      - openresty/**
+      - util/**
+      - '.github/workflows/**'
   pull_request:
     branches: ["master"]
+    paths:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      - Makefile
+      - builder/**
+      - command/**
+      - config/**
+      - configure/**
+      - module3rd/**
+      - openresty/**
+      - util/**
+      - '.github/workflows/**'
   schedule:
     - cron: "37 22 * * 0"
 
