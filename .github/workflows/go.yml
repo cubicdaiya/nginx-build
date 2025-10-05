@@ -2,6 +2,21 @@ name: Go
 
 on:
   pull_request:
+    paths:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      - Makefile
+      - builder/**
+      - command/**
+      - config/**
+      - configure/**
+      - module3rd/**
+      - nginx-build
+      - nginx-build.go
+      - openresty/**
+      - util/**
+      - '.github/workflows/go.yml'
 
 permissions:
   contents: read

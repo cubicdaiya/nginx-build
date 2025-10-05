@@ -4,7 +4,33 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      - Makefile
+      - builder/**
+      - command/**
+      - config/**
+      - configure/**
+      - module3rd/**
+      - openresty/**
+      - util/**
+      - '.github/workflows/security.yml'
   pull_request:
+    paths:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      - Makefile
+      - builder/**
+      - command/**
+      - config/**
+      - configure/**
+      - module3rd/**
+      - openresty/**
+      - util/**
+      - '.github/workflows/security.yml'
   schedule:
     - cron: "0 0 * * *"
 
