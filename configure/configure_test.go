@@ -67,3 +67,39 @@ func TestConfiguregenWithStaticLibraries(t *testing.T) {
 
 	}
 }
+
+func TestGeneratePreservesTrailingComments(t *testing.T) {
+	script := "#!/bin/sh\n\n./configure \\\n--prefix=/usr/local \\\n# --with-http_ssl_module\n"
+	base, comments := Normalize(script)
+	if base == "" {
+		t.Fatalf("expected base configure content, got empty string")
+	}
+	if comments == "" {
+		t.Fatalf("expected trailing comments to be captured")
+	}
+	enabled := true
+	options := Options{
+		Values: MakeArgsString(),
+		Bools:  MakeArgsBool(),
+	}
+	options.Bools["stub"] = OptionBool{Name: "--with-http_stub_status_module", Enabled: &enabled}
+	generated := Generate(base, nil, nil, options, "", false, 1)
+	if comments != "" {
+		if !strings.HasSuffix(generated, "\n") {
+			generated += "\n"
+		}
+		generated += comments
+		if !strings.HasSuffix(generated, "\n") {
+			generated += "\n"
+		}
+	}
+	if !strings.Contains(generated, "--with-http_stub_status_module") {
+		t.Fatalf("generated script missing appended option: %s", generated)
+	}
+	if strings.Contains(generated, "# --with-http_stub_status_module") {
+		t.Fatalf("appended option is still commented out: %s", generated)
+	}
+	if !strings.Contains(generated, "# --with-http_ssl_module") {
+		t.Fatalf("trailing comment was not preserved: %s", generated)
+	}
+}

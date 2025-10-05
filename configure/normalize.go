@@ -1,18 +1,39 @@
 package configure
 
 import (
-	"fmt"
 	"strings"
 )
 
-func Normalize(configure string) string {
-	configure = strings.TrimRight(configure, "\n")
-	configure = strings.TrimRight(configure, " ")
-	configure = strings.TrimRight(configure, "\\")
-	if configure != "" {
-		configure += " "
+// Normalize prepares the base configure script and captures trailing comment lines.
+func Normalize(configure string) (string, string) {
+	lines := strings.Split(configure, "\n")
+
+	// Drop trailing blank lines.
+	for len(lines) > 0 && strings.TrimSpace(lines[len(lines)-1]) == "" {
+		lines = lines[:len(lines)-1]
 	}
-	return configure
+
+	// Capture trailing comment lines (prefixed with # after trimming spaces).
+	var trailingComments []string
+	for len(lines) > 0 {
+		trimmed := strings.TrimSpace(lines[len(lines)-1])
+		if strings.HasPrefix(trimmed, "#") {
+			trailingComments = append([]string{lines[len(lines)-1]}, trailingComments...)
+			lines = lines[:len(lines)-1]
+			continue
+		}
+		break
+	}
+
+	base := strings.Join(lines, "\n")
+	base = strings.TrimRight(base, "\n")
+	base = strings.TrimRight(base, " ")
+	base = strings.TrimRight(base, "\\")
+	if base != "" {
+		base += " "
+	}
+
+	return base, strings.Join(trailingComments, "\n")
 }
 
 func normalizeAddModulePaths(path, rootDir string, dynamic bool) string {
@@ -30,9 +51,9 @@ func normalizeAddModulePaths(path, rootDir string, dynamic bool) string {
 
 	for _, modulePath := range modulePaths {
 		if strings.HasPrefix(modulePath, "/") {
-			result += fmt.Sprintf("%s=%s \\\n", opt, modulePath)
+			result += opt + "=" + modulePath + " \\\n"
 		} else {
-			result += fmt.Sprintf("%s=%s/%s \\\n", opt, rootDir, modulePath)
+			result += opt + "=" + rootDir + "/" + modulePath + " \\\n"
 		}
 	}
 

@@ -261,7 +261,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	nginxConfigure = configure.Normalize(nginxConfigure)
+	nginxConfigure, trailingComments := configure.Normalize(nginxConfigure)
 
 	modules3rd, err := module3rd.Load(*modulesConfPath)
 	if err != nil {
@@ -437,6 +437,15 @@ func main() {
 	}
 
 	configureScript := configure.Generate(nginxConfigure, modules3rd, dependencies, configureOptions, rootDir, *openResty, *jobs)
+	if trailingComments != "" {
+		if !strings.HasSuffix(configureScript, "\n") {
+			configureScript += "\n"
+		}
+		configureScript += trailingComments
+		if !strings.HasSuffix(configureScript, "\n") {
+			configureScript += "\n"
+		}
+	}
 
 	err = os.WriteFile("./nginx-configure", []byte(configureScript), 0655)
 	if err != nil {
