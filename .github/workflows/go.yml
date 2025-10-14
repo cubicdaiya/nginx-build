@@ -29,7 +29,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Build
         run: make
       - name: Test
@@ -42,7 +42,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with OpenSSL
         run: |
           make
@@ -55,7 +55,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with LibreSSL
         run: |
           make
@@ -68,7 +68,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with FreeNginx
         run: |
           make
@@ -81,7 +81,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with OpenResty
         run: |
           make
@@ -94,7 +94,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with Brotli
         run: |
           make
@@ -107,7 +107,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Install BoringSSL dependencies
         run: |
           sudo apt-get update
@@ -126,7 +126,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.2
+          go-version: 1.25.3
       - name: Run Nginx with oqs-provider
         run: |
           make
