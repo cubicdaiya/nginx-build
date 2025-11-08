@@ -12,25 +12,15 @@ import (
 )
 
 var (
-	mutex   sync.Mutex
-	patched bool
+	mutex          sync.Mutex
+	patchedTargets map[string]bool
 )
 
 func init() {
-	patched = false
+	patchedTargets = make(map[string]bool)
 }
 
-func patch(path, option string, reverse bool) error {
-
-	if reverse {
-		mutex.Lock()
-		if patched {
-			mutex.Unlock()
-			return nil
-		}
-		patched = true
-		mutex.Unlock()
-	}
+func patch(path, option string, reverse bool, workDir string) error {
 
 	args := []string{"sh", "-c"}
 	body := ""
@@ -45,6 +35,9 @@ func patch(path, option string, reverse bool) error {
 	if err != nil {
 		return err
 	}
+	if workDir != "" {
+		cmd.Dir = workDir
+	}
 
 	// As the output of patch is interactive,
 	// the result is always output.
@@ -54,9 +47,31 @@ func patch(path, option string, reverse bool) error {
 	return cmd.Run()
 }
 
-func Patch(pathInput, option, rootDir string, reverse bool) error {
+func Patch(pathInput, option, rootDir, targetDir, targetLabel string, reverse bool) error {
 	if pathInput == "" {
 		return nil
+	}
+	if targetDir == "" {
+		return fmt.Errorf("patch target %s has no working directory", targetLabel)
+	}
+	var revertRegistered bool
+	var revertSucceeded bool
+	if reverse {
+		mutex.Lock()
+		if patchedTargets[targetLabel] {
+			mutex.Unlock()
+			return nil
+		}
+		patchedTargets[targetLabel] = true
+		revertRegistered = true
+		mutex.Unlock()
+		defer func() {
+			if revertRegistered && !revertSucceeded {
+				mutex.Lock()
+				delete(patchedTargets, targetLabel)
+				mutex.Unlock()
+			}
+		}()
 	}
 
 	var individualPaths []string
@@ -101,11 +116,12 @@ func Patch(pathInput, option, rootDir string, reverse bool) error {
 		if reverse {
 			logMsg = "Reverting"
 		}
-		log.Printf("%s patch: %s (options: %s)", logMsg, p, option)
+		log.Printf("%s patch for %s: %s (options: %s)", logMsg, targetLabel, p, option)
 
-		if err := patch(p, option, reverse); err != nil {
+		if err := patch(p, option, reverse, targetDir); err != nil {
 			return fmt.Errorf("failed to %s patch %s (options: %s): %w", strings.ToLower(logMsg), p, option, err)
 		}
 	}
+	revertSucceeded = true
 	return nil
 }

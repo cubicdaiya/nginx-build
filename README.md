@@ -211,12 +211,14 @@ There is the example configuration below.
 
 ## Applying patch before building nginx
 
-`nginx-build` provides the options such as `-patch` and `-patch-opt` for applying patch to nginx.
+`nginx-build` provides the options such as `-patch` and `-patch-opt` for applying patches to the extracted sources. By default `-patch <path>` targets the primary tree (nginx, OpenResty, or freenginx depending on the build). To patch other bundled components prefix the flag with the component name, for example `-patch openssl=/path/to/openssl.patch`. Supported targets include `nginx`, `openresty`, `freenginx`, `pcre`/`pcre2`, `openssl`, `libressl`, `customssl` (or the custom name), and `zlib`.
 
 ```console
 nginx-build \
  -d work \
- -patch something.patch \
+ -openssl \
+ -patch patches/nginx.patch \
+ -patch openssl=patches/openssl.patch \
  -patch-opt "-p1"
 ```
 

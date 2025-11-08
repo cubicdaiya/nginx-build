@@ -1,0 +1,7 @@
+diff --git a/patch-ci-openssl.txt b/patch-ci-openssl.txt
+new file mode 100644
+index 0000000..88c9c0d
+--- /dev/null
++++ patch-ci-openssl.txt
+@@ -0,0 +1 @@
++patched by nginx-build CI (openssl)

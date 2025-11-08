@@ -124,7 +124,7 @@ func makeNginxBuildOptions() Options {
 		Default: builder.FreenginxVersion,
 	}
 	argsString["patch"] = OptionValue{
-		Desc:    "patch path for applying to nginx",
+		Desc:    "patch path (default nginx; use target=path for others)",
 		Default: "",
 	}
 	argsString["patch-opt"] = OptionValue{

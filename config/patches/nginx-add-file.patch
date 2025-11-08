@@ -1,0 +1,7 @@
+diff --git a/patch-ci-nginx.txt b/patch-ci-nginx.txt
+new file mode 100644
+index 0000000..a3f5b5c
+--- /dev/null
++++ patch-ci-nginx.txt
+@@ -0,0 +1 @@
++patched by nginx-build CI (nginx)

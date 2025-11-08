@@ -2,10 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 	"syscall"
@@ -16,6 +19,13 @@ import (
 	"github.com/cubicdaiya/nginx-build/module3rd"
 	"github.com/cubicdaiya/nginx-build/util"
 )
+
+const defaultPatchTarget = "nginx"
+
+type patchDirective struct {
+	target string
+	paths  []string
+}
 
 var (
 	nginxBuildOptions Options
@@ -163,6 +173,10 @@ func main() {
 	}
 
 	patchPath := nginxBuildOptions.Values["patch"].Value
+	patchDirectives, err := parsePatchDirectives(*patchPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 	configureOptions.Values = argsString
 	configureOptions.Bools = argsBool
 
@@ -302,6 +316,51 @@ func main() {
 		}
 	}
 
+	workDirAbs, err := filepath.Abs(workDir)
+	if err != nil {
+		log.Fatalf("Failed to resolve working directory: %v", err)
+	}
+
+	patchTargetDirs := make(map[string]string)
+	addPatchTarget := func(name, relativePath string) {
+		if name == "" || relativePath == "" {
+			return
+		}
+		patchTargetDirs[strings.ToLower(name)] = filepath.Join(workDirAbs, relativePath)
+	}
+
+	addPatchTarget(defaultPatchTarget, nginxBuilder.SourcePath())
+	if *openResty {
+		addPatchTarget("openresty", nginxBuilder.SourcePath())
+		addPatchTarget("ngx_openresty", nginxBuilder.SourcePath())
+	}
+	if *freenginx {
+		addPatchTarget("freenginx", nginxBuilder.SourcePath())
+	}
+	if *pcreStatic {
+		addPatchTarget("pcre", pcreBuilder.SourcePath())
+		addPatchTarget("pcre2", pcreBuilder.SourcePath())
+	}
+	if *openSSLStatic {
+		addPatchTarget("openssl", openSSLBuilder.SourcePath())
+	}
+	if *libreSSLStatic {
+		addPatchTarget("libressl", libreSSLBuilder.SourcePath())
+	}
+	if *customSSLURL != "" {
+		addPatchTarget("customssl", customSSLBuilder.SourcePath())
+		if customSSLBuilder.CustomName != "" {
+			addPatchTarget(strings.ToLower(customSSLBuilder.CustomName), customSSLBuilder.SourcePath())
+		}
+	}
+	if *zlibStatic {
+		addPatchTarget("zlib", zlibBuilder.SourcePath())
+	}
+
+	if err := validatePatchDirectives(patchDirectives, patchTargetDirs); err != nil {
+		log.Fatal(err)
+	}
+
 	rootDir, err := util.SaveCurrentDir()
 	if err != nil {
 		log.Fatalf("Failed to get current directory: %v", err)
@@ -311,10 +370,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// remove nginx source code applied patch
-	if *patchPath != "" && util.FileExists(nginxBuilder.SourcePath()) {
-		err := os.RemoveAll(nginxBuilder.SourcePath())
-		if err != nil {
+	if len(patchDirectives) > 0 {
+		if err := resetPatchedSources(patchDirectives, patchTargetDirs); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -452,17 +509,17 @@ func main() {
 		log.Fatalf("Failed to generate configure script for %s", nginxBuilder.SourcePath())
 	}
 
-	if err := util.Patch(*patchPath, *patchOption, rootDir, false); err != nil {
+	if err := applyPatches(patchDirectives, *patchOption, rootDir, patchTargetDirs); err != nil {
 		log.Fatalf("Failed to apply patch: %v", err)
 	}
 
 	// reverts source code with patch -R when the build was interrupted.
-	if *patchPath != "" {
+	if len(patchDirectives) > 0 {
 		sigChannel := make(chan os.Signal, 1)
 		signal.Notify(sigChannel, os.Interrupt)
 		go func() {
 			<-sigChannel
-			if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+			if err := revertPatches(patchDirectives, *patchOption, rootDir, patchTargetDirs); err != nil {
 				log.Printf("Failed to revert patch: %v", err)
 			}
 		}()
@@ -473,14 +530,14 @@ func main() {
 	err = configure.Run()
 	if err != nil {
 		log.Printf("Failed to configure %s\n", nginxBuilder.SourcePath())
-		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+		if err := revertPatches(patchDirectives, *patchOption, rootDir, patchTargetDirs); err != nil {
 			log.Printf("Failed to revert patch: %v", err)
 		}
 		util.PrintFatalMsg(err, "nginx-configure.log")
 	}
 
 	if *configureOnly {
-		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+		if err := revertPatches(patchDirectives, *patchOption, rootDir, patchTargetDirs); err != nil {
 			log.Printf("Failed to revert patch: %v", err)
 		}
 		printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
@@ -503,11 +560,111 @@ func main() {
 	err = builder.BuildNginx(*jobs)
 	if err != nil {
 		log.Printf("Failed to build %s\n", nginxBuilder.SourcePath())
-		if err := util.Patch(*patchPath, *patchOption, rootDir, true); err != nil {
+		if err := revertPatches(patchDirectives, *patchOption, rootDir, patchTargetDirs); err != nil {
 			log.Printf("Failed to revert patch: %v", err)
 		}
 		util.PrintFatalMsg(err, "nginx-build.log")
 	}
 
 	printLastMsg(workDir, nginxBuilder.SourcePath(), *openResty, *configureOnly)
+}
+
+func parsePatchDirectives(raw string) ([]patchDirective, error) {
+	if raw == "" {
+		return nil, nil
+	}
+	entries := strings.Split(raw, ",")
+	directives := make([]patchDirective, 0, len(entries))
+	index := make(map[string]int)
+	for _, entry := range entries {
+		spec := strings.TrimSpace(entry)
+		if spec == "" {
+			continue
+		}
+		target := defaultPatchTarget
+		pathSpec := spec
+		if parts := strings.SplitN(spec, "=", 2); len(parts) == 2 {
+			target = strings.ToLower(strings.TrimSpace(parts[0]))
+			pathSpec = strings.TrimSpace(parts[1])
+			if target == "" {
+				return nil, fmt.Errorf("invalid patch specification %q: missing target", spec)
+			}
+		}
+		if pathSpec == "" {
+			return nil, fmt.Errorf("invalid patch specification %q: missing path", spec)
+		}
+		idx, ok := index[target]
+		if !ok {
+			directives = append(directives, patchDirective{target: target})
+			idx = len(directives) - 1
+			index[target] = idx
+		}
+		directives[idx].paths = append(directives[idx].paths, pathSpec)
+	}
+	return directives, nil
+}
+
+func validatePatchDirectives(directives []patchDirective, targetDirs map[string]string) error {
+	for _, directive := range directives {
+		if _, ok := targetDirs[directive.target]; !ok {
+			available := make([]string, 0, len(targetDirs))
+			for key := range targetDirs {
+				available = append(available, key)
+			}
+			sort.Strings(available)
+			return fmt.Errorf("patch target %q is not available. Available targets: %s", directive.target, strings.Join(available, ", "))
+		}
+	}
+	return nil
+}
+
+func resetPatchedSources(directives []patchDirective, targetDirs map[string]string) error {
+	if len(directives) == 0 {
+		return nil
+	}
+	seen := make(map[string]struct{})
+	for _, directive := range directives {
+		targetDir := targetDirs[directive.target]
+		if targetDir == "" {
+			continue
+		}
+		if _, ok := seen[targetDir]; ok {
+			continue
+		}
+		if util.FileExists(targetDir) {
+			if err := os.RemoveAll(targetDir); err != nil {
+				return fmt.Errorf("failed to remove %s: %w", targetDir, err)
+			}
+		}
+		seen[targetDir] = struct{}{}
+	}
+	return nil
+}
+
+func applyPatches(directives []patchDirective, patchOption, rootDir string, targetDirs map[string]string) error {
+	return runPatchCommands(directives, patchOption, rootDir, targetDirs, false)
+}
+
+func revertPatches(directives []patchDirective, patchOption, rootDir string, targetDirs map[string]string) error {
+	return runPatchCommands(directives, patchOption, rootDir, targetDirs, true)
+}
+
+func runPatchCommands(directives []patchDirective, patchOption, rootDir string, targetDirs map[string]string, reverse bool) error {
+	if len(directives) == 0 {
+		return nil
+	}
+	for _, directive := range directives {
+		if len(directive.paths) == 0 {
+			continue
+		}
+		targetDir, ok := targetDirs[directive.target]
+		if !ok || targetDir == "" {
+			return fmt.Errorf("patch target %q is not available", directive.target)
+		}
+		joinedPaths := strings.Join(directive.paths, ",")
+		if err := util.Patch(joinedPaths, patchOption, rootDir, targetDir, directive.target, reverse); err != nil {
+			return err
+		}
+	}
+	return nil
 }
