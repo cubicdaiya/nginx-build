@@ -140,3 +140,30 @@ jobs:
             -customssl https://github.com/open-quantum-safe/oqs-provider.git \
             -customsslname oqs-provider \
             -customssltag 0.9.0
+
+  run-patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.4
+      - name: Run nginx-build with patches
+        run: |
+          set -euxo pipefail
+          make
+          ./nginx-build \
+            -c ./config/configure.example \
+            -m ./config/modules.json.example \
+            -d work \
+            -clear \
+            -pcre \
+            -zlib \
+            -openssl \
+            -patch ./config/patches/nginx-add-file.patch \
+            -patch openssl=./config/patches/openssl-add-file.patch
+          nginx_patch_path=$(find work -name patch-ci-nginx.txt -print -quit)
+          openssl_patch_path=$(find work -name patch-ci-openssl.txt -print -quit)
+          test -n "$nginx_patch_path"
+          test -n "$openssl_patch_path"
