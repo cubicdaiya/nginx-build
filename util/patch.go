@@ -54,6 +54,8 @@ func Patch(pathInput, option, rootDir, targetDir, targetLabel string, reverse bo
 	if targetDir == "" {
 		return fmt.Errorf("patch target %s has no working directory", targetLabel)
 	}
+	var revertRegistered bool
+	var revertSucceeded bool
 	if reverse {
 		mutex.Lock()
 		if patchedTargets[targetLabel] {
@@ -61,7 +63,15 @@ func Patch(pathInput, option, rootDir, targetDir, targetLabel string, reverse bo
 			return nil
 		}
 		patchedTargets[targetLabel] = true
+		revertRegistered = true
 		mutex.Unlock()
+		defer func() {
+			if revertRegistered && !revertSucceeded {
+				mutex.Lock()
+				delete(patchedTargets, targetLabel)
+				mutex.Unlock()
+			}
+		}()
 	}
 
 	var individualPaths []string
@@ -112,5 +122,6 @@ func Patch(pathInput, option, rootDir, targetDir, targetLabel string, reverse bo
 			return fmt.Errorf("failed to %s patch %s (options: %s): %w", strings.ToLower(logMsg), p, option, err)
 		}
 	}
+	revertSucceeded = true
 	return nil
 }
