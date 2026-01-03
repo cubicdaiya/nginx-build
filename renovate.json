@@ -8,10 +8,21 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/.github/workflows/security.yml/"
+        "/.github/workflows/go.yml/"
       ],
       "datasourceTemplate": "golang-version",
       "depNameTemplate": "golang",
+      "matchStrings": [
+        "go-version: (?<currentValue>[0-9]*.[0-9]*.[0-9]*)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.github/workflows/security.yml/"
+      ],
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "golang-security",
       "matchStrings": [
         "go-version-input: (?<currentValue>[0-9]*.[0-9]*.[0-9]*)"
       ]
@@ -25,6 +36,17 @@
       "depNameTemplate": "golang",
       "matchStrings": [
         "go-version: (?<currentValue>[0-9]*.[0-9]*.[0-9]*)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/osv-scanner.toml/"
+      ],
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "golang-security",
+      "matchStrings": [
+        "GoVersionOverride = \"(?<currentValue>[0-9]*.[0-9]*.[0-9]*)\""
       ]
     },
     {
@@ -124,6 +146,12 @@
     }
   ],
   "packageRules": [
+    {
+      "matchDepNames": [
+        "golang-security"
+      ],
+      "groupName": "go-version-security"
+    },
     {
       "matchDatasources": [
         "github-tags"
