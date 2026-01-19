@@ -119,6 +119,34 @@ jobs:
             -customssl https://boringssl.googlesource.com/boringssl \
             -customsslname boringssl
 
+  run-nginx-zlib-ng:
+    runs-on: ubuntu-latest
+    env:
+      GOCACHE: ${{ github.workspace }}/.cache
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.4
+      - name: Download nginx zlib-ng patch
+        run: |
+          set -euxo pipefail
+          curl -L https://patch-diff.githubusercontent.com/raw/nginx/nginx/pull/644.patch -o /tmp/nginx-pr-644.patch
+      - name: Run Nginx with zlib-ng compat
+        run: |
+          set -euxo pipefail
+          make
+          ./nginx-build \
+            -c ./config/configure.zlibng.example \
+            -m ./config/modules.json.example \
+            -d work \
+            -clear \
+            -pcre \
+            -zlib-ng \
+            -patch /tmp/nginx-pr-644.patch \
+            -patch-opt "-p1"
+
   run-nginx-oqs-provider:
     runs-on: ubuntu-latest
     steps:

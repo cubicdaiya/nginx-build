@@ -30,6 +30,12 @@ const (
 	ZlibDownloadURLPrefix = "https://zlib.net"
 )
 
+// zlib-ng
+const (
+	ZlibNGVersion           = "2.3.1"
+	ZlibNGDownloadURLPrefix = "https://github.com/zlib-ng/zlib-ng/archive/refs/tags"
+)
+
 // openResty
 const (
 	OpenRestyVersion           = "1.27.1.2"
@@ -52,5 +58,6 @@ const (
 	ComponentLibreSSL
 	ComponentCustomSSL
 	ComponentZlib
+	ComponentZlibNG
 	ComponentMax
 )
