@@ -37,7 +37,7 @@ func Normalize(configure string) (string, string) {
 }
 
 func normalizeAddModulePaths(path, rootDir string, dynamic bool) string {
-	var result string
+	var result strings.Builder
 	if len(path) == 0 {
 		return path
 	}
@@ -51,11 +51,11 @@ func normalizeAddModulePaths(path, rootDir string, dynamic bool) string {
 
 	for _, modulePath := range modulePaths {
 		if strings.HasPrefix(modulePath, "/") {
-			result += opt + "=" + modulePath + " \\\n"
+			result.WriteString(opt + "=" + modulePath + " \\\n")
 		} else {
-			result += opt + "=" + rootDir + "/" + modulePath + " \\\n"
+			result.WriteString(opt + "=" + rootDir + "/" + modulePath + " \\\n")
 		}
 	}
 
-	return result
+	return result.String()
 }
