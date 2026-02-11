@@ -61,17 +61,17 @@ func Generate(configure string, modules3rd []module3rd.Module3rd, dependencies [
 }
 
 func generateForModule3rd(modules3rd []module3rd.Module3rd) string {
-	result := ""
+	var result strings.Builder
 	for _, m := range modules3rd {
 		opt := "--add-module"
 		if m.Dynamic {
 			opt = "--add-dynamic-module"
 		}
 		if m.Form == "local" {
-			result += fmt.Sprintf("%s=%s \\\n", opt, m.URL)
+			result.WriteString(fmt.Sprintf("%s=%s \\\n", opt, m.URL))
 		} else {
-			result += fmt.Sprintf("%s=../%s \\\n", opt, m.Name)
+			result.WriteString(fmt.Sprintf("%s=../%s \\\n", opt, m.Name))
 		}
 	}
-	return result
+	return result.String()
 }
