@@ -61,6 +61,8 @@ func (builder *Builder) name() string {
 		}
 	case ComponentZlib:
 		name = "zlib"
+	case ComponentZlibNG:
+		name = "zlib-ng"
 	case ComponentOpenResty:
 		name = openresty.Name(builder.Version)
 	case ComponentFreenginx:
@@ -89,6 +91,11 @@ func (builder *Builder) option() string {
 		name = "pcre"
 	}
 
+	// zlib-ng does not match option name
+	if name == "zlib-ng" {
+		name = "zlib"
+	}
+
 	return fmt.Sprintf("--with-%s", name)
 }
 
@@ -106,6 +113,8 @@ func (builder *Builder) DownloadURL() string {
 		return builder.CustomURL
 	case ComponentZlib:
 		return fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, builder.Version)
+	case ComponentZlibNG:
+		return fmt.Sprintf("%s/%s.tar.gz", ZlibNGDownloadURLPrefix, builder.Version)
 	case ComponentOpenResty:
 		return fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, builder.Version)
 	case ComponentFreenginx:
@@ -116,6 +125,9 @@ func (builder *Builder) DownloadURL() string {
 }
 
 func (builder *Builder) SourcePath() string {
+	if builder.name() == "" {
+		return fmt.Sprintf("%s", builder.Version)
+	}
 	return fmt.Sprintf("%s-%s", builder.name(), builder.Version)
 }
 
@@ -194,6 +206,8 @@ func MakeBuilder(component int, version string) Builder {
 		builder.DownloadURLPrefix = LibreSSLDownloadURLPrefix
 	case ComponentZlib:
 		builder.DownloadURLPrefix = ZlibDownloadURLPrefix
+	case ComponentZlibNG:
+		builder.DownloadURLPrefix = ZlibNGDownloadURLPrefix
 	case ComponentOpenResty:
 		builder.DownloadURLPrefix = OpenRestyDownloadURLPrefix
 	case ComponentFreenginx:
