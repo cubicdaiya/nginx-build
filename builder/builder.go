@@ -16,7 +16,7 @@ type Builder struct {
 	Component         int
 	// for dependencies such as pcre and zlib and openssl
 	Static bool
-	// for custom SSL library
+	// for custom source archives or repositories
 	CustomURL  string
 	CustomName string
 	CustomTag  string
@@ -47,6 +47,12 @@ func (builder *Builder) name() string {
 	switch builder.Component {
 	case ComponentNginx:
 		name = "nginx"
+	case ComponentCustomNginx:
+		if builder.CustomName != "" {
+			name = builder.CustomName
+		} else {
+			name = "customnginx"
+		}
 	case ComponentPcre:
 		name = "pcre2"
 	case ComponentOpenSSL:
@@ -96,6 +102,8 @@ func (builder *Builder) DownloadURL() string {
 	switch builder.Component {
 	case ComponentNginx:
 		return fmt.Sprintf("%s/nginx-%s.tar.gz", NginxDownloadURLPrefix, builder.Version)
+	case ComponentCustomNginx:
+		return builder.CustomURL
 	case ComponentPcre:
 		return fmt.Sprintf("%s/pcre2-%s/pcre2-%s.tar.gz", PcreDownloadURLPrefix, builder.Version, builder.Version)
 	case ComponentOpenSSL:
@@ -137,6 +145,10 @@ func (builder *Builder) WarnMsgWithLibrary() string {
 }
 
 func (builder *Builder) InstalledVersion() (string, error) {
+	if builder.Component == ComponentCustomNginx {
+		return "", nil
+	}
+
 	nginxBinPath := "/usr/local/sbin/nginx"
 	if os.Getenv("NGINX_BIN") != "" {
 		nginxBinPath = os.Getenv("NGINX_BIN")
@@ -171,6 +183,9 @@ func (builder *Builder) InstalledVersion() (string, error) {
 	case "freenginx":
 		versionRe = freenginxVersionRe
 	}
+	if versionRe == nil {
+		return "", nil
+	}
 
 	m := versionRe.FindSubmatch(result)
 	if len(m) < 2 {
@@ -186,6 +201,8 @@ func MakeBuilder(component int, version string) Builder {
 	switch component {
 	case ComponentNginx:
 		builder.DownloadURLPrefix = NginxDownloadURLPrefix
+	case ComponentCustomNginx:
+		builder.DownloadURLPrefix = ""
 	case ComponentPcre:
 		builder.DownloadURLPrefix = fmt.Sprintf("%s/pcre2-%s", PcreDownloadURLPrefix, version)
 	case ComponentOpenSSL:

@@ -115,6 +115,18 @@ func makeNginxBuildOptions() Options {
 		Desc:    "zlib version",
 		Default: builder.ZlibVersion,
 	}
+	argsString["customnginx"] = OptionValue{
+		Desc:    "download URL for custom nginx source",
+		Default: "",
+	}
+	argsString["customnginxname"] = OptionValue{
+		Desc:    "name for custom nginx source",
+		Default: "",
+	}
+	argsString["customnginxtag"] = OptionValue{
+		Desc:    "git tag/branch for custom nginx source",
+		Default: "",
+	}
 	argsString["openrestyversion"] = OptionValue{
 		Desc:    "openresty version",
 		Default: builder.OpenRestyVersion,
