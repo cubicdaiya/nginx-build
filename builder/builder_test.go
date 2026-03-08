@@ -14,6 +14,12 @@ func setupBuilders(t *testing.T) []Builder {
 	builders[ComponentZlib] = MakeLibraryBuilder(ComponentZlib, ZlibVersion, false)
 	builders[ComponentOpenResty] = MakeBuilder(ComponentOpenResty, OpenRestyVersion)
 	builders[ComponentFreenginx] = MakeBuilder(ComponentFreenginx, FreenginxVersion)
+	builders[ComponentCustomNginx] = Builder{
+		Component:  ComponentCustomNginx,
+		Version:    "custom",
+		CustomURL:  "https://example.com/customnginx.tar.gz",
+		CustomName: "mycustomnginx",
+	}
 	// Add custom SSL builder
 	builders[ComponentCustomSSL] = Builder{
 		Component:  ComponentCustomSSL,
@@ -59,6 +65,10 @@ func TestName(t *testing.T) {
 		{
 			got:  builders[ComponentFreenginx].name(),
 			want: "freenginx",
+		},
+		{
+			got:  builders[ComponentCustomNginx].name(),
+			want: "mycustomnginx",
 		},
 		{
 			got:  builders[ComponentCustomSSL].name(),
@@ -141,6 +151,10 @@ func TestDownloadURL(t *testing.T) {
 			want: fmt.Sprintf("%s/freenginx-%s.tar.gz", FreenginxDownloadURLPrefix, FreenginxVersion),
 		},
 		{
+			got:  builders[ComponentCustomNginx].DownloadURL(),
+			want: "https://example.com/customnginx.tar.gz",
+		},
+		{
 			got:  builders[ComponentCustomSSL].DownloadURL(),
 			want: "https://example.com/customssl.tar.gz",
 		},
@@ -187,6 +201,10 @@ func TestSourcePath(t *testing.T) {
 		{
 			got:  builders[ComponentFreenginx].SourcePath(),
 			want: fmt.Sprintf("freenginx-%s", FreenginxVersion),
+		},
+		{
+			got:  builders[ComponentCustomNginx].SourcePath(),
+			want: "mycustomnginx-custom",
 		},
 		{
 			got:  builders[ComponentCustomSSL].SourcePath(),
@@ -430,6 +448,55 @@ func TestCustomSSLBuilder(t *testing.T) {
 			expectedSourcePath := test.builder.name() + "-" + test.builder.Version
 			if sourcePath != expectedSourcePath {
 				t.Errorf("SourcePath() = %v, want %v", sourcePath, expectedSourcePath)
+			}
+		})
+	}
+}
+
+func TestCustomNginxBuilder(t *testing.T) {
+	tests := []struct {
+		name       string
+		builder    Builder
+		wantName   string
+		wantURL    string
+		wantSource string
+	}{
+		{
+			name: "custom nginx with default name",
+			builder: Builder{
+				Component: ComponentCustomNginx,
+				Version:   "custom",
+				CustomURL: "https://example.com/nginx.tar.gz",
+			},
+			wantName:   "customnginx",
+			wantURL:    "https://example.com/nginx.tar.gz",
+			wantSource: "customnginx-custom",
+		},
+		{
+			name: "custom nginx with custom name",
+			builder: Builder{
+				Component:  ComponentCustomNginx,
+				Version:    "custom",
+				CustomURL:  "https://github.com/example/nginx-quic.git",
+				CustomName: "nginx-quic",
+				CustomTag:  "v1.0.0",
+			},
+			wantName:   "nginx-quic",
+			wantURL:    "https://github.com/example/nginx-quic.git",
+			wantSource: "nginx-quic-custom",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := test.builder.name(); got != test.wantName {
+				t.Errorf("name() = %v, want %v", got, test.wantName)
+			}
+			if got := test.builder.DownloadURL(); got != test.wantURL {
+				t.Errorf("DownloadURL() = %v, want %v", got, test.wantURL)
+			}
+			if got := test.builder.SourcePath(); got != test.wantSource {
+				t.Errorf("SourcePath() = %v, want %v", got, test.wantSource)
 			}
 		})
 	}

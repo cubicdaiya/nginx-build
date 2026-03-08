@@ -144,6 +144,9 @@ func main() {
 	openRestyVersion := nginxBuildOptions.Values["openrestyversion"].Value
 	freenginxVersion := nginxBuildOptions.Values["freenginxversion"].Value
 	patchOption := nginxBuildOptions.Values["patch-opt"].Value
+	customNginxURL := nginxBuildOptions.Values["customnginx"].Value
+	customNginxName := nginxBuildOptions.Values["customnginxname"].Value
+	customNginxTag := nginxBuildOptions.Values["customnginxtag"].Value
 	customSSLURL := nginxBuildOptions.Values["customssl"].Value
 	customSSLName := nginxBuildOptions.Values["customsslname"].Value
 	customSSLTag := nginxBuildOptions.Values["customssltag"].Value
@@ -201,8 +204,18 @@ func main() {
 	command.VerboseEnabled = *verbose
 
 	var nginxBuilder builder.Builder
-	if *openResty && *freenginx {
-		log.Fatal("select one between '-openresty' and '-freenginx'.")
+	primarySourceCount := 0
+	if *openResty {
+		primarySourceCount++
+	}
+	if *freenginx {
+		primarySourceCount++
+	}
+	if *customNginxURL != "" {
+		primarySourceCount++
+	}
+	if primarySourceCount > 1 {
+		log.Fatal("select one between '-openresty', '-freenginx', and '-customnginx'.")
 	}
 	// Check for conflicting SSL library options
 	sslCount := 0
@@ -218,7 +231,15 @@ func main() {
 	if sslCount > 1 {
 		log.Fatal("select only one SSL library: '-openssl', '-libressl', or '-customssl'.")
 	}
-	if *openResty {
+	if *customNginxURL != "" {
+		nginxBuilder = builder.Builder{
+			Component:  builder.ComponentCustomNginx,
+			Version:    "custom",
+			CustomURL:  *customNginxURL,
+			CustomName: *customNginxName,
+			CustomTag:  *customNginxTag,
+		}
+	} else if *openResty {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentOpenResty, *openRestyVersion)
 	} else if *freenginx {
 		nginxBuilder = builder.MakeBuilder(builder.ComponentFreenginx, *freenginxVersion)
@@ -269,7 +290,9 @@ func main() {
 	// change default umask
 	_ = syscall.Umask(0)
 
-	versionCheck(*version)
+	if !*openResty && !*freenginx && *customNginxURL == "" {
+		versionCheck(*version)
+	}
 
 	nginxConfigure, err := util.FileGetContents(*nginxConfigurePath)
 	if err != nil {
@@ -298,6 +321,12 @@ func main() {
 		workDir = *workParentDir + "/openresty/" + *openRestyVersion
 	} else if *freenginx {
 		workDir = *workParentDir + "/freenginx/" + *freenginxVersion
+	} else if *customNginxURL != "" {
+		customNginxWorkDir := *customNginxName
+		if customNginxWorkDir == "" {
+			customNginxWorkDir = "customnginx"
+		}
+		workDir = *workParentDir + "/nginx/" + customNginxWorkDir
 	} else {
 		workDir = *workParentDir + "/nginx/" + *version
 	}
@@ -337,6 +366,12 @@ func main() {
 	if *freenginx {
 		addPatchTarget("freenginx", nginxBuilder.SourcePath())
 	}
+	if *customNginxURL != "" {
+		addPatchTarget("customnginx", nginxBuilder.SourcePath())
+		if nginxBuilder.CustomName != "" {
+			addPatchTarget(nginxBuilder.CustomName, nginxBuilder.SourcePath())
+		}
+	}
 	if *pcreStatic {
 		addPatchTarget("pcre", pcreBuilder.SourcePath())
 		addPatchTarget("pcre2", pcreBuilder.SourcePath())
@@ -350,7 +385,7 @@ func main() {
 	if *customSSLURL != "" {
 		addPatchTarget("customssl", customSSLBuilder.SourcePath())
 		if customSSLBuilder.CustomName != "" {
-			addPatchTarget(strings.ToLower(customSSLBuilder.CustomName), customSSLBuilder.SourcePath())
+			addPatchTarget(customSSLBuilder.CustomName, customSSLBuilder.SourcePath())
 		}
 	}
 	if *zlibStatic {

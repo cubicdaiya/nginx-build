@@ -7,6 +7,39 @@ import (
 func TestMakeNginxBuildOptions(t *testing.T) {
 	options := makeNginxBuildOptions()
 
+	// Test custom nginx options exist
+	customNginxTests := []struct {
+		name string
+		key  string
+		desc string
+	}{
+		{
+			name: "customnginx option",
+			key:  "customnginx",
+			desc: "download URL for custom nginx source",
+		},
+		{
+			name: "customnginxname option",
+			key:  "customnginxname",
+			desc: "name for custom nginx source",
+		},
+		{
+			name: "customnginxtag option",
+			key:  "customnginxtag",
+			desc: "git tag/branch for custom nginx source",
+		},
+	}
+
+	for _, test := range customNginxTests {
+		t.Run(test.name, func(t *testing.T) {
+			if opt, ok := options.Values[test.key]; !ok {
+				t.Errorf("Option %s not found in Values", test.key)
+			} else if opt.Desc != test.desc {
+				t.Errorf("Option %s description = %q, want %q", test.key, opt.Desc, test.desc)
+			}
+		})
+	}
+
 	// Test custom SSL options exist
 	customSSLTests := []struct {
 		name string
@@ -53,6 +86,11 @@ func TestIsNginxBuildOption(t *testing.T) {
 		{
 			name: "valid value option - customssl",
 			key:  "customssl",
+			want: true,
+		},
+		{
+			name: "valid value option - customnginx",
+			key:  "customnginx",
 			want: true,
 		},
 		{

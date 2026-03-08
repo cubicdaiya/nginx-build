@@ -14,6 +14,7 @@
  * [nginx](https://nginx.org/)
  * [OpenResty](https://openresty.org/)
  * [freenginx](https://freenginx.org/)
+ * Custom nginx sources via `-customnginx` (for example Angie, nginx forks, and feature branches)
 
 ## Installation
 
@@ -89,6 +90,58 @@ $ nginx-build -d work -libressl
 
 `-libresslversion` is an option to set a version of LibreSSL.
 
+### Using a Custom nginx Source
+
+`nginx-build` can also build nginx from a custom URL, in the same way as `-customssl`. The URL can be either a tarball or a Git repository.
+
+This is intended for custom nginx trees in general, such as Angie, nginx forks, QUIC branches, or internal vendor branches.
+
+#### Basic Usage
+
+```bash
+# Using Angie from Git repository
+$ nginx-build -d work \
+  -customnginx https://github.com/webserver-llc/angie.git \
+  -customnginxname angie
+
+# Using a tarball URL
+$ nginx-build -d work \
+  -customnginx https://example.com/nginx-quic.tar.gz \
+  -customnginxname nginx-quic
+
+# Using a custom nginx branch from Git
+$ nginx-build -d work \
+  -customnginx https://github.com/example/nginx.git \
+  -customnginxname nginx-feature \
+  -customnginxtag feature/http3
+```
+
+#### Using a Specific Git Tag or Branch
+
+For Git repositories, you can specify a tag or branch with `-customnginxtag`:
+
+```bash
+# Use Angie with a specific tag
+$ nginx-build -d work \
+  -customnginx https://github.com/webserver-llc/angie.git \
+  -customnginxname angie \
+  -customnginxtag Angie-1.11.3
+
+# Use another custom nginx tree with a specific tag
+$ nginx-build -d work \
+  -customnginx https://github.com/example/nginx-quic.git \
+  -customnginxname nginx-quic \
+  -customnginxtag v1.0.0
+```
+
+#### Available Options
+
+- `-customnginx`: URL of the custom nginx source (supports both Git repositories and tarballs)
+- `-customnginxname`: Name for the custom nginx source (used in directory names)
+- `-customnginxtag`: Git tag or branch to checkout (only for Git repositories)
+
+For tarball URLs, the archive must extract into a single top-level directory. Archives that unpack files directly at the root, or contain multiple top-level directories, are not supported.
+
 ### Using Custom SSL Libraries (e.g., BoringSSL)
 
 `nginx-build` supports using arbitrary SSL libraries through custom SSL options. This is useful for libraries like BoringSSL that are not available as standard options.
@@ -139,6 +192,8 @@ $ nginx-build -d work \
   -customssl https://example.com/myssl-1.0.0.tar.gz \
   -customsslname myssl
 ```
+
+The tarball must extract into a single top-level directory. Archives that unpack files directly at the root, or contain multiple top-level directories, are not supported.
 
 #### Available Options
 
@@ -211,7 +266,7 @@ There is the example configuration below.
 
 ## Applying patch before building nginx
 
-`nginx-build` provides the options such as `-patch` and `-patch-opt` for applying patches to the extracted sources. By default `-patch <path>` targets the primary tree (nginx, OpenResty, or freenginx depending on the build). To patch other bundled components prefix the flag with the component name, for example `-patch openssl=/path/to/openssl.patch`. Supported targets include `nginx`, `openresty`, `freenginx`, `pcre`/`pcre2`, `openssl`, `libressl`, `customssl` (or the custom name), and `zlib`.
+`nginx-build` provides the options such as `-patch` and `-patch-opt` for applying patches to the extracted sources. By default `-patch <path>` targets the primary tree (nginx, OpenResty, freenginx, or a custom nginx source depending on the build). To patch other bundled components prefix the flag with the component name, for example `-patch openssl=/path/to/openssl.patch`. Supported targets include `nginx`, `openresty`, `freenginx`, `customnginx` (or the custom name), `pcre`/`pcre2`, `openssl`, `libressl`, `customssl` (or the custom name), and `zlib`.
 
 ```console
 nginx-build \
@@ -255,6 +310,40 @@ If you don't install PCRE and OpenSSL on your system, it is required to add the 
 And there is the limitation for the support of OpenResty.
 `nginx-build` does not allow to use OpenResty's unique configure options directly.
 If you want to use OpenResty's unique configure option, [Configuration for building nginx](#configuration-for-building-nginx) is helpful.
+
+## Build Custom nginx Sources
+
+`nginx-build` supports building custom nginx sources through `-customnginx`.
+
+```bash
+$ nginx-build -d work \
+  -customnginx https://github.com/example/nginx.git \
+  -customnginxname nginx-feature \
+  -customnginxtag feature/http3 \
+  -pcre \
+  -zlib \
+  -openssl
+```
+
+If you don't install PCRE, zlib, and OpenSSL on your system, it is required to add `-pcre`, `-zlib`, and `-openssl`.
+You can use `-patch customnginx=/path/to/patch.diff`, or `-patch <customnginxname>=/path/to/patch.diff` when `-customnginxname` is set.
+
+## Build Angie
+
+`nginx-build` supports building [Angie](https://github.com/webserver-llc/angie) through `-customnginx`.
+
+```bash
+$ nginx-build -d work \
+  -customnginx https://github.com/webserver-llc/angie.git \
+  -customnginxname angie \
+  -customnginxtag Angie-1.11.3 \
+  -pcre \
+  -zlib \
+  -openssl
+```
+
+If you don't install PCRE, zlib, and OpenSSL on your system, it is required to add `-pcre`, `-zlib`, and `-openssl`.
+You can also use `-patch angie=/path/to/patch.diff` when `-customnginxname angie` is set.
 
 ## Build freenginx
 

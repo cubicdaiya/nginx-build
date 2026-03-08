@@ -47,6 +47,7 @@ const (
 	ComponentNginx = iota
 	ComponentOpenResty
 	ComponentFreenginx
+	ComponentCustomNginx
 	ComponentPcre
 	ComponentOpenSSL
 	ComponentLibreSSL

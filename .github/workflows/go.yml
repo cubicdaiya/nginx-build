@@ -87,6 +87,29 @@ jobs:
           make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -openresty -pcre -zlib -openssl
 
+  run-angie:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.26.1
+      - name: Run Angie
+        run: |
+          make
+          ./nginx-build \
+            -c ./config/configure.example \
+            -m ./config/modules.json.example \
+            -d work \
+            -clear \
+            -pcre \
+            -zlib \
+            -openssl \
+            -customnginx https://github.com/webserver-llc/angie.git \
+            -customnginxname angie \
+            -customnginxtag Angie-1.11.3
+
   run-nginx-brotli:
     runs-on: ubuntu-latest
     steps:
