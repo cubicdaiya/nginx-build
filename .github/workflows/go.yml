@@ -137,6 +137,7 @@ jobs:
           sudo apt-get install -y cmake ninja-build libunwind-dev
       - name: Run Nginx with BoringSSL
         run: |
+          echo "--with-http_ssl_module \ " >> ./config/configure.example
           make
           ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib \
             -customssl https://boringssl.googlesource.com/boringssl \
@@ -152,6 +153,7 @@ jobs:
           go-version: 1.26.1
       - name: Run Nginx with oqs-provider
         run: |
+          echo "--with-http_ssl_module \ " >> ./config/configure.example
           make
           ./nginx-build \
             -c ./config/configure.example \
