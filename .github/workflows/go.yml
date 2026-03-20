@@ -138,7 +138,7 @@ jobs:
       - name: Run Nginx with BoringSSL
         run: |
           make
-          ./nginx-build -c ./config/configure.example -m ./config/modules.json.example -d work -clear -pcre -zlib \
+          ./nginx-build -c ./config/configure.http2-http3.example -m ./config/modules.json.example -d work -clear -pcre -zlib \
             -customssl https://boringssl.googlesource.com/boringssl \
             -customsslname boringssl
 
@@ -154,7 +154,7 @@ jobs:
         run: |
           make
           ./nginx-build \
-            -c ./config/configure.example \
+            -c ./config/configure.http2-http3.example \
             -m ./config/modules.json.example \
             -d work \
             -clear \

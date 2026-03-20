@@ -1,0 +1,8 @@
+#!/bin/sh
+
+./configure \
+--sbin-path=/usr/sbin/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--with-http_v2_module \
+--with-http_v3_module \
+# comment out
