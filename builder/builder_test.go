@@ -346,26 +346,31 @@ func TestMakeStaticLibrary(t *testing.T) {
 		builder       Builder
 		staticLibrary StaticLibrary
 		version       string
+		wantHTTPSSL   bool
 	}{
 		{
 			builder:       builders[ComponentPcre],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentPcre]),
 			version:       PcreVersion,
+			wantHTTPSSL:   false,
 		},
 		{
 			builder:       builders[ComponentOpenSSL],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentOpenSSL]),
 			version:       OpenSSLVersion,
+			wantHTTPSSL:   true,
 		},
 		{
 			builder:       builders[ComponentLibreSSL],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentLibreSSL]),
 			version:       LibreSSLVersion,
+			wantHTTPSSL:   true,
 		},
 		{
 			builder:       builders[ComponentZlib],
 			staticLibrary: MakeStaticLibrary(&builders[ComponentZlib]),
 			version:       ZlibVersion,
+			wantHTTPSSL:   false,
 		},
 	}
 
@@ -378,6 +383,9 @@ func TestMakeStaticLibrary(t *testing.T) {
 		}
 		if test.builder.Version != test.version {
 			t.Fatalf("not equal version between builder's and default's")
+		}
+		if test.staticLibrary.EnablesHTTPSSLModule != test.wantHTTPSSL {
+			t.Fatalf("unexpected EnablesHTTPSSLModule for %s: got %v want %v", test.staticLibrary.Name, test.staticLibrary.EnablesHTTPSSLModule, test.wantHTTPSSL)
 		}
 	}
 }
@@ -450,6 +458,22 @@ func TestCustomSSLBuilder(t *testing.T) {
 				t.Errorf("SourcePath() = %v, want %v", sourcePath, expectedSourcePath)
 			}
 		})
+	}
+}
+
+func TestMakeStaticLibraryWithCustomSSL(t *testing.T) {
+	customSSLBuilder := Builder{
+		Component:  ComponentCustomSSL,
+		Version:    "custom",
+		Static:     true,
+		CustomURL:  "https://example.com/ssl.tar.gz",
+		CustomName: "mycustomssl",
+	}
+
+	staticLibrary := MakeStaticLibrary(&customSSLBuilder)
+
+	if !staticLibrary.EnablesHTTPSSLModule {
+		t.Fatalf("custom SSL should enable HTTP SSL module")
 	}
 }
 

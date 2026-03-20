@@ -68,6 +68,33 @@ func TestConfiguregenWithStaticLibraries(t *testing.T) {
 	}
 }
 
+func TestConfiguregenWithCustomSSLLibrary(t *testing.T) {
+	customSSLBuilder := builder.Builder{
+		Component:  builder.ComponentCustomSSL,
+		Version:    "custom",
+		Static:     true,
+		CustomURL:  "https://example.com/customssl.tar.gz",
+		CustomName: "mycustomssl",
+	}
+
+	dependencies := []builder.StaticLibrary{
+		builder.MakeStaticLibrary(&customSSLBuilder),
+	}
+	var configureOptions Options
+	configureScript := Generate("", []module3rd.Module3rd{}, dependencies, configureOptions, "", false, 1)
+
+	wantedOptions := []string{
+		"--with-http_ssl_module",
+		"--with-openssl=../mycustomssl-custom \\\n",
+	}
+
+	for _, want := range wantedOptions {
+		if !strings.Contains(configureScript, want) {
+			t.Fatalf("configure script does not contain wanted option: %v", want)
+		}
+	}
+}
+
 func TestGeneratePreservesTrailingComments(t *testing.T) {
 	script := "#!/bin/sh\n\n./configure \\\n--prefix=/usr/local \\\n# --with-http_ssl_module\n"
 	base, comments := Normalize(script)
