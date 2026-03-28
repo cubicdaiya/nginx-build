@@ -1,0 +1,59 @@
+name: GitHub Actions Lint
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/**"
+      - "actionlint.yaml"
+      - "actionlint.yml"
+      - ".github/actionlint.yaml"
+      - ".github/actionlint.yml"
+      - "ghalint.yaml"
+      - "ghalint.yml"
+      - ".github/ghalint.yaml"
+      - ".github/ghalint.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - "actionlint.yaml"
+      - "actionlint.yml"
+      - ".github/actionlint.yaml"
+      - ".github/actionlint.yml"
+      - "ghalint.yaml"
+      - "ghalint.yml"
+      - ".github/ghalint.yaml"
+      - ".github/ghalint.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.26.1
+
+      - name: Install linters
+        run: |
+          mkdir -p "$HOME/bin"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          GOBIN="$HOME/bin" go install github.com/suzuki-shunsuke/ghalint/cmd/ghalint@v1.5.5
+          GOBIN="$HOME/bin" go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.11
+
+      - name: Run ghalint
+        run: ghalint run
+
+      - name: Run actionlint
+        run: actionlint

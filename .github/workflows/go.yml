@@ -24,8 +24,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -37,8 +42,13 @@ jobs:
 
   run-nginx-openssl:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -50,8 +60,13 @@ jobs:
 
   run-nginx-libressl:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -63,8 +78,13 @@ jobs:
 
   run-freenginx:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -76,8 +96,13 @@ jobs:
 
   run-openresty:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -89,8 +114,13 @@ jobs:
 
   run-angie:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -112,8 +142,13 @@ jobs:
 
   run-nginx-brotli:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -125,8 +160,13 @@ jobs:
 
   run-nginx-boringssl:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -144,8 +184,13 @@ jobs:
 
   run-nginx-oqs-provider:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -166,8 +211,13 @@ jobs:
 
   run-patch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
