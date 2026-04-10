@@ -34,7 +34,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Build
         run: make
       - name: Test
@@ -52,7 +52,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with OpenSSL
         run: |
           make
@@ -70,7 +70,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with LibreSSL
         run: |
           make
@@ -88,7 +88,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with FreeNginx
         run: |
           make
@@ -106,7 +106,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with OpenResty
         run: |
           make
@@ -124,7 +124,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Angie
         run: |
           make
@@ -152,7 +152,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with Brotli
         run: |
           make
@@ -170,7 +170,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Install BoringSSL dependencies
         run: |
           sudo apt-get update
@@ -194,7 +194,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run Nginx with oqs-provider
         run: |
           make
@@ -221,7 +221,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.26.1
+          go-version: 1.26.2
       - name: Run nginx-build with patches
         run: |
           set -euxo pipefail
