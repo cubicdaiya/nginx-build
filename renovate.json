@@ -8,6 +8,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
+        "/.github/workflows/github-actions-lint.yml/",
         "/.github/workflows/go.yml/"
       ],
       "datasourceTemplate": "golang-version",
