@@ -154,6 +154,16 @@
       "groupName": "go-version-security"
     },
     {
+      "description": "OpenSSL LTS only. See https://openssl-library.org/roadmap/index.html",
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchPackageNames": [
+        "openssl/openssl"
+      ],
+      "allowedVersions": "/^3\\.5\\.[0-9]+$/"
+    },
+    {
       "matchDatasources": [
         "github-tags"
       ],
