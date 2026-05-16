@@ -2,7 +2,7 @@ package builder
 
 // nginx
 const (
-	NginxVersion           = "1.30.0"
+	NginxVersion           = "1.30.1"
 	NginxDownloadURLPrefix = "https://nginx.org/download"
 )
 
