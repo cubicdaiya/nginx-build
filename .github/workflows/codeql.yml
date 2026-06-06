@@ -73,6 +73,9 @@ jobs:
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
+      - name: Start cicd-sensor
+        uses: cicd-sensor/cicd-sensor-action@1935de498397aa7b9bf6ac7ca822ddb430a34843 # v0.0.31
+
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
