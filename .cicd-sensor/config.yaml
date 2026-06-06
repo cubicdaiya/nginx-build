@@ -1,0 +1,3 @@
+default_max_alerts_per_rule: 20
+disable_baseline_rules: false
+monitor_mode: true

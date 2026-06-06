@@ -43,6 +43,9 @@ jobs:
     name: Run govulncheck
     timeout-minutes: 15
     steps:
+      - name: Start cicd-sensor
+        uses: cicd-sensor/cicd-sensor-action@1935de498397aa7b9bf6ac7ca822ddb430a34843 # v0.0.31
+
       - id: govulncheck
         uses: golang/govulncheck-action@v1
         with:
