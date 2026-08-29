@@ -140,7 +140,7 @@ func TestDownloadURL(t *testing.T) {
 		},
 		{
 			got:  builders[ComponentZlib].DownloadURL(),
-			want: fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, ZlibVersion),
+			want: fmt.Sprintf("%s/v%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, ZlibVersion, ZlibVersion),
 		},
 		{
 			got:  builders[ComponentOpenResty].DownloadURL(),

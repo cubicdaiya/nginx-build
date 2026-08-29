@@ -113,7 +113,7 @@ func (builder *Builder) DownloadURL() string {
 	case ComponentCustomSSL:
 		return builder.CustomURL
 	case ComponentZlib:
-		return fmt.Sprintf("%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, builder.Version)
+		return fmt.Sprintf("%s/v%s/zlib-%s.tar.gz", ZlibDownloadURLPrefix, builder.Version, builder.Version)
 	case ComponentOpenResty:
 		return fmt.Sprintf("%s/openresty-%s.tar.gz", OpenRestyDownloadURLPrefix, builder.Version)
 	case ComponentFreenginx:
