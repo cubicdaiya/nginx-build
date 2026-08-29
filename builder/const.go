@@ -27,7 +27,7 @@ const (
 // zlib
 const (
 	ZlibVersion           = "1.3.2"
-	ZlibDownloadURLPrefix = "https://zlib.net"
+	ZlibDownloadURLPrefix = "https://github.com/madler/zlib/releases/download"
 )
 
 // openResty
