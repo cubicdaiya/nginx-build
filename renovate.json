@@ -120,7 +120,7 @@
     },
     {
       "customType": "regex",
-      "description": "LibreSSL tags include development releases. Confirm stable status on https://www.libressl.org/ before approving updates.",
+      "description": "LibreSSL tags include development releases. Confirm stable status on https://www.libressl.org/ before approving a new major or minor series.",
       "managerFilePatterns": [
         "/builder/const.go/"
       ],
@@ -208,14 +208,28 @@
       "minimumReleaseAge": "0 days"
     },
     {
-      "description": "Confirm that LibreSSL is stable before approving updates. See https://www.libressl.org/",
+      "description": "Require approval for new LibreSSL major or minor series; keep patch updates separate. See https://www.libressl.org/",
       "matchDatasources": [
         "github-tags"
       ],
       "matchPackageNames": [
         "libressl/portable"
       ],
-      "dependencyDashboardApproval": true
+      "dependencyDashboardApproval": true,
+      "separateMinorPatch": true
+    },
+    {
+      "description": "Create PRs without dashboard approval for patch updates within the adopted LibreSSL series.",
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchPackageNames": [
+        "libressl/portable"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "dependencyDashboardApproval": false
     },
     {
       "matchDatasources": [
