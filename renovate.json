@@ -172,16 +172,6 @@
   ],
   "packageRules": [
     {
-      "description": "Group security workflow action updates with security Go version updates.",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchFileNames": [
-        ".github/workflows/security.yml"
-      ],
-      "groupName": "go-version-security"
-    },
-    {
       "matchDepNames": [
         "go-security"
       ],
