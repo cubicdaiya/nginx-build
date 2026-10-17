@@ -172,6 +172,19 @@
   ],
   "packageRules": [
     {
+      "description": "Security Go versions are managed together as go-security by the custom regex managers.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchFileNames": [
+        ".github/workflows/security.yml"
+      ],
+      "matchDepNames": [
+        "go"
+      ],
+      "enabled": false
+    },
+    {
       "matchDepNames": [
         "go-security"
       ],
