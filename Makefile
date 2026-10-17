@@ -2,7 +2,7 @@ nginx-build: go.mod go.sum *.go builder/*.go command/*.go configure/*.go module3
 	go build -ldflags "-X main.NginxBuildVersion=`git rev-list HEAD -n1`" -o $@
 
 build-example: nginx-build
-	./nginx-build -c config/configure.example -m config/modules.cfg.example -d work -clear
+	./nginx-build -c config/configure.example -m config/modules.json.example -d work -clear
 
 check:
 	go test ./...
