@@ -26,7 +26,7 @@ const (
 
 // zlib
 const (
-	ZlibVersion           = "1.3.2"
+	ZlibVersion           = "1.4"
 	ZlibDownloadURLPrefix = "https://github.com/madler/zlib/releases/download"
 )
 
